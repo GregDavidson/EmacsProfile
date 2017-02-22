@@ -1,6 +1,8 @@
 *~
+*#
 *.o
 *.so
+*.swp
 TAGS
 TAGS-*
 Makefile.depends
@@ -23,3 +25,7 @@ semanticdb
 Starter-Kit
 url
 vendor
+eww-bookmarks
+j-mode
+network-security.data
+session.*

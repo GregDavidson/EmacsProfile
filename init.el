@@ -1,6 +1,7 @@
 ;;; Emacs Init Code
-;; NOT byte-compiled
 ;; Maintained by jgd
+;; NOT byte-compiled
+;; Consider migrating content here to jgd.el{,c}
 
 ;; Attempted workaround for font problem in 24.3.1
  (setq initial-frame-alist '(
@@ -57,8 +58,9 @@
 
 ;;; Load-Paths
 
-(dolist (p '("~/Lib/Emacs" "~/.emacs.d/vendor"
-	"~/.emacs.d/jgd" "~/.emacs.d/vendor/ensime/elisp/"))
+(dolist (p '( "~/Lib/Emacs" "~/.emacs.d/vendor"
+							"~/.emacs.d/jgd" "~/.emacs.d/vendor/ensime/elisp/"
+							"~/.emacs.d/vendor/html5-el/"))
 	(add-to-list 'load-path p) )
 
 ;;(load-file "~/.emacs.d/cedet/cedet-devel-load.el")
@@ -90,12 +92,54 @@
 
 ;;; Org Mod
 
+;; http://wenshanren.org/?p=334 Friday 18 November 2016 s/src/source/
+(defun org-insert-source-block (src-code-type)
+  "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
+  (interactive
+		(let ((src-code-types
+						'("emacs-lisp" "python" "C" "sh" "java" "js"
+							 "clojure" "C++" "css" "calc" "asymptote"
+							 "dot" "gnuplot" "ledger" "lilypond" "mscgen"
+							 "octave" "oz" "plantuml" "R" "sass" "screen"
+							 "sql" "awk" "ditaa" "haskell" "latex" "lisp"
+							 "matlab" "ocaml" "org" "perl" "ruby" "scheme"
+							 "sqlite" ) ))
+			(list (ido-completing-read "Source code type: " src-code-types))))
+  (progn
+    (newline-and-indent)
+    (insert (format "#+BEGIN_SRC %s\n" src-code-type))
+    (newline-and-indent)
+    (insert "#+END_SRC\n")
+    (previous-line 2)
+    (org-edit-src-code) ) )
+
+(global-set-key (kbd "C-M-'") 'org-insert-source-block)
+
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
+(defun org-mode-jgd ()
+	(setq variable-pitch-mode 1)
+	(set-face-attribute 'org-table nil :inherit 'fixed-pitch) )
+
 (add-hook 'org-mode-hook 'turn-on-font-lock)
+(add-hook 'org-mode-hook 'org-mode-jgd)
+
+;; Variable Pitch Mode for Source Code
+
+(defun variable-pitch-mode-jgd ()
+	(setq variable-pitch-mode 1)
+)
+
+;; PHP Mode
+
+(add-hook 'php-mode-hook 'variable-pitch-mode-jgd)
+
+;; SQL Mode
+
+(add-hook 'sql-mode-hook 'variable-pitch-mode-jgd)
 
 ;; Uniquify
 (require 'uniquify)
@@ -134,4 +178,93 @@
 
 ;; Workaround to hopefully get rid of annoying:
 ;; Save Error: "Unbalanced parentheses": /home/greg/.emacs.d/semanticdb/!home!greg!Play!Lang!Lisps!ClojureScript!modern-cljs!resources!public!semantic.cache
-(global-semantic-show-unmatched-syntax-mode -1)
+; This was working, but now:
+; Symbol's function definition is void: global-semantic-show-unmatched-syntax-mode
+; (global-semantic-show-unmatched-syntax-mode -1)
+
+;; html5 editing
+
+(eval-after-load "rng-loc"
+  '(add-to-list 'rng-schema-locating-files "~/code/html5-el/schemas.xml"))
+
+(require 'whattf-dt)
+
+;; this font works via set-frame-font so let's write a function
+;; using format to put in the desired size!
+;; -unknown-DejaVu Sans-normal-normal-semicondensed-*-*-*-*-*-*-0-iso10646-1
+
+
+;;;; j-lang Support
+;; https://github.com/zellio/j-mode
+
+(add-to-list 'load-path "~/.emacs.d/j-mode/")
+(autoload 'j-mode "j-mode.el" "Major mode for editing J files" t)
+(add-to-list 'auto-mode-alist '("\\.ij[rstp]$" . j-mode))
+
+
+;;;; Rust Support
+; http://bassam.co/emacs/2015/08/24/rust-with-emacs/
+
+;; Company
+
+;; Enable company globally for all mode
+(global-company-mode)
+
+;; Reduce the time after which the company auto completion popup opens
+(setq company-idle-delay 0.2)
+
+;; Reduce the number of characters before company kicks in
+(setq company-minimum-prefix-length 1)
+
+;; Racer
+
+;; Set path to racer binary
+(setq racer-cmd "/usr/local/bin/racer")
+
+;; Set path to rust src directory
+(setq racer-rust-src-path "~/.rust/src/")
+
+;; Load rust-mode when you open `.rs` files
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+;; Setting up configurations when you load rust-mode
+(add-hook 'rust-mode-hook
+	
+	'(lambda ()
+     ;; Enable racer
+;;     (racer-activate)
+		 (racer-mode)
+		 
+		 ;; Hook in racer with eldoc to provide documentation
+     (racer-turn-on-eldoc)
+		 
+		 ;; Use flycheck-rust in rust-mode
+     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+		 
+		 ;; Use company-racer in rust mode
+     (set (make-local-variable 'company-backends) '(company-racer))
+		 
+		 ;; Key binding to jump to method definition
+     (local-set-key (kbd "M-.") #'racer-find-definition)
+		 
+		 ;; Key binding to auto complete and indent
+     (local-set-key (kbd "TAB") #'racer-complete-or-indent) ) )
+
+;; Tramp
+
+(setq tramp-default-method "ssh")
+
+;; Shell Mode
+
+;; Work in progress!!!
+;; Need to learn about the faces in use in shell mode!
+
+(defun shell-mode-jgd ()
+	(setq variable-pitch-mode 1)
+//	(set-face-attribute 'ansi-color-face nil :inherit 'fixed-pitch)
+ )
+
+(add-hook 'shell-mode-hook 'turn-on-font-lock)
+(add-hook 'shell-mode-hook 'shell-mode-jgd)
+
+(global-set-key (kbd "M-,") 'tags-loop-continue)
