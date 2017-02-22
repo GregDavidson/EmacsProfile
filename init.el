@@ -267,4 +267,7 @@
 (add-hook 'shell-mode-hook 'turn-on-font-lock)
 (add-hook 'shell-mode-hook 'shell-mode-jgd)
 
+;; Miscellaneous
+
+; Somehow M-; got rebound to something weird so reset it
 (global-set-key (kbd "M-,") 'tags-loop-continue)
