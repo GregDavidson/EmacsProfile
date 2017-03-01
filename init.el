@@ -133,10 +133,6 @@
 	(setq variable-pitch-mode 1)
 )
 
-;; PHP Mode
-
-(add-hook 'php-mode-hook 'variable-pitch-mode-jgd)
-
 ;; SQL Mode
 
 (add-hook 'sql-mode-hook 'variable-pitch-mode-jgd)

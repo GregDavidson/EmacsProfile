@@ -351,6 +351,23 @@
   (define-key c-mode-base-map "\C-m" 'newline-and-indent)
 )
 
+;; PHP Mode
+
+(defun pear/php-mode-init()
+  "Set some buffer-local variables."
+  (setq
+		case-fold-search t
+		indent-tabs-mode t
+		c-basic-offset jgd-default-indent
+		tab-width jgd-default-indent
+		c-echo-syntactic-information-p t ;show parse on indent
+  )
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'arglist-close '0)
+)
+(add-hook 'php-mode-hook 'pear/php-mode-init)
+(add-hook 'php-mode-hook 'variable-pitch-mode-jgd)
+
 ;;; Prolog preferences
 
 ;; see http://turing.ubishops.ca/home/bruda/emacs-prolog/

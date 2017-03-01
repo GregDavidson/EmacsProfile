@@ -328,6 +328,7 @@ a placeholder for a correct one!!! "
 	(interactive)
 	(setq outline-minor-mode-prefix "\C-c\C-o")
 	(outline-minor-mode 1)
+	(setq variable-pitch-mode 1)
 	(setq outline-regexp "-- [*\f]+")
 	(jgd-outline-minor-map)
 )
