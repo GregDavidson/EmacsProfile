@@ -32,11 +32,26 @@
 ;;                      clojure-test-mode ; comes with cider
 ;;	cedet
 	cider
+	company
+	company-racer
+	company
 	multi-term
+	emacsql
+	emacsql-mysql
+	emacsql-psql
+	emacsql-sqlite
+	org
+	mysql-to-org
+	php-mode
+	sql-indent
+	sqlup-mode
+	workgroups2
+	rust-mode
 ;;	scala-mode2
 )
   "A list of packages to ensure are installed at launch.")
 
+; This is not working on ngender.org, Friday 21 April 2017, !!!
 (dolist (p my-packages)
   (unless (package-installed-p p)
     (package-install p) ) )
@@ -78,8 +93,8 @@
 ;; Report an error if not found, say nothing if all goes well
 (load "jgd" nil t)	; my fancy code in ~/.emacs.d/jgd
 
-(load "frame-bufs" nil t)
-(frame-bufs-mode t)
+; (load "frame-bufs" nil t)
+; (frame-bufs-mode t)
 
 ;; (require 'felineherd) ;; what is this?
 
@@ -142,6 +157,7 @@
 
 ;;; workgroups2
 
+; package is a bit old - is there something better???
 (require 'workgroups2)
 
 ;; <prefix> <key>
@@ -183,7 +199,8 @@
 (eval-after-load "rng-loc"
   '(add-to-list 'rng-schema-locating-files "~/code/html5-el/schemas.xml"))
 
-(require 'whattf-dt)
+; This is not working on ngender.org, Friday 21 April 2017, !!!
+; (require 'whattf-dt)
 
 ;; this font works via set-frame-font so let's write a function
 ;; using format to put in the desired size!
