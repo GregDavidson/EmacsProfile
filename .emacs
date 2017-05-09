@@ -34,7 +34,7 @@
  '(org-log-done (quote time))
 	'(package-selected-packages
 		 (quote
-			 (git-commit perl6-mode perspective org org-autolist org-bullets org-page org-projectile org-ref org-tree-slide ox-gfm tldr toc-org workgroups2 typed-clojure-mode smex scala-mode2 scala-mode rainbow-delimiters racer prolog project-mode php-mode paredit-everywhere multi-term markdown-mode magithub ido-ubiquitous idle-highlight-mode helm ghci-completion flycheck-rust flycheck-haskell flycheck-clojure find-file-in-project enh-ruby-mode ecb-snapshot company-racer closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc auto-complete)))
+			 (git-commit perl6-mode perspective org-autolist org-bullets org-page org-projectile org-ref org-tree-slide tldr toc-org workgroups2 typed-clojure-mode smex scala-mode2 scala-mode rainbow-delimiters prolog project-mode php-mode paredit-everywhere multi-term ido-ubiquitous idle-highlight-mode helm ghci-completion flycheck-rust flycheck-haskell flycheck-clojure find-file-in-project enh-ruby-mode ecb-snapshot company-racer closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc auto-complete)))
  '(pr-faces-p t)
 	'(pr-ps-printer-alist
 		 (quote
@@ -60,7 +60,8 @@
  '(rust-indent-offset 2)
 	'(safe-local-variable-values
 		 (quote
-			 ((outline-minor-mode . 1)
+			 ((c-hanging-comment-ender-p)
+				 (outline-minor-mode . 1)
 				 (folded-file . t)
 				 (folding-internal-margins))))
  '(scheme-program-name "guile")
@@ -77,7 +78,7 @@
  '(tcl-continued-indent-level 8)
  '(tcl-indent-level 8)
  '(tool-bar-mode nil)
- '(tramp-default-host "nil" nil (tramp))
+ '(tramp-default-host "nil")
  '(tramp-default-host-alist nil nil (tramp))
  '(transient-mark-mode 1)
  '(uniquify-buffer-name-style (quote reverse) nil (uniquify))
