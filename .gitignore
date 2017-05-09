@@ -3,8 +3,10 @@
 *.o
 *.so
 *.swp
+*.dat
 TAGS
 TAGS-*
+*pw.*
 Makefile.depends
 *.elc
 ede-projects.el
