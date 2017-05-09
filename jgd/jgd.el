@@ -581,6 +581,7 @@
 ;;; SQL Support
 
 (load "jgd-sql")
+(load "jgd-sql-connect")
 
 ;;; Printing
 
