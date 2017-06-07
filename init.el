@@ -4,14 +4,14 @@
 ;; Consider migrating content here to jgd.el{,c}
 
 ;; Attempted workaround for font problem in 24.3.1
- (setq initial-frame-alist '(
-	 (font . "Monospace-10")
-	 (vertical-scroll-bars . right)
- ))
- (setq default-frame-alist '(
-   (font . "Monospace-10")
-	 (vertical-scroll-bars . right)
- ))
+ ;; (setq initial-frame-alist '(
+ ;; 	 (font . "Monospace-10")
+ ;; 	 (vertical-scroll-bars . right)
+ ;; ))
+ ;; (setq default-frame-alist '(
+ ;;   (font . "Monospace-10")
+ ;; 	 (vertical-scroll-bars . right)
+ ;; ))
 
 ;;; Packages
 
@@ -104,53 +104,6 @@
 
 (global-set-key "\C-x\C-b" 'bs-show)
 (global-set-key "\C-cv" 'buffer-face-mode)
-
-;;; Org Mod
-
-;; http://wenshanren.org/?p=334 Friday 18 November 2016 s/src/source/
-(defun org-insert-source-block (src-code-type)
-  "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
-  (interactive
-		(let ((src-code-types
-						'("emacs-lisp" "python" "C" "sh" "java" "js"
-							 "clojure" "C++" "css" "calc" "asymptote"
-							 "dot" "gnuplot" "ledger" "lilypond" "mscgen"
-							 "octave" "oz" "plantuml" "R" "sass" "screen"
-							 "sql" "awk" "ditaa" "haskell" "latex" "lisp"
-							 "matlab" "ocaml" "org" "perl" "ruby" "scheme"
-							 "sqlite" ) ))
-			(list (ido-completing-read "Source code type: " src-code-types))))
-  (progn
-    (newline-and-indent)
-    (insert (format "#+BEGIN_SRC %s\n" src-code-type))
-    (newline-and-indent)
-    (insert "#+END_SRC\n")
-    (previous-line 2)
-    (org-edit-src-code) ) )
-
-(global-set-key (kbd "C-M-'") 'org-insert-source-block)
-
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
-(defun org-mode-jgd ()
-	(setq variable-pitch-mode 1)
-	(set-face-attribute 'org-table nil :inherit 'fixed-pitch) )
-
-(add-hook 'org-mode-hook 'turn-on-font-lock)
-(add-hook 'org-mode-hook 'org-mode-jgd)
-
-;; Variable Pitch Mode for Source Code
-
-(defun variable-pitch-mode-jgd ()
-	(setq variable-pitch-mode 1)
-)
-
-;; SQL Mode
-
-(add-hook 'sql-mode-hook 'variable-pitch-mode-jgd)
 
 ;; Uniquify
 (require 'uniquify)
@@ -266,19 +219,6 @@
 ;; Tramp
 
 (setq tramp-default-method "ssh")
-
-;; Shell Mode
-
-;; Work in progress!!!
-;; Need to learn about the faces in use in shell mode!
-
-(defun shell-mode-jgd ()
-	(setq variable-pitch-mode 1)
-//	(set-face-attribute 'ansi-color-face nil :inherit 'fixed-pitch)
- )
-
-(add-hook 'shell-mode-hook 'turn-on-font-lock)
-(add-hook 'shell-mode-hook 'shell-mode-jgd)
 
 ;; Miscellaneous
 

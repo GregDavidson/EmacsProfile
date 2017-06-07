@@ -4,7 +4,14 @@
 
 ;; SuSE has a fallback of "/etc/skel/.gnu-emacs"
 ;; I may have a trimmed down version of it:
-(load "~/.gnu-emacs" nil t)
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+(load "~/.gnu-emacs" t t)
 
 ; A common place to start user customizations
 (load "~/.emacs.d/init.el" nil t)
