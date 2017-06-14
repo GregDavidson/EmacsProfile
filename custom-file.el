@@ -33,13 +33,14 @@
  '(org-log-done (quote time))
 	'(package-selected-packages
 		 (quote
-			 (git-commit perl6-mode perspective org org-autolist org-bullets org-page org-projectile org-ref org-tree-slide ox-gfm tldr toc-org workgroups2 typed-clojure-mode smex scala-mode2 scala-mode rainbow-delimiters racer prolog project-mode php-mode paredit-everywhere multi-term markdown-mode magithub ido-ubiquitous idle-highlight-mode helm ghci-completion flycheck-rust flycheck-haskell flycheck-clojure find-file-in-project enh-ruby-mode ecb-snapshot company-racer closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc auto-complete)))
+			 (magit orgit use-package ac-helm ob-php ob-sql-mode git-commit perl6-mode perspective org org-autolist org-bullets org-page org-projectile org-ref org-tree-slide ox-gfm tldr toc-org workgroups2 typed-clojure-mode smex scala-mode2 scala-mode rainbow-delimiters racer prolog project-mode php-mode paredit-everywhere multi-term markdown-mode magithub ido-ubiquitous idle-highlight-mode helm ghci-completion flycheck-rust flycheck-haskell flycheck-clojure find-file-in-project enh-ruby-mode ecb-snapshot company-racer closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc auto-complete)))
  '(pr-faces-p t)
 	'(pr-ps-printer-alist
 		 (quote
 			 ((hpdeskjet940c "lpr" nil "-P" "lpr")
 				 (bilbo "lpr" nil "-P" "lpr"))))
  '(pr-txt-printer-alist (quote ((hpdeskjet940c "lpr" nil "lpr"))))
+ '(printer-name nil)
 	'(prolog-program-name
 		 (quote
 			 (((getenv "EPROLOG")
@@ -56,6 +57,8 @@
  '(ps-n-up-printing 1)
  '(ps-number-of-columns 1)
  '(ps-print-header t)
+ '(ps-printer-name "hp-color-laser")
+ '(ps-printer-name-option "-P")
  '(rust-indent-offset 2)
 	'(safe-local-variable-values
 		 (quote
