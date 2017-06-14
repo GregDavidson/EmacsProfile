@@ -9,6 +9,9 @@
 
 (load "~/.gnu-emacs" nil t)
 
+(load "~/.gnu-emacs" t t)
+>>>>>>> 6cae221328c4377eedd681974d7fd7c8f96eafeb
+
 ; A common place to start user customizations
 (load "~/.emacs.d/init.el" nil t)
 
