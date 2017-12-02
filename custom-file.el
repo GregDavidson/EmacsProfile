@@ -31,9 +31,6 @@
  '(mark-even-if-inactive t)
  '(org-agenda-files (quote ("~/Notes/Languages/javascript.org")))
  '(org-log-done (quote time))
-	'(package-selected-packages
-		 (quote
-			 (apiwrap async auto-complete biblio biblio-core cider cljsbuild-mode clojure-mode-extra-font-locking closure-lint-mode find-file-in-project ghci-completion git-commit helm idle-highlight-mode ido-ubiquitous magit magithub markdown-mode multi-term mysql-to-org nov ob-prolog org org-autolist org-bullets org-page org-pdfview org-projectile org-tree-slide ox-gfm paredit-everywhere persp-mode rainbow-delimiters smex toc-org typed-clojure-mode use-package racer prolog project-mode cljdoc)))
  '(paperless-capture-directory "~/Scan/ScansNew")
  '(paperless-root-directory "/More/Greg/Archives/2017")
  '(pr-faces-p t)
@@ -42,6 +39,7 @@
 			 ((hpdeskjet940c "lpr" nil "-P" "lpr")
 				 (bilbo "lpr" nil "-P" "lpr"))))
  '(pr-txt-printer-alist (quote ((hpdeskjet940c "lpr" nil "lpr"))))
+ '(printer-name nil)
 	'(prolog-program-name
 		 (quote
 			 (((getenv "EPROLOG")
@@ -58,6 +56,8 @@
  '(ps-n-up-printing 1)
  '(ps-number-of-columns 1)
  '(ps-print-header t)
+ '(ps-printer-name "hp-color-laser")
+ '(ps-printer-name-option "-P")
  '(rust-indent-offset 2)
 	'(safe-local-variable-values
 		 (quote

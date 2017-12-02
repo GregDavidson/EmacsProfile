@@ -146,6 +146,7 @@
 
 (global-set-key "\C-x\C-b" 'bs-show)
 (global-set-key "\C-cv" 'buffer-face-mode)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; WindMove
 

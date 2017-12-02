@@ -5,11 +5,7 @@
 ;; SuSE has a fallback of "/etc/skel/.gnu-emacs"
 ;; I may have a trimmed down version of it:
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
+;; (package-initialize)
 
 (load "~/.gnu-emacs" t t)
 
