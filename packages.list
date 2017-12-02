@@ -1,0 +1,93 @@
+  auto-complete      20170124.1845 installed             Auto Completion for GNU Emacs
+  cider              20170905.1037 installed             Clojure Interactive Development Environment that Rocks
+  cljdoc             0.1.0         installed             eldoc mode for clojure
+  cljsbuild-mode     20160402.1000 installed             A minor mode for the ClojureScript 'lein cljsbuild' command
+  clojure-mode-ex... 20170303.2310 installed             Extra font-locking for Clojure mode
+  closure-lint-mode  20101118.1324 installed             minor mode for the Closure Linter
+  ewmctrl            20161104.1833 installed             Use `wmctrl' to manage desktop windows via EWMH/NetWM.
+  find-file-in-pr... 20170906.2011 installed             Find file/directory and review Diff/Patch/Commit efficiently everywhere
+  flycheck-clojure   20170221.1354 installed             Flycheck: Clojure support
+  flycheck-haskell   20170815.44   installed             Flycheck: Automatic Haskell configuration
+  flycheck-rust      20170404.842  installed             Flycheck: Rust additions and Cargo support
+  ghci-completion    20151125.457  installed             Completion for GHCi commands in inferior-haskell buffers
+  git-commit         20170823.2103 installed             Edit Git commit messages
+  helm               20170908.541  installed             Helm is an Emacs incremental and narrowing framework
+  idle-highlight-... 20120920.948  installed             highlight the word the point is on
+  ido-ubiquitous     20170819.1045 installed             Use ido (nearly) everywhere.
+  magit              20170907.1713 installed             A Git porcelain inside Emacs
+  magithub           20170901.1234 installed             Magit interfaces for GitHub
+  markdown-mode      20170830.2131 installed             Major mode for Markdown-formatted text
+  multi-term         20160619.233  installed             Managing multiple terminal buffers in Emacs.
+  mysql-to-org       20170205.1306 installed             Minor mode to output the results of mysql queries to org tables
+  nov                20170907.907  installed             Featureful EPUB reader mode
+  ob-prolog          20170126.921  installed             org-babel functions for prolog evaluation.
+  ob-sql-mode        20170213.1056 installed             SQL code blocks evaluated by sql-mode
+  org                20171106      installed             Outline-based notes management and organizer
+  org-autolist       20150922.705  installed             Improved list management in org-mode
+  org-bullets        20140918.1137 installed             Show bullets in org-mode as UTF-8 characters
+  org-page           20170806.1924 installed             a static site generator based on org mode
+  org-pdfview        20161130.1053 installed             Support for links to documents in pdfview mode
+  org-projectile     20170819.1047 installed             Repository todo management for org-mode
+  org-ref            20170808.625  installed             citations, cross-references and bibliographies in org-mode
+  org-tree-slide     20160513.2325 installed             A presentation tool for org-mode
+  ox-gfm             20170628.1402 installed             Github Flavored Markdown Back-End for Org Export Engine
+  paperless          20170213.503  installed             A major mode for sorting and filing PDF documents.
+  paredit-everywhere 20150821.2144 installed             Enable some paredit features in non-lisp buffers
+  perl6-mode         20160730.1455 installed             Major mode for editing Perl 6 code
+  persp-mode         20170908.648  installed             windows/buffers sets shared among frames + save/load.
+  php-mode           20170729.1258 installed             Major mode for editing PHP code
+  project-mode       1.0           installed             Define code projects. Full-text search, etc.
+  prolog             1.22          installed             major mode for editing and running Prolog (and Mercury) code
+  racer              1.2           installed             The official Emacs package for Racer
+  racket-mode        20170907.1231 installed             Major mode for Racket language.
+  rainbow-delimiters 20160430.2358 installed             Highlight brackets according to their depth
+  smex               20151212.1409 installed             M-x interface with Ido-style fuzzy matching.
+  tldr               20170702.1859 installed             tldr client for Emacs
+  toc-org            20170518.451  installed             add table of contents to org-mode files (formerly, org-toc)
+  typed-clojure-mode 20151003.1122 installed             Typed Clojure minor mode for Emacs
+  use-package        20170812.2256 installed             A use-package declaration for simplifying your .emacs
+  apiwrap            20170901.648  dependency            api-wrapping macros
+  async              20170823.2116 dependency            Asynchronous processing in Emacs
+  biblio             20161014.1604 dependency            Browse and import bibliographic references from CrossRef, arXiv, DBLP, HAL, Dissemin, and doi.org
+  biblio-core        20160901.1115 dependency            A framework for looking up and displaying bibliographic entries
+  bind-key           20161218.1520 dependency            A simple way to manage personal keybindings
+  clojure-mode       20170819.2159 dependency            Major mode for Clojure code
+  dash               20170810.137  dependency            A modern list library for Emacs
+  diminish           20170419.1036 dependency            Diminished modes are minor modes with no modeline display
+  epl                20150517.433  dependency            Emacs Package Library
+  esxml              20170903.150  dependency            Library for working with xml via esxml and sxml
+  f                  20170404.1039 dependency            Modern API for working with files and directories
+  faceup             20170126.1305 dependency            Regression test system for font-lock
+  flycheck           20170907.1504 dependency            On-the-fly syntax checking
+  ghub               20170803.601  dependency            minuscule client for the Github API
+  ghub+              20170819.1806 dependency            a thick GitHub API client built on ghub
+  git                20140128.241  dependency            An Elisp API for programmatically using Git
+  haskell-mode       20170907.903  dependency            A Haskell editing mode
+  helm-bibtex        20170808.1124 dependency            A bibliography manager based on Helm
+  helm-core          20170906.141  dependency            Development files for Helm
+  ht                 20161015.1945 dependency            The missing hash table library for Emacs
+  htmlize            20161211.1019 dependency            Convert buffer text and decorations to HTML.
+  hydra              20170903.218  dependency            Make bindings that stick around.
+  ido-completing-... 20170819.1045 dependency            A completing-read-function using ido
+  ivy                20170906.855  dependency            Incremental Vertical completYon
+  key-chord          20160227.438  dependency            map pairs of simultaneously pressed keys to commands
+  let-alist          1.0.5         dependency            Easily let-bind values of an assoc-list by their names
+  levenshtein        20090830.340  dependency            Edit distance between two strings.
+  magit-popup        20170824.1130 dependency            Define prefix-infix-suffix command combos
+  memoize            20170720.1802 dependency            Memoization functions
+  mustache           20131117.1407 dependency            a mustache templating library in emacs lisp
+  org-category-ca... 20170819.1047 dependency            Contextualy capture of org-mode TODOs.
+  paredit            20170405.1149 dependency            minor mode for editing parentheses
+  parsebib           20170501.347  dependency            A library for parsing bib files
+  pdf-tools          20170908.108  dependency            Support library for PDF documents.
+  pkg-info           20150517.443  dependency            Information about packages
+  popup              20160709.729  dependency            Visual Popup User Interface
+  projectile         20170827.2053 dependency            Manage and navigate projects in Emacs easily
+  queue              0.2           dependency            Queue data structure
+  rust-mode          20170827.1300 dependency            A major emacs mode for editing Rust source code
+  s                  20170906.1304 dependency            The long lost Emacs string manipulation library.
+  seq                2.20          dependency            Sequence manipulation functions
+  simple-httpd       20170125.1910 dependency            pure elisp HTTP server
+  spinner            1.7.3         dependency            Add spinners and progress-bars to the mode-line for ongoing operations
+  tablist            20170219.1935 dependency            Extended tabulated-list-mode
+  with-editor        20170817.1240 dependency            Use the Emacsclient as $EDITOR

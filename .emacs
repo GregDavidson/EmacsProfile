@@ -4,7 +4,10 @@
 
 ;; SuSE has a fallback of "/etc/skel/.gnu-emacs"
 ;; I may have a trimmed down version of it:
-(load "~/.gnu-emacs" nil t)
+
+;; (package-initialize)
+
+(load "~/.gnu-emacs" t t)
 
 ; A common place to start user customizations
 (load "~/.emacs.d/init.el" nil t)
