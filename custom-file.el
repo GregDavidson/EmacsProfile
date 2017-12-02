@@ -33,7 +33,9 @@
  '(org-log-done (quote time))
 	'(package-selected-packages
 		 (quote
-			 (git-commit perl6-mode perspective org org-autolist org-bullets org-page org-projectile org-ref org-tree-slide ox-gfm tldr toc-org workgroups2 typed-clojure-mode smex scala-mode2 scala-mode rainbow-delimiters racer prolog project-mode php-mode paredit-everywhere multi-term markdown-mode magithub ido-ubiquitous idle-highlight-mode helm ghci-completion flycheck-rust flycheck-haskell flycheck-clojure find-file-in-project enh-ruby-mode ecb-snapshot company-racer closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc auto-complete)))
+			 (apiwrap async auto-complete biblio biblio-core cider cljsbuild-mode clojure-mode-extra-font-locking closure-lint-mode find-file-in-project ghci-completion git-commit helm idle-highlight-mode ido-ubiquitous magit magithub markdown-mode multi-term mysql-to-org nov ob-prolog org org-autolist org-bullets org-page org-pdfview org-projectile org-tree-slide ox-gfm paredit-everywhere persp-mode rainbow-delimiters smex toc-org typed-clojure-mode use-package racer prolog project-mode cljdoc)))
+ '(paperless-capture-directory "~/Scan/ScansNew")
+ '(paperless-root-directory "/More/Greg/Archives/2017")
  '(pr-faces-p t)
 	'(pr-ps-printer-alist
 		 (quote
