@@ -59,7 +59,11 @@
  '(rust-indent-offset 2)
 	'(safe-local-variable-values
 		 (quote
-			 ((outline-minor-mode . 1)
+			 ((sql-directory-path . "/ssh:ngender.org:")
+				 (directory-path . "/ssh:ngender.org:")
+				 (syntax . common-lisp)
+				 (package . maxima)
+				 (outline-minor-mode . 1)
 				 (folded-file . t)
 				 (folding-internal-margins))))
  '(scheme-program-name "guile")

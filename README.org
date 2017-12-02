@@ -1,0 +1,23 @@
+* Emacs Configuration Directory: ~/.emacs.d
+
+This directory is managed with git.
+It is expected to work on any account with an up-to-date Emacs
+This means that any host-specific features need to be expressed conditionally!
+
+Notes:
+
+1. It's expected that ~/.emacs links to ~/.emacs.d/.emacs
+2. (setq custom-file "~/.emacs.d/custom-file.el")
+
+Problems:
+
+1. There are some host-specific parts of various files, e.g.
+jgd/jgd-sql-connect.el
+
+2. custom-file.el
+- Customization settings changes seem rather unstable
+- I'd rather have some of these in my .el files
+- How am I going to curate & propagage changes to this file?
+
+3. I should split the parts of this which apply to jgd from the
+parts which might work well for anyone.

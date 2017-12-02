@@ -50,7 +50,8 @@
 		 (tiki.ngender
 			 (sql-product 'mysql)
 			 (sql-port 3306)
-			 (sql-server "ngender.org")
+			 (sql-server "localhost")
+			 (sql-default-directory "/ssh:ngender.org:")
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") )
 		 (tiki.office
