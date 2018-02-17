@@ -3,10 +3,10 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
-	(filename . "~/Notes/GTD/ideas.org")
-	(front-context-string . "** Social Media ")
-	(rear-context-string . "onsidered later\n")
-	(position . 52))
+	(filename . "~/Notes/GTD/misc.org")
+	(front-context-string . "** Email to Alex")
+	(rear-context-string . "ree-service.pdf\n")
+	(position . 210))
 ("org-refile-last-stored"
 	(filename . "~/GTD/gtd.org")
 	(front-context-string . "*** TODO use sam")
