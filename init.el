@@ -203,8 +203,8 @@
 (setq racer-cmd "/usr/local/bin/racer")
 
 ;; Set path to rust src directory
-; (setq racer-rust-src-path "~/.rust/src/")
-(setq racer-rust-src-path "/usr/local/lib/rustlib/")
+(setq racer-rust-src-path "~/.rust/src/")
+; (setq racer-rust-src-path "/usr/local/src/racerlib/rustlib/")
 
 ;; Load rust-mode when you open `.rs` files
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
