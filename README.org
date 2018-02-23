@@ -21,3 +21,8 @@ jgd/jgd-sql-connect.el
 
 3. I should split the parts of this which apply to jgd from the
 parts which might work well for anyone.
+
+4. How do I ensure that byte-recompilation happens automatically?
+
+I could use (byte-recompile-directory) with suitable options
+when I start my emacs server.
