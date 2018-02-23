@@ -29,32 +29,32 @@
 ;;; server list
 (setq sql-connection-alist
 	'(
-		 (greg.local
+		 ("greg.local"
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
 			 (sql-user "greg")
 			 (sql-database "greg") )
-		 (wicci.local
+		 ("wicci.local"
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
 			 (sql-user "greg")
 			 (sql-database "wicci1") )
-		 (tiki.local
+		 ("tiki.local"
 			 (sql-product 'mysql)
 			 (sql-port 3306)
 			 (sql-server "localhost")
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") )
-		 (tiki.ngender
+		 ("tiki.ngender"
 			 (sql-product 'mysql)
 			 (sql-port 3306)
 			 (sql-server "localhost")
 			 (sql-default-directory "/ssh:ngender.org:")
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") )
-		 (tiki.office
+		 ("tiki.office"
 			 (sql-product 'mysql)
 			 (sql-port 3306)
 			 (sql-server "ngender-org.office")
@@ -68,7 +68,8 @@
    (helm-comp-read "Select server: "
 		 (mapcar (lambda (item)
 							 (list
-								 (symbol-name (nth 0 item))
+								 ; (symbol-name (nth 0 item))
+								 (nth 0 item)
 								 (nth 0 item)))
 			 sql-connection-alist ) ) )
   ;; password
