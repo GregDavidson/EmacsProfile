@@ -69,160 +69,84 @@
 	(interactive)
 	(beginning-of-sql-function)
 	(message "%S" (setq sql-func-matches
-									(when (looking-at (rx sql-create-function)) (match-data) ) )) )
+			    (when (looking-at (rx sql-create-function)) (match-data) ) )) )
 
+;; (setq f "CREATE OR REPLACE
+;; FUNCTION list_strict_non_try_funcs(_schema name)
+;; RETURNS SETOF regprocedure AS $$
+;; 	SELECT pg_proc.oid::regprocedure
+;; 	FROM pg_proc, pg_namespace
+;; 	WHERE proisstrict AND NOT (proname LIKE 'try_%')
+;; 	AND pronamespace = pg_namespace.oid	AND nspname = $1
+;; $$ LANGUAGE sql;")
 
+;; (string-match (rx create-) f)
+;; 0
 
-CREATE OR REPLACE
-FUNCTION try_list_strict_non_try_funcs(_schema name) RETURNS VOID AS $$
-	SELECT pg_proc.oid::regprocedure
-	FROM pg_proc, pg_namespace
-	WHERE proisstrict AND NOT (proname LIKE 'try_%')
-	AND pronamespace = pg_namespace.oid	AND nspname = $1
-$$ LANGUAGE sql STRICT;
+;; (string-match (rx create-function-) f)
+;; 0
 
-CREATE OR REPLACE
-FUNCTION list_strict_non_try_funcs(_schema name) RETURNS VOID AS $$
-	SELECT non-null(
-		try_list_strict_non_try_funcs($1),
-		'list_strict_non_try_funcs(name)'
-	)
-$$ LANGUAGE sql;
+;; (string-match (rx create-function) f)
+;; 0
+;; (match-string 0)
 
-(match-data)
+;; (string-match (rx create-function) f)
+;; 0
 
-(nth-match 0)
+;; (match-string 0 f)
+;; "CREATE OR REPLACE
+;; FUNCTION list_strict_non_try_funcs(_schema name)
+;; RETURNS SETOF regprocedure AS $$
+;; 	SELECT pg_proc.oid::regprocedure
+;; 	FROM pg_proc, pg_namespace
+;; 	WHERE proisstrict AND NOT (proname LIKE 'try_%')
+;; 	AND pronamespace = pg_namespace.oid	AND nspname = $1
+;; $$ LANGUAGE sql;"
 
-(string-match (rx create-) f)
-0
+;; (match-string 1 f)
+;; "list_strict_non_try_funcs"
 
-(string-match (rx create-function-) f)
-0
+;; (match-string 2 f)
+;; "_schema name"
 
-(string-match (rx create-function) f)
-0
-(match-string 0)
+;; (match-string 3 f)
+;; "$$"
 
-(string-match (rx create-function) f)
-0
+;; (match-string 4 f)
+;; "
+;; 	SELECT pg_proc.oid::regprocedure
+;; 	FROM pg_proc, pg_namespace
+;; 	WHERE proisstrict AND NOT (proname LIKE 'try_%')
+;; 	AND pronamespace = pg_namespace.oid	AND nspname = $1
+;; "
 
+;; (match-string 5 f)
+;; "LANGUAGE sql"
 
-CREATE OR REPLACE
-FUNCTION list_strict_non_try_funcs(_schema name)
-RETURNS SETOF regprocedure AS $$
-	SELECT pg_proc.oid::regprocedure
-	FROM pg_proc, pg_namespace
-	WHERE proisstrict AND NOT (proname LIKE 'try_%')
-	AND pronamespace = pg_namespace.oid	AND nspname = $1
-$$ LANGUAGE sql;
+;; (match-string 6 f)
+;; nil
 
+;; (list-concat (list-interpose '("a" "b" "c") ", "))
+;; "a, b, c"
 
+;; (list-interpose '("hello") ", ")
+;; ("hello")
 
-(match-string 0 f)
-"CREATE OR REPLACE
-FUNCTION list_strict_non_try_funcs(_schema name)
-RETURNS SETOF regprocedure AS $$
-	SELECT pg_proc.oid::regprocedure
-	FROM pg_proc, pg_namespace
-	WHERE proisstrict AND NOT (proname LIKE 'try_%')
-	AND pronamespace = pg_namespace.oid	AND nspname = $1
-$$LANGUAGE sql STRICT;
+;; (list-interpose '() ", ")
+;; nil
 
-CREATE OR REPLACE
-FUNCTION list_strict_non_try_funcs(_schema name) AS $$
-	SELECT non-null(
-		try_list_strict_non_try_funcs($1),
-		'list_strict_non_try_funcs(name)'
-	)
-$$LANGUAGE sql;
-CREATE OR REPLACE
-FUNCTION list_strict_non_try_funcs(_schema name)
-RETURNS SETOF regprocedure AS $$
-	SELECT pg_proc.oid::regprocedure
-	FROM pg_proc, pg_namespace
-	WHERE proisstrict AND NOT (proname LIKE 'try_%')
-	AND pronamespace = pg_namespace.oid	AND nspname = $1
-$$ LANGUAGE sql;
+;; (str-drop-word "this silly package" "silly")
+;; "this package"
 
-(setq f "CREATE OR REPLACE
-FUNCTION list_strict_non_try_funcs(_schema name)
-RETURNS SETOF regprocedure AS $$
-	SELECT pg_proc.oid::regprocedure
-	FROM pg_proc, pg_namespace
-	WHERE proisstrict AND NOT (proname LIKE 'try_%')
-	AND pronamespace = pg_namespace.oid	AND nspname = $1
-$$ LANGUAGE sql;")
+;; (str-drop-word "this silly package" "this")
+;; "silly package"
 
-(string-match (rx create-) f)
-0
+;; (str-drop-word "this silly package" "package")
+;; "this silly"
 
-(string-match (rx create-function-) f)
-0
+;; (str-drop-word "this silly package" "hello")
+;; "this silly package"
 
-(string-match (rx create-function) f)
-0
-(match-string 0)
-
-(string-match (rx create-function) f)
-0
-
-(match-string 0 f)
-"CREATE OR REPLACE
-FUNCTION list_strict_non_try_funcs(_schema name)
-RETURNS SETOF regprocedure AS $$
-	SELECT pg_proc.oid::regprocedure
-	FROM pg_proc, pg_namespace
-	WHERE proisstrict AND NOT (proname LIKE 'try_%')
-	AND pronamespace = pg_namespace.oid	AND nspname = $1
-$$ LANGUAGE sql;"
-
-(match-string 1 f)
-"list_strict_non_try_funcs"
-
-(match-string 2 f)
-"_schema name"
-
-(match-string 3 f)
-"$$"
-
-(match-string 4 f)
-"
-	SELECT pg_proc.oid::regprocedure
-	FROM pg_proc, pg_namespace
-	WHERE proisstrict AND NOT (proname LIKE 'try_%')
-	AND pronamespace = pg_namespace.oid	AND nspname = $1
-"
-
-(match-string 5 f)
-"LANGUAGE sql"
-
-(match-string 6 f)
-nil
-
-(list-concat (list-interpose '("a" "b" "c") ", "))
-"a, b, c"
-
-(list-interpose '("hello") ", ")
-("hello")
-
-(list-interpose '() ", ")
-nil
-
-(str-drop-word "this silly package" "silly")
-"this package"
-
-(str-drop-word "this silly package" "this")
-"silly package"
-
-(str-drop-word "this silly package" "package")
-"this silly"
-
-(str-drop-word "this silly package" "hello")
-"this silly package"
-
-
-
-
-(list-concat (list-interpose '("hello") ", "))
+;; (list-concat (list-interpose '("hello") ", "))
 
 
