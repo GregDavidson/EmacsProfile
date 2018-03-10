@@ -343,25 +343,25 @@
 
 ; Haskell preferences - for 2.7.0, November 2009
 
-(jgd-update-dirs 'load-path "~/Lib/Emacs/HaskellMode")
+;; (jgd-update-dirs 'load-path "~/Lib/Emacs/HaskellMode")
 
-(load "haskell-site-file")
+;; (load "haskell-site-file")
 
 ;; (jgd-update-union 'auto-mode-alist
 ;; 		  '("\\.[hg]s$"  . haskell-mode)
 ;; 		  '("\\.hi$"     . haskell-mode)
 ;; 		  '("\\.l[hg]s$" . literate-haskell-mode) )
 
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
-(add-hook 'haskell-mode-hook 'font-lock-mode)
+;; (add-hook 'haskell-mode-hook 'font-lock-mode)
 
 ;; Declaration scanning: just use M-x imenu or:
-(global-set-key [(control meta down-mouse-3)] 'imenu)
-(add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
+;; (global-set-key [(control meta down-mouse-3)] 'imenu)
+;; (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
 
 ;; Older Haskell preferences (remove soon):
 
