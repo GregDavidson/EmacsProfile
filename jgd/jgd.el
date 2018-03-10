@@ -303,6 +303,7 @@
 (defun jgd-sh-mode-hook ()
   (setq-default sh-basic-offset 2)
   (setq-default sh-indentation 2)
+	(setq orgstruct-heading-prefix-regexp "##* ")
 )
 
 (add-hook 'sh-mode-hook 'jgd-sh-mode-hook)
@@ -364,6 +365,7 @@
 	;; objc-mode-map, java-mode-map, and idl-mode-map
 	;; all inherit from it.
   (define-key c-mode-base-map "\C-m" 'newline-and-indent)
+	(setq orgstruct-heading-prefix-regexp "// ")
 )
 
 ;; PHP Mode
@@ -636,7 +638,13 @@
 
 ;; More Rust Mode in init.el
 
-(add-hook 'rust-mode-hook 'variable-pitch-mode-jgd)
+(defun rust-mode-jgd ()
+	(variable-pitch-mode-jgd)
+	(setq orgstruct-heading-prefix-regexp "// ")
+	(orgstruct-mode)
+)
+
+(add-hook 'rust-mode-hook 'rust-mode-jgd)
 
 ;; Shell Mode
 
@@ -644,7 +652,12 @@
 
 ;; SQL Mode
 
-(add-hook 'sql-mode-hook 'variable-pitch-mode-jgd)
+(defun sql-mode-jgd ()
+	(variable-pitch-mode-jgd)
+	(setq orgstruct-heading-prefix-regexp "-- ")
+	(orgstruct-mode)
+)
+(add-hook 'sql-mode-hook 'sql-mode-jgd)
 
 ;;; Key Settings
 
