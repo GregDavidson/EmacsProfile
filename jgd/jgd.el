@@ -388,37 +388,37 @@
 ;;; Prolog preferences
 
 ;; see http://turing.ubishops.ca/home/bruda/emacs-prolog/
-(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
-(autoload 'prolog-mode "prolog"
-	"Major mode for editing Prolog programs." t )
-(autoload 'mercury-mode "prolog"
-	"Major mode for editing Mercury programs." t )
-(defvar prolog-system 'swi)
-(jgd-update-union 'auto-mode-alist
-		  '("\\.pl\\'" . prolog-mode)
-		  '("\\.m\\'" . mercury-mode) )
+;; (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
+;; (autoload 'prolog-mode "prolog"
+;; 	"Major mode for editing Prolog programs." t )
+;; (autoload 'mercury-mode "prolog"
+;; 	"Major mode for editing Mercury programs." t )
+;; (defvar prolog-system 'swi)
+;; (jgd-update-union 'auto-mode-alist
+;; 		  '("\\.pl\\'" . prolog-mode)
+;; 		  '("\\.m\\'" . mercury-mode) )
 
 ;;; Mozart/Oz preferences
 
-(when (not (boundp 'ozhome))
-  (defvar ozhome (or (getenv "OZHOME") (expand-file-name "/usr/lib/mozart")) )
-  (defvar oz-bin (expand-file-name "bin" ozhome))
-  (defvar oz-elisp (expand-file-name "share/elisp" ozhome))
-  (when (file-directory-p ozhome)
-    (when (and (file-directory-p oz-bin)
-	       (not (member exec-path oz-bin)) )
-      (nconc exec-path (list oz-bin))
-      (setenv "PATH" (concat (getenv "PATH") ":" oz-bin)) )
-  (jgd-prepend-paths 'load-path oz-elisp)
+;; (when (not (boundp 'ozhome))
+;;   (defvar ozhome (or (getenv "OZHOME") (expand-file-name "/usr/lib/mozart")) )
+;;   (defvar oz-bin (expand-file-name "bin" ozhome))
+;;   (defvar oz-elisp (expand-file-name "share/elisp" ozhome))
+;;   (when (file-directory-p ozhome)
+;;     (when (and (file-directory-p oz-bin)
+;; 	       (not (member exec-path oz-bin)) )
+;;       (nconc exec-path (list oz-bin))
+;;       (setenv "PATH" (concat (getenv "PATH") ":" oz-bin)) )
+;;   (jgd-prepend-paths 'load-path oz-elisp)
   
-  (jgd-update-union 'auto-mode-alist
-		    '("\\.oz\\'" . oz-mode)
-		    '("\\.ozg\\'" . oz-gump-mode) )
+;;   (jgd-update-union 'auto-mode-alist
+;; 		    '("\\.oz\\'" . oz-mode)
+;; 		    '("\\.ozg\\'" . oz-gump-mode) )
   
-  (autoload 'run-oz "oz" "" t)
-  (autoload 'oz-mode "oz" "" t)
-  (autoload 'oz-gump-mode "oz" "" t)
-  (autoload 'oz-new-buffer "oz" "" t) ) )
+;;   (autoload 'run-oz "oz" "" t)
+;;   (autoload 'oz-mode "oz" "" t)
+;;   (autoload 'oz-gump-mode "oz" "" t)
+;;   (autoload 'oz-new-buffer "oz" "" t) ) )
 
 ;;; Haskell preferences - for 2.7.0, November 2009
 
@@ -512,7 +512,8 @@
 (setq org-default-notes-file (expand-file-name "Notes" org-directory))
 
 (defconst my-org-babel-t
-	'(emacs-lisp shell awk sed sql J scheme clojure prolog)
+;	'(emacs-lisp shell awk sed sql J scheme clojure prolog)
+	'(emacs-lisp shell awk sed sql J scheme clojure)
 	"known org-mode source block languages I'd like org to evaluate" )
 
 ;; More org-babel packages, would allow more babel-t languages:

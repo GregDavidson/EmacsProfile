@@ -32,7 +32,7 @@
  '(org-agenda-files '("~/Notes/Languages/javascript.org"))
  '(org-log-done 'time)
 	'(package-selected-packages
-		 '(org-ac org-beautify-theme org-bookmark-heading org-gcal org-table-sticky-header evil-magit evil use-package workgroups2 typed-clojure-mode sqlup-mode sql-indent smex scala-mode2 rainbow-delimiters prolog project-mode perspective persp-mode perl6-mode paredit-everywhere org-tree-slide org-bullets org-autolist mysql-to-org multi-term idle-highlight-mode git-rebase-mode git-commit-mode ghci-completion flycheck-rust flycheck-haskell flycheck-clojure find-file-in-project enh-ruby-mode emacsql-sqlite emacsql-psql emacsql-mysql ecb-snapshot company-racer closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc auto-complete))
+		 '(rust-mode org-ac org-beautify-theme org-bookmark-heading org-gcal org-table-sticky-header evil-magit evil use-package workgroups2 typed-clojure-mode sqlup-mode sql-indent smex scala-mode2 rainbow-delimiters prolog project-mode perspective persp-mode perl6-mode paredit-everywhere org-tree-slide org-bullets org-autolist mysql-to-org multi-term idle-highlight-mode git-rebase-mode git-commit-mode ghci-completion flycheck-rust flycheck-haskell flycheck-clojure find-file-in-project enh-ruby-mode emacsql-sqlite emacsql-psql emacsql-mysql ecb-snapshot company-racer closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc auto-complete))
  '(paperless-capture-directory "~/Scan/ScansNew")
  '(paperless-root-directory "/More/Greg/Archives/2017")
  '(pr-faces-p t)

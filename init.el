@@ -3,7 +3,7 @@
 ;; NOT byte-compiled
 ;; Consider migrating content here to jgd.el{,c}
 
-;; Attempted workaround for font problem in 24.3.1
+;; Attempted workaround for font prem in 24.3.1
  ;; (setq initial-frame-alist '(
  ;; 	 (font . "Monospace-10")
  ;; 	 (vertical-scroll-bars . right)
@@ -19,7 +19,8 @@
 (defvar my-archives
 	'( ("gnu" . "http://elpa.gnu.org/packages/")
 		 ("marmalade" . "http://marmalade-repo.org/packages/")
-		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") ) )
+		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+		 ("org" . "https://orgmode.org/elpa/") ) )
 (dolist (a my-archives)	(add-to-list 'package-archives a t))
 (package-initialize)
 
@@ -75,7 +76,7 @@
 	persp-mode
 	php-mode
 	project-mode
-	prolog
+;	prolog
 	rainbow-delimiters
 	racer
 	rust-mode
