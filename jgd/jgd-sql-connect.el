@@ -2,7 +2,7 @@
 
 ;;; default PostgreSQL login params
 (setq sql-postgres-login-params
-	'( (user :default "greg")
+	'( (user :default "keith")
 		 (database :default "wicci1")
 		 (server :default "localhost")
 		 (port :default 5432) ) )
@@ -29,17 +29,17 @@
 ;;; server list
 (setq sql-connection-alist
 	'(
-		 (greg.local
+		 (keith.local
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
-			 (sql-user "greg")
-			 (sql-database "greg") )
+			 (sql-user "keith")
+			 (sql-database "keith") )
 		 (wicci.local
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
-			 (sql-user "greg")
+			 (sql-user "keith")
 			 (sql-database "wicci1") )
 		 (tiki.local
 			 (sql-product 'mysql)
@@ -57,7 +57,7 @@
 		 (tiki.office
 			 (sql-product 'mysql)
 			 (sql-port 3306)
-			 (sql-server "ngender-org.office")
+			 (sql-server "keith@ngender-org.office")
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") ) ) )
 

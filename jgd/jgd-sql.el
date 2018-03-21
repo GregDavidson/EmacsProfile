@@ -311,7 +311,7 @@ a placeholder for a correct one!!! "
 	(buffer-face-mode)
 )
 
-(global-set-key [?\s-s ?\s-q ?\s-l] 'sql-startup )
+; (global-set-key [?\s-s ?\s-q ?\s-l] 'sql-startup )
 
 (defun sql-just-set-the-f*ing-buffer ()
   "Set the SQLi buffer SQL strings are sent to."
