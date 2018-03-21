@@ -323,16 +323,6 @@ a placeholder for a correct one!!! "
 					;(run-hooks 'sql-set-sqli-hook)
 ) )
 
-(defun sql-outline-minor-mode ()
-	"Add outline-minor-mode to sql-mode."
-	(interactive)
-	(setq outline-minor-mode-prefix "\C-c\C-o")
-	(outline-minor-mode 1)
-	(setq variable-pitch-mode 1)
-	(setq outline-regexp "-- [*\f]+")
-	(jgd-outline-minor-map)
-)
-
 (defun jgd-bind-sql-magic-functions ()
 	"Add magic functions to the sql-mode-map."
 	(interactive)
@@ -352,10 +342,9 @@ a placeholder for a correct one!!! "
 	(set-variable 'fill-column 60 t)
 )
 
-(add-hook 'sql-mode-hook 'sql-outline-minor-mode)
-(add-hook 'sql-mode-hook 'sql-just-set-the-f*ing-buffer)
-(add-hook 'sql-mode-hook 'jgd-set-default-tab-width)
-(add-hook 'sql-mode-hook 'jgd-bind-sql-magic-functions)
+;; (add-hook 'sql-mode-hook 'sql-just-set-the-f*ing-buffer)
+;; (add-hook 'sql-mode-hook 'jgd-set-default-tab-width)
+;; (add-hook 'sql-mode-hook 'jgd-bind-sql-magic-functions)
 
 ; Let's make sure that these handy buffers exist
 (dolist (buffer '("*SQL*" "*compilation*" "*shell*"))
