@@ -1,0 +1,98 @@
+* NGender Emacs Extensions Directory
+
+Except where explicit calls to require indicate
+dependencies, the packages (files) in this directory stand
+alone.  You will want to arrange for their loading in your
+[[~/emacs.d/init.el][init.el]] file, either with an explicit require or
+by arranging an autoload.  Some further customization may
+also be required in your [[~/.emacs.d/init.el][init.el]] to get the full
+functionality of the package.
+
+** Files:
+- [[org-list-files]] :: Generate Org-Mode list of *.el files in this directory
+- [[ngender.el]] :: NGender Emacs Profile Base
+- [[ngender-cedet.el]] :: Semantic Bovinator (CEDET) Support
+- [[ngender-c.el]] :: C/C++ Hacking Support
+- [[ngender-clisp.el]] :: Common Lisp Hacking Support
+- [[ngender-clojure.el]] :: Clojure Hacking Support
+- [[ngender-elisp.el]] :: Emacs-Lisp Hacking Support
+- [[ngender-haskell.el]] :: Haskell Hacking Support
+- [[ngender-mozart.el]] :: Mozart/Oz Hacking Support
+- [[ngender-org.el]] :: Org Mode Support
+- [[ngender-php.el]] :: PHP Hacking Support
+- [[ngender-prolog.el]] :: Prolog Hacking Support
+- [[ngender-rust.el]] :: Rust Hacking Support
+- [[ngender-scala.el]] :: Ensime Scala Support
+- [[ngender-rx.el]] :: sexp notation for regular expressions
+- [[ngender-shell.el]] :: Support for Bourne-Compatible Shells
+- [[ngender-sql.el]] :: Fancy SQL Editing Support
+- [[ngender-sql-connect.el]] :: Connect SQLi to Database
+- [[ox-tiki.el]] :: Tiki Wiki Back-End for Org Export Engine
+
+** Compile Log Wednesday 21 March 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-c.el at Wed Mar 21 23:56:04 2018
+ngender-c.el:16:36:Warning: reference to free variable
+    ‘ngender-default-indent’
+
+In ngender-c-mode-common-hook:
+ngender-c.el:48:24:Warning: reference to free variable
+    ‘ngender-default-indent’
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-cedet.el at Wed Mar 21 23:56:14 2018
+ngender-cedet.el:17:7:Warning: assignment to free variable
+    ‘my-semantic-submodes’
+ngender-cedet.el:27:18:Warning: reference to free variable
+    ‘my-semantic-submodes’
+
+In end of data:
+ngender-cedet.el:95:1:Warning: the following functions are not known to be defined:
+    semantic-load-enable-primary-ectags-support,
+    ede-enable-generic-projects
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-clisp.el at Wed Mar 21 23:56:19 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-clojure.el at Wed Mar 21 23:56:22 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-elisp.el at Wed Mar 21 23:56:23 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-haskell.el at Wed Mar 21 23:56:24 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-mozart.el at Wed Mar 21 23:56:24 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-org.el at Wed Mar 21 23:56:25 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-php.el at Wed Mar 21 23:56:26 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-prolog.el at Wed Mar 21 23:56:26 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-rust.el at Wed Mar 21 23:56:27 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-rx.el at Wed Mar 21 23:56:28 2018
+ngender-rx.el:823:1:Warning: Lexical argument shadows the dynamic variable
+    rx-parent
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-shell.el at Wed Mar 21 23:56:31 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-sql-connect.el at Wed Mar 21 23:56:32 2018
+ngender-sql-connect.el:7:1:Error: Loading file /home/greg/.emacs.d/NGender/ngender-rx.elc failed to provide feature ‘ngender-rx’
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-sql.el at Wed Mar 21 23:56:33 2018
+ngender-sql.el:9:1:Error: Loading file /home/greg/.emacs.d/NGender/ngender-rx.elc failed to provide feature ‘ngender-rx’
+
+Compiling file /home/greg/.emacs.d/NGender/ngender.el at Wed Mar 21 23:56:35 2018
+
+In ngender-union-list:
+ngender.el:68:17:Error: ‘add-to-list’ can’t use lexical var ‘bag’; use ‘push’
+    or ‘cl-pushnew’
+ngender.el:98:1:Warning: Unused lexical variable ‘d’
+ngender.el:245:1:Warning: Unused lexical argument ‘n’
+
+In lbd-ps-landscape:
+ngender.el:308:9:Warning: assignment to free variable ‘ps-landscape-mode’
+
+In lbd-ps-portrait:
+ngender.el:314:9:Warning: assignment to free variable ‘ps-landscape-mode’
+
+Compiling file /home/greg/.emacs.d/NGender/ox-tiki.el at Wed Mar 21 23:56:37 2018
+ox-tiki.el:316:1:Warning: Unused lexical variable ‘struct’

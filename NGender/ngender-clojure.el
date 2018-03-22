@@ -1,0 +1,40 @@
+;; * Clojure Hacking Support -*- lexical-binding: t; -*-
+;; Authors:
+;;	jgd = J. Greg Davidson
+
+;; ** Dependencies - provide and require
+
+(provide 'ngender-clojure)
+(require 'ngender)
+
+;; ** Everything Else
+
+;; Based in part on the .emacs.d imported by
+;; git clone https://github.com/flyingmachine/emacs-for-clojure.git ~/.emacs.d
+
+;; (add-to-list 'auto-mode-alist '("\\.edn\\'" . clojure-mode))
+
+;; (setq nrepl-history-file "~/.emacs.d/nrepl-history")
+;; (setq nrepl-popup-stacktraces t)
+;; (setq nrepl-popup-stacktraces-in-repl t)
+
+;; (defun pnh-clojure-mode-eldoc-hook ()
+;;   (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
+;;   (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+;;   (nrepl-enable-on-existing-clojure-buffers)
+;;   ;; prevent hippie expand from trying file names
+;;   (dolist (fn 'try-complete-file-name 'try-complete-file-name-partially)
+;;     (setq hippie-expand-try-functions-list (delete fn hippie-expand-try-functions-list)) )
+;;   (setq ido-use-filename-at-point nil)
+;;   )
+
+;; (add-hook 'nrepl-connected-hook 'pnh-clojure-mode-eldoc-hook)
+
+(ngender-update-union 'auto-mode-alist '("\\.cljs\\'" . clojure-mode) )
+
+;; (add-hook 'nrepl-mode-hook 'subword-mode)
+
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'nrepl-mode) )
+
+;; (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)

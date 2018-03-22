@@ -1,4 +1,8 @@
-(provide 'jgd-cedet)
+;; * Semantic Bovinator (CEDET) Support -*- lexical-binding: t; -*-
+;; Authors:
+;;	jgd = J. Greg Davidson
+
+(provide 'ngender-cedet)
 
 ;;; Semantic Bovinator (CEDET)
 
@@ -75,11 +79,11 @@
 ;; (require 'cedet-java)
 
 ;; if this stuff is still wanted, need to
-;; append it onto the jgd-c-style list:
+;; append it onto the ngender-c-style list:
 
-; see jgd.el for
-; (defconst jgd-c-style
-(defconst jgd-c-style-cedet
+; see ngender.el for
+; (defconst ngender-c-style
+(defconst ngender-c-style-cedet
   `(
 		 semantic bovinator CEDET features:
 		 (add-to-list 'ac-sources '(ac-source-semantic) nil t)

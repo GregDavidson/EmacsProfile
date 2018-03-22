@@ -1,4 +1,14 @@
-;;; Following https://github.com/tmtxt/.emacs.d ... tmtxt-sql.el
+;; * Connect SQLi to Database -*- lexical-binding: t; -*-
+;; Authors:
+;;	jgd = J. Greg Davidson
+
+;; ** Dependencies - provide and require
+
+(require 'ngender-sql)
+																				;
+Following https://github.com/tmtxt/.emacs.d ... tmtxt-sql.el
+
+;; ** Login Parameters
 
 ;;; default PostgreSQL login params
 (setq sql-postgres-login-params
@@ -14,7 +24,8 @@
 		 (server :default "localhost")
 		 (port :default 3306) ) )
 
-;;; hooks
+;; ** Hooks
+
 (add-hook 'sql-interactive-mode-hook
 	(lambda ()
 		(toggle-truncate-lines t)
@@ -26,7 +37,8 @@
 		(setq-local ac-ignore-case t)
 		(auto-complete-mode) ) )
 
-;;; server list
+;; **  server list
+
 (setq sql-connection-alist
 	'(
 		 ("greg.local"
@@ -61,8 +73,12 @@
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") ) ) )
 
-;;; TODO update this function
-(defun jgd-sql-connect (connection)
+;; ** Function ngender-sql-connect
+
+;; TODO update this function - Why??
+;; New reason:  Need to merge account as well as password info
+;; with the connection information!!
+(defun ngender-sql-connect (connection)
   "Connect to the input server using sql-connection-alist"
   (interactive
    (helm-comp-read "Select server: "
@@ -73,8 +89,8 @@
 								 (nth 0 item)))
 			 sql-connection-alist ) ) )
   ;; password
-;  (require 'my-sql-pw "jgd-sql-pw.el.gpg")
-  (require 'my-sql-pw "jgd-sql-pw.el")
+;  (require 'my-sql-pw "my-sql-pw.el.gpg")
+  (require 'my-sql-pw "my-sql-pw.el")
   ;; get the sql connection info and product from the sql-connection-alist
   (let* ((connection-info (assoc connection sql-connection-alist))
          (connection-product (nth 1 (nth 1 (assoc 'sql-product connection-info))))
@@ -95,4 +111,6 @@
         (sql-connect connection connection)
       (sql-connect connection))))
 
-(provide 'jgd-sql-connect)
+;; ** Provides
+
+(provide 'ngender-sql-connect)

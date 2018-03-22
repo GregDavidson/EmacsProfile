@@ -1,10 +1,15 @@
-;; * fancy sql editing support
+;; * Fancy SQL Editing Support -*- lexical-binding: t; -*-
+;; Authors:
+;;	jgd = J. Greg Davidson
 
-(provide 'jgd-sql)
+;; ** Dependencies - provide and require
+
+(provide 'ngender-sql)
+(require 'ngender)
+(require 'ngender-rx)
 
 ;; ** Let's make rx regular expressions extensible
 
-(require 'rx-jgd)
 
 (defun def-rx-1 (name &rest defs)
 	(or (assq name rx-constituents)
@@ -313,7 +318,12 @@ a placeholder for a correct one!!! "
 
 (global-set-key [?\s-s ?\s-q ?\s-l] 'sql-startup )
 
-(defun sql-just-set-the-f*ing-buffer ()
+;; SQL-Mode is a bit stupid in that it won't try to find the
+;; SQLi buffer, even though there will usually only be one
+;; and SQL-Mode provides the perfect tool to find it,
+;; (sql-find-sqli-buffer), forcing the user to manually set
+;; it for each SQL buffer!
+(defun ngender-set-sqli-buffer ()
   "Set the SQLi buffer SQL strings are sent to."
   (interactive)
   (let ((default-buffer (sql-find-sqli-buffer)))
@@ -330,10 +340,9 @@ a placeholder for a correct one!!! "
 	(outline-minor-mode 1)
 	(setq variable-pitch-mode 1)
 	(setq outline-regexp "-- [*\f]+")
-	(jgd-outline-minor-map)
 )
 
-(defun jgd-bind-sql-magic-functions ()
+(defun ngender-bind-sql-magic-functions ()
 	"Add magic functions to the sql-mode-map."
 	(interactive)
 	(define-key sql-mode-map (kbd "C-c M-b")
@@ -346,17 +355,18 @@ a placeholder for a correct one!!! "
 		'create-sql-function-comment )
 )
 
-(defun jgd-sql-misc ()
+(defun ngender-sql-misc ()
 	"Miscellaneous sql-mode customizations."
 	(interactive)
 	(set-variable 'fill-column 60 t)
 )
 
-(add-hook 'sql-mode-hook 'sql-outline-minor-mode)
-(add-hook 'sql-mode-hook 'sql-just-set-the-f*ing-buffer)
-(add-hook 'sql-mode-hook 'jgd-set-default-tab-width)
-(add-hook 'sql-mode-hook 'jgd-bind-sql-magic-functions)
-
-; Let's make sure that these handy buffers exist
-(dolist (buffer '("*SQL*" "*compilation*" "*shell*"))
-	(get-buffer-create buffer) )
+(defun ngender-sql-mode ()
+	(ngender-set-default-tab-width)
+	(ngender-pitch-mode)
+	(setq orgstruct-heading-prefix-regexp "-- ") ; maybe /* as well?
+	(orgstruct-mode)
+	(ngender-set-sqli-buffer)
+	(ngender-bind-sql-magic-functions)
+)
+(add-hook 'sql-mode-hook 'ngender-sql-mode)

@@ -6,7 +6,7 @@
 *.dat
 TAGS
 TAGS-*
-*pw.*
+*-pw.*
 Makefile.depends
 *.elc
 ede-projects.el
