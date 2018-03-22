@@ -1,7 +1,9 @@
-;;; Emacs Init Code
+;; * Emacs Init Code
 ;; Maintained by jgd
 ;; NOT byte-compiled
-;; Consider migrating content here to jgd.el{,c}
+;; Anything complicated should be migrated to a byte-compiled file
+;; under NGender if it's fairly generic
+;; under JGD otherwise
 
 ;; Attempted workaround for font prem in 24.3.1
  ;; (setq initial-frame-alist '(
@@ -13,7 +15,7 @@
  ;; 	 (vertical-scroll-bars . right)
  ;; ))
 
-;;; Packages
+;; ** Packages
 
 (require 'package)
 (defvar my-archives
@@ -27,34 +29,13 @@
 (when (not package-archive-contents)
   (package-refresh-contents) )
 
-;; Add in your own as you wish:
+;; Is this redundant given list-packages??
 (defvar my-packages '(
 	auto-complete
-;	cedet
 	cider
-; clojure-mode ; comes with cider
-; clojure-test-mode ; comes with cider
-;	cljdoc
-;	cljsbuild-mode
-;	clojure-mode-extra-font-locking
-;	closure-lint-mode
 	company
-; company-racer ; something here's been misbehaving!
-;	ecb-snapshot
-;	enh-ruby-mode
-;	emacsql
-;	emacsql-mysql
-;	emacsql-psql
-;	emacsql-sqlite
-;	find-file-in-project ; searches project tree
-;	flycheck
-;	flycheck-clojure
-;	flycheck-haskell
-;	flycheck-rust
-;	ghci-completion
 	git-commit
 	helm
-;	idle-highlight-mode ; does what?
 	ido-ubiquitous
 	magit
 	magithub
@@ -64,32 +45,23 @@
 	org
 	org-autolist
 	org-bullets
-;	org-context
 	org-page
 	org-projectile
-;	org-ref
 	org-tree-slide
 	ox-gfm
 	paredit-everywhere
-;	perl6-mode
-;;	perspective
 	persp-mode
 	php-mode
 	project-mode
-;	prolog
 	rainbow-delimiters
 	racer
 	rust-mode
-;	scala-mode
-;	scala-mode2
 	sql-indent
 	sqlup-mode
 	smex
-;	tldr
 	toc-org
 	typed-clojure-mode
 	use-package
-;	workgroups2
 )
   "A list of packages to ensure are installed at launch.")
 
@@ -113,35 +85,44 @@
 
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 
-;;; Load-Paths
+;; ** Font and Pitch Preferences
+
+(defvar *ngender-pitch-mode* :variable)
+(defvar *ngender-fixed-font* "Dejavu Sans Mono")
+(defvar *ngender-variable-font* "Dejavu Sans Condensed")
+(defvar *ngender-font* *ngender-variable-font*)
+(defvar *ngender-frame-font* *ngender-font*)
+;		 "-adobe-courier-medium-r-normal--%d-*-*-*-m-*-iso8859-1"
+
+;; ** Load-Paths
 
 (dolist (p '(
-	     "~/Lib/Emacs" "~/.emacs.d/vendor"
-	     "~/.emacs.d/jgd" "~/.emacs.d/vendor/ensime/elisp/"
-	     "~/.emacs.d/vendor/html5-el/" ) )
+							"~/Lib/Emacs" "~/.emacs.d/vendor"
+							"~/.emacs.d/JGD" "~/.emacs.d/NGender"
+							"~/.emacs.d/vendor/ensime/elisp/"
+							"~/.emacs.d/vendor/html5-el/" ) )
 	(add-to-list 'load-path p) )
 
-;;(load-file "~/.emacs.d/cedet/cedet-devel-load.el")
-;;(load-file "~/.emacs.d/cedet/contrib/cedet-contrib-load.el")
-;;(load "vendor/cedet/cedet-devel-load")
-;;(load "vendor/cedet/contrib/cedet-contrib-load")
+;; ** Load Packages
 
-;;; Ensime
+;; *** Load NGender Packages
+;; Should instead arrange for most of them to autoload!!
 
-;; (require 'ensime)
-;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+;; Report an error if not found, say nothing if all goes well
+(load "ngender" nil t)
+(load "ngender-cut1" nil t)
+(load "ngender-rx" nil t)
+(load "ngender-org" nil t)
+(load "ngender-shell" nil t)
+(load "ngender-elisp" nil t)
+(load "ngender-sql" nil t)
+(load "ngender-sql-pw" nil t)
+(load "ngender-sql-connect" nil t)
 
-;;; Load some more code
+;; *** Load JGD Packages
 
 ;; Report an error if not found, say nothing if all goes well
 (load "jgd" nil t)	; my fancy code in ~/.emacs.d/jgd
-
-; (load "frame-bufs" nil t)
-; (frame-bufs-mode t)
-
-;; (require 'felineherd) ;; what is this?
-
-;; (when window-system (speedbar t))
 
 ;;; Key Bindings - (Re)Define some keyboard shortcuts
 
@@ -184,9 +165,6 @@
 (add-to-list 'auto-mode-alist '("\\.ij[rstp]$" . j-mode))
 
 
-;;;; Rust Support
-; http://bassam.co/emacs/2015/08/24/rust-with-emacs/
-
 ;; Company
 
 ;; Enable company globally for all mode
@@ -197,42 +175,6 @@
 
 ;; Reduce the number of characters before company kicks in
 ; (setq company-minimum-prefix-length 1)
-
-;; Racer
-
-;; Set path to racer binary
-(setq racer-cmd "/usr/local/bin/racer")
-
-;; Set path to rust src directory
-; (setq racer-rust-src-path "~/.rust/src/")
-(setq racer-rust-src-path "/usr/local/lib/rustlib/")
-
-;; Load rust-mode when you open `.rs` files
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-
-;; Setting up configurations when you load rust-mode
-(add-hook 'rust-mode-hook
-	  '(lambda ()
-	     ;; Enable racer
-	     (racer-activate)
-	     (racer-mode)
-	     
-	     ;; Hook in racer with eldoc to provide documentation
-	     (racer-turn-on-eldoc)
-	     
-	     ;; Use flycheck-rust in rust-mode
-	     ; (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-	     
-	     ;; Use company-racer in rust mode
-	     ;; (set (make-local-variable 'company-backends) '(company-racer))
-	     
-	     ;; Key binding to jump to method definition
-	     (local-set-key (kbd "M-.") #'racer-find-definition)
-	     
-	     ;; Key binding to auto complete and indent
-	     (local-set-key (kbd "TAB") #'racer-complete-or-indent)
-	     ) )
-
 
 ;;; Tramp
 
@@ -284,3 +226,157 @@
 ;; ;  (global-set-key (kbd "C-s-<left>") 'wg-switch-to-previous-workgroup)
 
 ; (workgroups-mode 1)
+
+;;;; Capture-Mode
+
+;; We're capturing everything under our GTD directory
+;; Maybe someday we'll separate these things out?
+
+(global-set-key "\C-cc" 'org-capture)
+
+(defconst gtd-dir (expand-file-name "GTD" org-directory))
+(defconst gtd-inbox-org (expand-file-name "inbox.org" gtd-dir))
+(defconst gtd-gtd-org (expand-file-name "gtd.org" gtd-dir))
+(defconst gtd-tickler-org (expand-file-name "tickler.org" gtd-dir))
+(defconst gtd-someday-org (expand-file-name "someday.org" gtd-dir))
+
+(defconst gtd-bookmarks-org (expand-file-name "bookmarks.org" gtd-dir))
+(defconst gtd-journal-org (expand-file-name "journal.org" gtd-dir))
+(defconst gtd-ideas-org (expand-file-name "ideas.org" gtd-dir))
+(defconst gtd-misc-org (expand-file-name "misc.org" gtd-dir))
+
+(setq org-agenda-files (list gtd-inbox-org gtd-gtd-org gtd-tickler-org))
+
+(setq org-capture-templates
+	`( ( "t" "Todo [inbox]" entry
+			 (file+headline ,gtd-inbox-org "Tasks")
+			 "* TODO %i%?" )
+		 ( "T" "Tickler" entry
+			 (file+headline ,gtd-tickler-org "Tickler")
+			 "* %i%? \n %U" )
+		 ("b" "Bookmarks" entry (file+headline ,gtd-bookmarks-org "Bookmarks")
+			 "* %?\nEntered %U\n  %i\n  %a")
+		 ("j" "Journal" entry (file+datetree ,gtd-journal-org)
+			 "* %?\nEntered %U\n  %i\n  %a")
+		 ("i" "Ideas" entry (file+headline ,gtd-ideas-org "Ideas")
+			 "* %?\nEntered %U\n  %i\n  %a")
+		 ("m" "Misc" entry (file+headline ,gtd-misc-org "Miscellany")
+			 "* %?\nEntered %U\n  %i\n  %a\n  %x")
+		 ) )
+
+;; There's some confusion about org-refile-targets
+;; Initially none of these worked.  Then the first
+;; one started working.  I may have needed to put
+;; in a couple of levels of headings.
+;; I would definitely like more flexibility and/or
+;; to be able to file things to a deeper level!
+
+(setq org-refile-targets `((,gtd-gtd-org :maxlevel . 3)
+                           (,gtd-someday-org :level . 1)
+                           (,gtd-tickler-org :maxlevel . 2)
+                           (,gtd-bookmarks-org :level . 1)
+                           (,gtd-journal-org :maxlevel . 4)
+                           (,gtd-ideas-org :maxlevel . 4)
+                           (,gtd-misc-org :maxlevel . 2)
+))
+
+;; (setq org-refile-targets `(
+;; 			    (nil :maxlevel . 5)
+;; 			    (,org-agenda-files :maxlevel . 5) ; do I want , here?
+;; 			    (,gtd-someday-org :level . 1) ))
+                           
+;; (setq org-refile-targets `(
+;; 			    (,org-agenda-files :maxlevel . 5) ; do I want , here?
+;; 			    (,gtd-someday-org :level . 1) ))
+                           
+;;; Key Settings
+
+;; ignore keysyms generated by my flakey Dell Studio
+(global-set-key [XF86AudioMedia] 'ignore)
+(global-set-key [C-XF86AudioMedia] 'ignore)
+(global-set-key [M-XF86AudioMedia] 'ignore)
+(global-set-key [XF86AudioPrev] 'ignore)
+(global-set-key [C-XF86AudioPrev] 'ignore)
+
+
+(global-set-key [M-left]  'beginning-of-line)
+(global-set-key [M-right] 'end-of-line)
+(global-set-key [M-up]    'move-to-top-of-window)
+(global-set-key [M-down]  'move-to-bottom-of-window)
+
+;; Make Control-W kill the word to the left of the cursor
+;; just like it works within a shell command line.
+(global-set-key [?\C-w] 'backward-kill-word)
+(global-set-key [C-backspace] 'kill-region) ; was C-W
+
+;; the "*-region-or-word" functions don't seem to exist in gnu emacs
+;; (global-set-key [?\M-c] 'capitalize-region-or-word)
+;; (global-set-key [?\M-C] 'upcase-region-or-word)
+
+(global-set-key [?\s-c] 'upcase-word)
+(global-set-key [s-prior] 'ngender-previous-window)
+(global-set-key [s-next] 'ngender-next-window)
+(global-set-key [?\s-\;] 'comment-region)
+(global-set-key [?\s-\:] 'uncomment-region)
+
+;; Bindings for Meta (aka Alt) plus a function key:
+
+(global-set-key [C-f1] 'help-command)	; press f1 for help
+(global-set-key [C-f2] 'shell)	; get a Unix shell in a window
+(global-set-key [C-f3] 'compile)	; compile (make) something
+(global-set-key [C-f4] 'next-error)	; visit the next compilation error
+(global-set-key [C-f5] 'undo)		; Keep pressing it to undo more
+(global-set-key [C-f7] 'blink-matching-open)	;  matching parens
+(global-set-key [C-f8] 'start-kbd-macro)	; start recording commands
+(global-set-key [C-f9] 'end-kbd-macro)	; finish and call it a macro
+(global-set-key [C-f10] 'call-last-kbd-macro)	; re-execute the macro
+;;; (global-set-key [M-f11] 'upcase-word)
+(global-set-key [C-f12] 'repeat-complex-command)
+
+;;; Set some miscellaneous variables
+(setq visible-bell t)
+(setq tab-stop-list nil)
+(setq inhibit-startup-screen t)
+
+;; ** Autoloading NGender and JGD Modules
+
+(load "ngender-sql")
+(load "ngender-sql-connect")
+
+;; Need to set up autoloading for
+;; NGender/ngender-cedet.el
+;; NGender/ngender-c.el
+;; NGender/ngender-clisp.el
+;; NGender/ngender-clojure.el
+;; NGender/ngender-cut1.el
+;; NGender/ngender.el
+;; NGender/ngender-haskell.el
+;; NGender/ngender-llre.el
+;; NGender/ngender-mozart.el
+;; NGender/ngender-org.el
+;; NGender/ngender-php.el
+;; NGender/ngender-prolog.el
+;; NGender/ngender-rust.el
+;; NGender/ngender-rx.el
+;; NGender/ngender-shell.el
+;; NGender/ngender-sql-connect.el
+;; NGender/ngender-sql.el
+;; NGender/ngender-sql-pw.el
+;; NGender/ngender-sql-test.el
+;; NGender/ox-tiki.el
+
+;; Load rust-mode when you open `.rs` files
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+;; ** Ensuring utility buffers exist
+
+; Let's make sure that these handy buffers exist
+(dolist (buffer '("*SQL*" "*compilation*" "*shell*"))
+	(get-buffer-create buffer) )
+
+
+;; ** Last things!
+
+(server-start)
+(winner-mode 1)
+(menu-bar-mode 1)              ;  it got disabled somewhere!
