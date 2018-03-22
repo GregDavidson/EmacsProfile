@@ -22,6 +22,7 @@ functionality of the package.
 - [[ngender-php.el]] :: PHP Hacking Support
 - [[ngender-prolog.el]] :: Prolog Hacking Support
 - [[ngender-rust.el]] :: Rust Hacking Support
+- [[ngender-scala.el]] :: Ensime Scala Support
 - [[ngender-rx.el]] :: sexp notation for regular expressions
 - [[ngender-shell.el]] :: Support for Bourne-Compatible Shells
 - [[ngender-sql.el]] :: Fancy SQL Editing Support
