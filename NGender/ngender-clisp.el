@@ -1,0 +1,23 @@
+;; * Common Lisp Hacking Support -*- lexical-binding: t; -*-
+;; Authors:
+;;	jgd = J. Greg Davidson
+
+;; ** Dependencies - provide and require
+
+(provide 'ngender-clisp)
+(require 'ngender)
+
+;; ** Everything Else
+
+;; (defun slime-setup-ngender (slime-dir lisp-program)
+;;   "Set up Slime to use the right Common Lisp"
+;;   (ngender-prepend-paths 'load-path slime-dir)
+;;   (when (and (member slime-dir load-path)
+;; 	     (file-exists-p lisp-program) )
+;;     (setq inferior-lisp-program lisp-program)
+;;     (require 'slime)
+;;     (slime-setup) ) )
+
+;; (defun slime-setup-clisp ()
+;;   (interactive)
+;;   (slime-setup-ngender "~/Lib/Emacs/slime/" "/usr/bin/clisp") )

@@ -1,9 +1,11 @@
-;;; rx.el --- sexp notation for regular expressions
+;; * sexp notation for regular expressions -*- lexical-binding: t; -*-
+
+;; ** Header
 
 ;; Copyright (C) 2001, 2002, 2003, 2004, 2005,
 ;;   2006, 2007, 2008, 2009, 2010, 2011 Free Software Foundation, Inc.
 
-;; jgd modifications January 2011
+;; ngender modifications January 2011
 
 ;; Author: Gerd Moellmann <gerd@gnu.org>
 ;; Maintainer: FSF
@@ -24,7 +26,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
 
-;;; Commentary:
+;; ** Commentary:
 
 ;; This is another implementation of sexp-form regular expressions.
 ;; It was unfortunately written without being aware of the Sregex
@@ -109,7 +111,7 @@
 ;;; History:
 ;;
 
-;;; Code:
+;; ** Code:
 
 ;; (defconst rx-constituents ;; original
 (defvar rx-constituents			;; jgd changed January 2011
@@ -1161,6 +1163,6 @@ enclosed in `(and ...)'.
 ;; ;;;###autoload (autoload 'sregexq "rx" nil nil 'macro)
 ;; (defalias 'sregexq 'rx)
 
-(provide 'rx-jgd)
+(provide 'rx-ngender)
 
 ;;; rx.el ends here

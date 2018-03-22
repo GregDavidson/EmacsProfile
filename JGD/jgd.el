@@ -378,6 +378,7 @@
 		c-basic-offset jgd-default-indent
 		tab-width jgd-default-indent
 		c-echo-syntactic-information-p t ;show parse on indent
+		orgstruct-heading-prefix-regexp "///* "
   )
   (c-set-offset 'arglist-intro '+)
   (c-set-offset 'arglist-close '0)
