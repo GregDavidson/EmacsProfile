@@ -1,3 +1,16 @@
+;; * Exploring Emacs SQL Possibilities -*- lexical-binding: t; -*-
+;; Authors:
+;;	jgd = J. Greg Davidson
+
+;; It's not yet clear what may emerge from this!
+
+;; ** Dependencies - provide and require
+
+;; (provide 'ngender-sql-test)
+;; (require 'ngender)
+
+;; ** Everything Else
+
 (defun sql-func-play ()
 	"Given an sql function definition conforming to the syntax
 	described above in (def-rx sql-create-function ...):

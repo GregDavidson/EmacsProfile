@@ -304,6 +304,7 @@
   (setq-default sh-basic-offset 2)
   (setq-default sh-indentation 2)
 	(setq orgstruct-heading-prefix-regexp "##* ")
+	(orgstruct-mode)
 )
 
 (add-hook 'sh-mode-hook 'jgd-sh-mode-hook)
@@ -365,7 +366,8 @@
 	;; objc-mode-map, java-mode-map, and idl-mode-map
 	;; all inherit from it.
   (define-key c-mode-base-map "\C-m" 'newline-and-indent)
-	(setq orgstruct-heading-prefix-regexp "// ")
+	(setq orgstruct-heading-prefix-regexp "/[/*] ")
+	(orgstruct-mode)
 )
 
 ;; PHP Mode
@@ -378,8 +380,9 @@
 		c-basic-offset jgd-default-indent
 		tab-width jgd-default-indent
 		c-echo-syntactic-information-p t ;show parse on indent
-		orgstruct-heading-prefix-regexp "///* "
+		orgstruct-heading-prefix-regexp "/[/*] "
   )
+	(orgstruct-mode)
   (c-set-offset 'arglist-intro '+)
   (c-set-offset 'arglist-close '0)
 )
@@ -642,7 +645,7 @@
 
 (defun rust-mode-jgd ()
 	(variable-pitch-mode-jgd)
-	(setq orgstruct-heading-prefix-regexp "// ")
+	(setq orgstruct-heading-prefix-regexp "/[/*] ")
 	(orgstruct-mode)
 )
 
@@ -656,7 +659,7 @@
 
 (defun sql-mode-jgd ()
 	(variable-pitch-mode-jgd)
-	(setq orgstruct-heading-prefix-regexp "-- ")
+	(setq orgstruct-heading-prefix-regexp "-- ") ; maybe /* as well?
 	(orgstruct-mode)
 )
 (add-hook 'sql-mode-hook 'sql-mode-jgd)
