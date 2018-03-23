@@ -337,32 +337,61 @@
 (setq tab-stop-list nil)
 (setq inhibit-startup-screen t)
 
-;; ** Autoloading NGender and JGD Modules
+;; ** Loading desired NGender and JGD Modules
 
-(load "ngender-sql")
-(load "ngender-sql-connect")
+(require 'jgd)
+(require 'ngender)
+(require 'ngender-org)
+(add-to-list 'auto-mode-alist '("\\.org\\'" . ngender-org-mode)
+(require 'ngender-sql)
+(add-to-list 'auto-mode-alist '("\\.sql\\'" . ngender-sql-mode)
+(require 'ngender-sql-connect)
+(require 'my-sql-pw)
 
-;; Need to set up autoloading for
-;; NGender/ngender-cedet.el
-;; NGender/ngender-c.el
-;; NGender/ngender-clisp.el
-;; NGender/ngender-clojure.el
-;; NGender/ngender-cut1.el
-;; NGender/ngender.el
-;; NGender/ngender-haskell.el
-;; NGender/ngender-llre.el
-;; NGender/ngender-mozart.el
-;; NGender/ngender-org.el
-;; NGender/ngender-php.el
-;; NGender/ngender-prolog.el
-;; NGender/ngender-rust.el
-;; NGender/ngender-rx.el
-;; NGender/ngender-shell.el
-;; NGender/ngender-sql-connect.el
-;; NGender/ngender-sql.el
-;; NGender/ngender-sql-pw.el
-;; NGender/ngender-sql-test.el
-;; NGender/ox-tiki.el
+;; ** Not Yet Loading NGender and JGD Modules
+;; *** ngender-cedet
+;; (require 'ngender-cedet)
+;; *** ngender-clisp
+;; (require 'ngender-clisp)
+;; *** ngender-sql-test
+;; (require 'ngender-sql-test)
+;; *** ox-tiki
+;; (require 'ox-tiki)
+
+;; ** AutoLoading NGender Modules
+
+;; *** ngender-c
+(autoload 'ngender-c-mode "ngender-c")
+(add-to-list 'auto-mode-alist '("\\.[cChH]\\(pp\\|PP\\|xx\\|XX\\|++\\|\\)\\'" . ngender-c-mode)
+
+;; *** ngender-clojure
+(autoload 'ngender-clojure-mode "ngender-clojure")
+(add-to-list 'auto-mode-alist '("\\.\\(clj[cxs]\\?\\|dtm\\|edn\\)\\'" . ngender-clojure-mode))
+
+;; *** ngender-haskell
+(autoload 'ngender-haskell-mode "ngender-haskell")
+(add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-haskell-mode))
+
+;; **** ngender-mozart
+;; (require "ngender-mozart")
+;; (autoload 'ngender-mozart-mode "ngender-mozart")
+;; (add-to-list 'auto-mode-alist '("\\.oz\\'" . ngender-mozart-mode)
+
+;; **** ngender-php
+(autoload 'ngender-php-mode "ngender-php")
+(add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-php-mode)
+;; **** ngender-prolog
+(autoload 'ngender-prolog-mode "ngender-prolog")
+(add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-prolog-mode)
+;; **** ngender-rust
+(autoload 'ngender-rust-mode "ngender-rust")
+(add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-rust-mode)
+;; **** ngender-rx
+(autoload 'ngender-rx-mode "ngender-rx")
+(add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-rx-mode)
+;; **** ngender-shell
+(autoload 'ngender-shell-mode "ngender-shell")
+(add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-shell-mode)
 
 ;; Load rust-mode when you open `.rs` files
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
