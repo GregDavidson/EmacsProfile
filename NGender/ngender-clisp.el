@@ -2,12 +2,11 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** require
 
-(provide 'ngender-clisp)
-(require 'ngender)
+;; (require 'slime)
 
-;; ** Everything Else
+;; ** slime-setup
 
 ;; (defun slime-setup-ngender (slime-dir lisp-program)
 ;;   "Set up Slime to use the right Common Lisp"
@@ -21,3 +20,11 @@
 ;; (defun slime-setup-clisp ()
 ;;   (interactive)
 ;;   (slime-setup-ngender "~/Lib/Emacs/slime/" "/usr/bin/clisp") )
+
+;; ** provide
+
+;; (provide 'ngender-clisp)
+
+;; ** Loading
+
+;; (require 'ngender-clisp)

@@ -2,10 +2,9 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** require
 
-(provide 'ngender-clojure)
-(require 'ngender)
+(require 'clojure-mode)
 
 ;; ** Everything Else
 
@@ -38,3 +37,12 @@
 ;;   '(add-to-list 'ac-modes 'nrepl-mode) )
 
 ;; (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+
+;; ** provide
+
+(provide 'ngender-clojure)
+
+;; ** Loading
+
+;; (autoload 'ngender-clojure-mode "ngender-clojure")
+;; (add-to-list 'auto-mode-alist '("\\.\\(clj[cxs]\\?\\|dtm\\|edn\\)\\'" . ngender-clojure-mode))

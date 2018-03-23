@@ -2,9 +2,8 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** require
 
-(provide 'ngender-c)
 (require 'cc-mode)
 ;; (require 'ngender-cedet)
 
@@ -44,13 +43,13 @@
   "C Programming Style for Virtual Infinity Systems" )
 
 ;; Customizations for all of c-mode, c++-mode, and objc-mode
-(defun ngender-c-mode-common-hook ()
-  (setq c-basic-offset ngender-default-indent
-	tab-width ngender-default-indent
-	indent-tabs-mode t
-	c-echo-syntactic-information-p t ;show parse on indent
+(defun ngender-c-mode ()
+  (setq
+		c-basic-offset ngender-default-indent
+		tab-width ngender-default-indent
+		indent-tabs-mode t
+		c-echo-syntactic-information-p t ;show parse on indent
   )
-  ;; add style NGENDER and set it for the current buffer
   (c-add-style "NGENDER" ngender-c-style t)
   ;; offset customizations not in ngender-c-style
   ;; (c-set-offset 'member-init-intro '++)
@@ -65,3 +64,15 @@
 	(setq orgstruct-heading-prefix-regexp "/[/*] ")
 	(orgstruct-mode)
 )
+
+(add-hook 'c-mode-hook 'ngender-c-mode)
+(add-hook 'c++-mode-hook 'ngender-c-mode)
+
+;; ** provide
+
+(provide 'ngender-c)
+
+;; ** Autoloading
+
+;; (autoload 'ngender-c-mode "ngender-c")
+;; (add-to-list 'auto-mode-alist '("\\.[cChH]\\(pp\\|PP\\|xx\\|XX\\|++\\|\\)\\'" . ngender-c-mode)

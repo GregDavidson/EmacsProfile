@@ -2,9 +2,7 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-(provide 'ngender-cedet)
-
-;;; Semantic Bovinator (CEDET)
+;; ** require
 
 (require 'cedet)
 (require 'semantic/tag)
@@ -92,3 +90,13 @@
 		 (semantic-mode t)
 		 )
   "Semantic Bovinator features for NGender C Programming Style" )
+
+;; ** provide
+
+(provide 'ngender-cedet)
+
+;; ** how to load this
+
+;; CEDET is best loaded by calling
+;; (require 'ngender-cedet)
+;; in your init.el file.

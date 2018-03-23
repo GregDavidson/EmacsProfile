@@ -2,9 +2,14 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** loading
 
-(provide 'ngender-sql)
+;; (autoload 'ngender-sql-mode "ngender-sql")
+;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . ngender-sql-mode)
+
+;; ** require
+
+(require 'sql-mode)
 (require 'ngender)
 (require 'ngender-rx)
 
@@ -370,3 +375,8 @@ a placeholder for a correct one!!! "
 	(ngender-bind-sql-magic-functions)
 )
 (add-hook 'sql-mode-hook 'ngender-sql-mode)
+
+;; ** provide
+
+(provide 'ngender-sql)
+
