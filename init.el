@@ -110,7 +110,6 @@
 
 ;; Report an error if not found, say nothing if all goes well
 (load "ngender" nil t)
-(load "ngender-cut1" nil t)
 (load "ngender-rx" nil t)
 (load "ngender-org" nil t)
 (load "ngender-shell" nil t)
