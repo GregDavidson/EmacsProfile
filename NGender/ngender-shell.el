@@ -17,7 +17,8 @@
 	(ngender-pitch-mode)
 )
 
-(add-hook 'sh-mode-hook 'ngender-sh-mode-hook)
+(add-hook 'sh-mode-hook 'ngender-sh-mode-hook) ; this doesn't do it for shell-mode
+(add-hook 'shell-mode-hook 'ngender-sh-mode-hook) ; this does
 
 ;; Put the current directory of a shell in the mode-line
 (defconst ngender-short-dirpath-max 40)
