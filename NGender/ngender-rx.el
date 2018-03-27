@@ -1163,6 +1163,6 @@ enclosed in `(and ...)'.
 ;; ;;;###autoload (autoload 'sregexq "rx" nil nil 'macro)
 ;; (defalias 'sregexq 'rx)
 
-(provide 'rx-ngender)
+(provide 'ngender-rx)
 
 ;;; rx.el ends here
