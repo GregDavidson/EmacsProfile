@@ -1,4 +1,7 @@
-;; * sexp notation for regular expressions -*- lexical-binding: t; -*-
+;; * sexp notation for regular expressions
+;; I've turned off Lexical Binding because of
+;; rx-parent.  Can I simply make it an
+;; exception??
 
 ;; ** Header
 
