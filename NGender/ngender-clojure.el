@@ -2,11 +2,27 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** require
-
+;; ** requires
 (require 'clojure-mode)
+(require 'cider)
 
-;; ** Everything Else
+;; Configure cider
+
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+(setq nrepl-hide-special-buffers t)
+
+(setq cider-repl-popup-stacktraces t)
+
+;; (setq cider-repl-history-file "path/to/file")
+
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
+
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+
+;; ** Configure Clojure-Nrepl
+
+;; Is this still needed, given Cider??
 
 ;; Based in part on the .emacs.d imported by
 ;; git clone https://github.com/flyingmachine/emacs-for-clojure.git ~/.emacs.d
@@ -28,6 +44,8 @@
 ;;   )
 
 ;; (add-hook 'nrepl-connected-hook 'pnh-clojure-mode-eldoc-hook)
+
+;; Configure Clojure-Mode
 
 (ngender-update-union 'auto-mode-alist '("\\.cljs\\'" . clojure-mode) )
 
