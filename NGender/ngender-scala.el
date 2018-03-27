@@ -2,11 +2,15 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Require
 
-;; (require 'ensime)
+(ngender-package-loaded 'ensime)
+(require 'ensime)
 
 ;; ** The Hook
 
-;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
+;; Provide
+
+(provide 'ngender-scala)
