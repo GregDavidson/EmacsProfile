@@ -6,7 +6,7 @@
 
 (require 'ngender-sql)
 																				;
-Following https://github.com/tmtxt/.emacs.d ... tmtxt-sql.el
+;; Following https://github.com/tmtxt/.emacs.d ... tmtxt-sql.el
 
 ;; ** Login Parameters
 
