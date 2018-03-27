@@ -1,11 +1,12 @@
 ;; * Emacs Init Code
 ;; Maintained by jgd
 ;; NOT byte-compiled
-;; Anything complicated should be migrated to a byte-compiled file
-;; - under NGender if it's fairly generic
-;; - under JGD otherwise
+;; Features requiring significant customization
+;; are in separate byte-compiled files under
+;; - NGender/ if likely to be useful to others
+;; - JGD/ otherwise
 
-;; Attempted workaround for font prem in 24.3.1
+;; ** Attempted workaround for font prem in 24.3.1
 ;; (setq initial-frame-alist '(
 ;; 	 (font . "Monospace-10")
 ;; 	 (vertical-scroll-bars . right)
@@ -30,13 +31,13 @@
   (package-refresh-contents) )
 
 ;; Is this redundant given list-packages??
-(defvar my-packages '(auto-complete cider company git-commit
-	helm ido-ubiquitous magit magithub markdown-mode multi-term
+;; Consider moving into appropriate customization file
+(defvar my-packages '(auto-complete company git-commit helm
+	ido-ubiquitous magit magithub markdown-mode multi-term
 	mysql-to-org org org-autolist org-bullets org-page
 	org-projectile org-tree-slide ox-gfm paredit-everywhere
 	persp-mode php-mode project-mode rainbow-delimiters racer
-	rust-mode sql sql-indent sqlup-mode smex toc-org
-	typed-clojure-mode use-package)
+	rust-mode sql sql-indent sqlup-mode smex toc-org use-package)
   "A list of packages to ensure are installed at launch.")
 
 ;; How to complain if package can't be loaded??
