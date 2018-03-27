@@ -9,7 +9,8 @@
 
 ;; ** require
 
-(require 'sql-mode)
+(require 'sql)
+(require 'sqlup-mode)
 (require 'ngender)
 (require 'ngender-rx)
 
