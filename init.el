@@ -2,18 +2,18 @@
 ;; Maintained by jgd
 ;; NOT byte-compiled
 ;; Anything complicated should be migrated to a byte-compiled file
-;; under NGender if it's fairly generic
-;; under JGD otherwise
+;; - under NGender if it's fairly generic
+;; - under JGD otherwise
 
 ;; Attempted workaround for font prem in 24.3.1
- ;; (setq initial-frame-alist '(
- ;; 	 (font . "Monospace-10")
- ;; 	 (vertical-scroll-bars . right)
- ;; ))
- ;; (setq default-frame-alist '(
- ;;   (font . "Monospace-10")
- ;; 	 (vertical-scroll-bars . right)
- ;; ))
+;; (setq initial-frame-alist '(
+;; 	 (font . "Monospace-10")
+;; 	 (vertical-scroll-bars . right)
+;; ))
+;; (setq default-frame-alist '(
+;;   (font . "Monospace-10")
+;; 	 (vertical-scroll-bars . right)
+;; ))
 
 ;; ** Packages
 
@@ -30,48 +30,27 @@
   (package-refresh-contents) )
 
 ;; Is this redundant given list-packages??
-(defvar my-packages '(
-	auto-complete
-	cider
-	company
-	git-commit
-	helm
-	ido-ubiquitous
-	magit
-	magithub
-	markdown-mode
-	multi-term
-	mysql-to-org
-	org
-	org-autolist
-	org-bullets
-	org-page
-	org-projectile
-	org-tree-slide
-	ox-gfm
-	paredit-everywhere
-	persp-mode
-	php-mode
-	project-mode
-	rainbow-delimiters
-	racer
-	rust-mode
-	sql
-	sql-indent
-	sqlup-mode
-	smex
-	toc-org
-	typed-clojure-mode
-	use-package
-)
+(defvar my-packages '(auto-complete cider company git-commit
+	helm ido-ubiquitous magit magithub markdown-mode multi-term
+	mysql-to-org org org-autolist org-bullets org-page
+	org-projectile org-tree-slide ox-gfm paredit-everywhere
+	persp-mode php-mode project-mode rainbow-delimiters racer
+	rust-mode sql sql-indent sqlup-mode smex toc-org
+	typed-clojure-mode use-package)
   "A list of packages to ensure are installed at launch.")
 
-; This is not working on ngender.org, Friday 21 April 2017, !!!
-(dolist (p my-packages)
-  (unless (package-installed-p p)
-    (package-install p) ) )
+;; How to complain if package can't be loaded??
+(defun ngender-package-loaded (&rest packages)
+	"ensure that these packages are loaded"
+	(dolist (p packages)
+		(unless (package-installed-p p)
+			(package-install p) ) )
+)
 
-(require 'multi-term)
+;; This is not working on ngender.org, Friday 21 April 2017, !!!
+(apply 'ngender-package-loaded my-packages)
+;; various JGD and NGender package files will use this
+;; to ensure that their required packages are loaded
 
 ;; ** Font and Pitch Preferences
 
@@ -79,49 +58,73 @@
 (defvar *ngender-fixed-font* "Dejavu Sans Mono")
 (defvar *ngender-variable-font* "Dejavu Sans Condensed")
 (defvar *ngender-font* *ngender-variable-font*)
+;; (defvar *ngender-font* *ngender-fixed-font*)
 (defvar *ngender-frame-font* *ngender-font*)
 ;		 "-adobe-courier-medium-r-normal--%d-*-*-*-m-*-iso8859-1"
 
+;; Switches face to value of buffer-face-mode-face
+;; If default is fixed-pitch, set to variable-pitch and vice versa!
+(global-set-key "\C-cv" 'buffer-face-mode)
+(setq buffer-face-mode-face 'fixed-pitch)
+;; (setq buffer-face-mode-face 'variable-pitch)
+
 ;; ** Load-Paths
 
-(dolist (p '( "~/Lib/Emacs" "~/.emacs.d/vendor"
-	      "~/.emacs.d/JGD" "~/.emacs.d/NGender"
-	      "~/.emacs.d/vendor/ensime/elisp/"
-	      "~/.emacs.d/vendor/html5-el/" ) )
+;; *** Packages under ~/.emacs.d/vendor
+;; These are packages or versions of packages not available through the Emacs
+;; package system.  Remove them from here and from the vendor directory
+;; when no longer needed.
+(dolist (p '(	"~/.emacs.d/vendor"
+;;						"~/.emacs.d/vendor/ensime/elisp/" ;; standard package now good?
+							"~/.emacs.d/vendor/html5-el/" ) )
   (add-to-list 'load-path p) )
 
-;; ** Load Packages
+;; *** Personal and NGender Emacs Code Directories
+(dolist (p '(	"~/Lib/Emacs" "~/.emacs.d/NGender" "~/.emacs.d/JGD" ) )
+  (add-to-list 'load-path p) )
 
-;; *** Load NGender Packages
-;; Should instead arrange for most of them to autoload!!
+;; ** Load NGender Packages
+;; Can/should any of these autoload??
 
 ;; Report an error if not found, say nothing if all goes well
-;; (load "ngender" nil t)
-;; (load "ngender-rx" nil t)
+(load "ngender" nil t)
+(load "ngender-rx" nil t)
 ;; (load "ngender-org" nil t)
-;; (load "ngender-shell" nil t)
-;; (load "ngender-elisp" nil t)
-;; (load "ngender-sql" nil t)
-;; (load "my-sql-pw" nil t)
-;; (load "ngender-sql-connect" nil t)
+(load "ngender-shell" nil t)
+(load "ngender-elisp" nil t)
+(load "ngender-sql" nil t)
+(load "my-sql-pw" nil t)
+(load "ngender-sql-connect" nil t)
 
-;; *** Load JGD Packages
+;; ** Load JGD Packages
 
 ;; Report an error if not found, say nothing if all goes well
 ;; (load "jgd" nil t)	; my fancy code in ~/.emacs.d/jgd
 
 ;; *** Key Bindings - (Re)Define some keyboard shortcuts
 
+;; ** Load Miscellaneous Simple Packages
+
+;; *** bs - menu for selecting and displaying buffers
 (global-set-key "\C-x\C-b" 'bs-show)
-(global-set-key "\C-cv" 'buffer-face-mode)
+
+;; Magit - Emacs Git integration
+
+;; Package will autoload
 (global-set-key (kbd "C-x g") 'magit-status)
 
-;; *** WindMove
+;; *** Multi-Term - manage multiple terminal emulators
 
+(require 'multi-term)
+
+;; *** WindMove - move among windows with arrow keys
+
+(require 'windmove)
 (windmove-default-keybindings 'meta)
 
-;; *** Uniquify
-;; (require 'uniquify)
+;; *** Uniquify - better buffer names on conflict
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'reverse)
 
 ;; Workaround to hopefully get rid of annoying:
 ;; Save Error: "Unbalanced parentheses": /home/greg/.emacs.d/semanticdb/!home!greg!Play!Lang!Lisps!ClojureScript!modern-cljs!resources!public!semantic.cache
@@ -129,7 +132,9 @@
 ; Symbol's function definition is void: global-semantic-show-unmatched-syntax-mode
 ; (global-semantic-show-unmatched-syntax-mode -1)
 
-;; *** html5 editing
+;; *** html5 editing - needs review!!
+
+;; How is this related to "~/.emacs.d/vendor/html5-el/" ??
 
 ;; (eval-after-load "rng-loc"
 ;;   '(add-to-list 'rng-schema-locating-files "~/code/html5-el/schemas.xml"))
@@ -141,15 +146,18 @@
 ;; using format to put in the desired size!
 ;; -unknown-DejaVu Sans-normal-normal-semicondensed-*-*-*-*-*-*-0-iso10646-1
 
-
-;; *** j-lang Support
+;; *** J-Lang Support - needs review!!
 ;; https://github.com/zellio/j-mode
+
+;; Check that these paths are up to date next time we play with J!
 
 ;; (add-to-list 'load-path "~/.emacs.d/j-mode/")
 ;; (autoload 'j-mode "j-mode.el" "Major mode for editing J files" t)
 ;; (add-to-list 'auto-mode-alist '("\\.ij[rstp]$" . j-mode))
 
-;; *** Company
+;; *** Company - completion system - needs review!!
+
+;; Do we still want this??
 
 ;; Enable company globally for all mode
 ; (global-company-mode)
@@ -180,12 +188,6 @@
 (global-set-key [XF86AudioPrev] 'ignore)
 (global-set-key [C-XF86AudioPrev] 'ignore)
 
-;; *** Handy Meta-Arrow bindings
-(global-set-key [M-left]  'beginning-of-line)
-(global-set-key [M-right] 'end-of-line)
-(global-set-key [M-up]    'move-to-top-of-window)
-(global-set-key [M-down]  'move-to-bottom-of-window)
-
 ;; Make Control-W kill the word to the left of the cursor
 ;; just like it works within a shell command line.
 (global-set-key [?\C-w] 'backward-kill-word)
@@ -197,8 +199,6 @@
 
 ;; *** Super bindings
 (global-set-key [?\s-c] 'upcase-word)
-(global-set-key [s-prior] 'ngender-previous-window)
-(global-set-key [s-next] 'ngender-next-window)
 (global-set-key [?\s-\;] 'comment-region)
 (global-set-key [?\s-\:] 'uncomment-region)
 
@@ -282,7 +282,7 @@
 
 ;; ** Ensuring utility buffers exist
 
-; Let's make sure that these handy buffers exist
+;; Not really necessary as they'll be created on demand!
 (dolist (buffer '("*SQL*" "*compilation*" "*shell*"))
 	(get-buffer-create buffer) )
 
