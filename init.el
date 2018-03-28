@@ -34,13 +34,14 @@
 ;; Consider moving into appropriate customization file
 (defvar my-packages '(auto-complete company git-commit helm
 	ido-ubiquitous magit magithub markdown-mode multi-term
-	mysql-to-org org org-autolist org-bullets org-page
-	org-projectile org-tree-slide ox-gfm paredit-everywhere
+	 paredit-everywhere
 	persp-mode php-mode project-mode rainbow-delimiters racer
 	rust-mode sql sql-indent sqlup-mode smex toc-org use-package)
   "A list of packages to ensure are installed at launch.")
 
-;; How to complain if package can't be loaded??
+;; Various JGD and NGender package files will use this
+;; to ensure that their required packages are loaded.
+;; How could we fail gracefully?? This will not!!
 (defun ngender-package-loaded (&rest packages)
 	"ensure that these packages are loaded"
 	(dolist (p packages)
@@ -48,53 +49,73 @@
 			(package-install p) ) )
 )
 
-;; This is not working on ngender.org, Friday 21 April 2017, !!!
+;; Install the packages we always want:
 (apply 'ngender-package-loaded my-packages)
-;; various JGD and NGender package files will use this
-;; to ensure that their required packages are loaded
+;; Failed on ngender.org, Friday 21 April 2017!!
 
 ;; ** Font and Pitch Preferences
 
-(defvar *ngender-pitch-mode* :variable)
+;; Use a %d format spec where the font size goes, e.g.
+;;	"-adobe-courier-medium-r-normal--%d-*-*-*-m-*-iso8859-1"
+;; otherwise it will be put at the end as will happen here:
 (defvar *ngender-fixed-font* "Dejavu Sans Mono")
 (defvar *ngender-variable-font* "Dejavu Sans Condensed")
-(defvar *ngender-font* *ngender-variable-font*)
-;; (defvar *ngender-font* *ngender-fixed-font*)
+(defvar *ngender-pitch-mode* :variable)					; vs. :fixed
+(defvar *ngender-font*
+	(cond
+		( (eq *ngender-pitch-mode* :variable ) *ngender-variable-font* )
+		( (eq *ngender-pitch-mode* :fixed ) *ngender-fixed-font* ) ) )
 (defvar *ngender-frame-font* *ngender-font*)
-;		 "-adobe-courier-medium-r-normal--%d-*-*-*-m-*-iso8859-1"
 
-;; Switches face to value of buffer-face-mode-face
-;; If default is fixed-pitch, set to variable-pitch and vice versa!
+;; make it easy to switch the default for the current buffer:
+(setq buffer-face-mode-face
+	(cond
+		( (eq *ngender-font* *ngender-variable-font*)	'fixed-pitch)
+		( (eq *ngender-font* *ngender-fixed-font*) 'variable-pitch) ) )
+;; Switches face to buffer-face-mode-face
 (global-set-key "\C-cv" 'buffer-face-mode)
-(setq buffer-face-mode-face 'fixed-pitch)
-;; (setq buffer-face-mode-face 'variable-pitch)
 
 ;; ** Load-Paths
+
+;; add-to-list will put the new items at the front so the
+;; last added will come first
+
+(defun require-file-pass (path type-test type-name) (
+	(let ( (p (file-chase-links path)) )
+		(if (funcall type-test p) path
+			(lwarn '(init) :warning "Expected %s to be a %s" type-name) ) ) )
+
+(defun require-file (path) (require-file-pass path 'file-regular-p 'file) )
+(defun require-dir (path) (require-file-pass path 'file-directory-p 'directory) )
 
 ;; *** Packages under ~/.emacs.d/vendor
 ;; These are packages or versions of packages not available through the Emacs
 ;; package system.  Remove them from here and from the vendor directory
 ;; when no longer needed.
-(dolist (p '(	"~/.emacs.d/vendor"
-;;						"~/.emacs.d/vendor/ensime/elisp/" ;; standard package now good?
-							"~/.emacs.d/vendor/html5-el/" ) )
-  (add-to-list 'load-path p) )
+(dolist (path '(	"~/.emacs.d/vendor"
+;;								"~/.emacs.d/vendor/ensime/elisp" ;; standard package now good??
+									"~/.emacs.d/vendor/html5-el" ) )
+	(let ( (p (require-directory path)) )
+		(when p (add-to-list 'load-path p) ) ) )
 
 ;; *** Personal and NGender Emacs Code Directories
-(dolist (p '(	"~/Lib/Emacs" "~/.emacs.d/NGender" "~/.emacs.d/JGD" ) )
-  (add-to-list 'load-path p) )
+(dolist (path '(	"~/Lib/Emacs" "~/.emacs.d/NGender" "~/.emacs.d/JGD" ) )
+	(let ( (p (require-directory path)) )
+		(when p (add-to-list 'load-path p) ) ) )
 
 ;; ** Load NGender Packages
 ;; Can/should any of these autoload??
 
 ;; Report an error if not found, say nothing if all goes well
 (load "ngender" nil t)
-(load "ngender-rx" nil t)
-;; (load "ngender-org" nil t)
+(defvar *ngender-org-packages '(mysql-to-org org org-autolist org-bullets org-page
+	org-projectile org-tree-slide ox-gfm) "desired set of org-mode packages")
+(load "ngender-org" nil t)
 (load "ngender-shell" nil t)
 (load "ngender-elisp" nil t)
+(load "ngender-rx" nil t)
 (load "ngender-sql" nil t)
-(load "my-sql-pw" nil t)
+(load "my-sql-pw" nil t)			 ; encryption would be better!!
 (load "ngender-sql-connect" nil t)
 
 ;; ** Load JGD Packages
@@ -250,36 +271,34 @@
 ;; (add-to-list 'auto-mode-alist '("\\.[cChH]\\(pp\\|PP\\|xx\\|XX\\|++\\|\\)\\'" . ngender-c-mode)
 
 ;; *** ngender-clojure
-;; (autoload 'ngender-clojure-mode "ngender-clojure")
-;; (add-to-list 'auto-mode-alist '("\\.\\(clj[cxs]\\?\\|dtm\\|edn\\)\\'" . ngender-clojure-mode))
+;; (autoload 'ngender-clojure "ngender-clojure")
+;; (add-to-list 'auto-mode-alist '("\\.\\(clj[cxs]\\?\\|dtm\\|edn\\)\\'" . ngender-clojure))
 
 ;; *** ngender-haskell
-;; (autoload 'ngender-haskell-mode "ngender-haskell")
-;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-haskell-mode))
+;; (autoload 'ngender-haskell "ngender-haskell")
+;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-haskell))
 
 ;; **** ngender-mozart
 ;; (require "ngender-mozart")
-;; (autoload 'ngender-mozart-mode "ngender-mozart")
-;; (add-to-list 'auto-mode-alist '("\\.oz\\'" . ngender-mozart-mode)
+;; (autoload 'ngender-mozart "ngender-mozart")
+;; (add-to-list 'auto-mode-alist '("\\.oz\\'" . ngender-mozart))
 
 ;; **** ngender-php
-;; (autoload 'ngender-php-mode "ngender-php")
-;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-php-mode)
+;; (autoload 'ngender-php "ngender-php")
+;; (add-to-list 'auto-mode-alist '("\\.php\\'" . ngender-php))
 ;; **** ngender-prolog
-;; (autoload 'ngender-prolog-mode "ngender-prolog")
-;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-prolog-mode)
+;; (autoload 'ngender-prolog "ngender-prolog")
+;; (add-to-list 'auto-mode-alist '("\\.pl\\'" . ngender-prolog))
 ;; **** ngender-rust
-;; (autoload 'ngender-rust-mode "ngender-rust")
-;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-rust-mode)
+(defvar *ngender-rust-packages '(rust-mode racer)	"desired set of org-mode packages")
+(autoload 'ngender-rust "ngender-rust")
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . ngender-rust))
 ;; **** ngender-rx
-;; (autoload 'ngender-rx-mode "ngender-rx")
-;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-rx-mode)
+;; (autoload 'ngender-rx "ngender-rx")
+;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-rx))
 ;; **** ngender-shell
-;; (autoload 'ngender-shell-mode "ngender-shell")
-;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-shell-mode)
-
-;; Load rust-mode when you open `.rs` files
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+;; (autoload 'ngender-shell "ngender-shell")
+;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-shell))
 
 ;; ** Ensuring utility buffers exist
 

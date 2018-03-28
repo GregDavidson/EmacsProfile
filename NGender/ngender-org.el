@@ -2,9 +2,11 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
-(provide 'ngender-org)
+(unless (boundp *ngender-org-packages*)
+	(defvar *ngender-org-packages* '(org) "minimal set of org-mode packages") )
+(apply 'ngender-package-loaded *ngender-org-packages* )
 (require 'ngender)
 
 ;; ** Everything Else
@@ -72,3 +74,7 @@
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 (add-hook 'org-mode-hook 'org-mode-ngender)
 (add-hook 'org-mode-hook 'ngender-pitch-mode)
+
+;; ** Provide
+
+(provide 'ngender-org)
