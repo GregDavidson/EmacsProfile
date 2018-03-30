@@ -1,6 +1,4 @@
-;; * Emacs Init Code
-;; Maintained by jgd
-;; NOT byte-compiled
+;; * JGD/init-me.el
 ;; Features requiring significant customization
 ;; are in separate byte-compiled files under
 ;; - NGender/ if likely to be useful to others
@@ -25,10 +23,11 @@
 		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
 		 ("org" . "https://orgmode.org/elpa/") ) )
 (dolist (a my-archives)	(add-to-list 'package-archives a t))
-(package-initialize)
 
-(when (not package-archive-contents)
-  (package-refresh-contents) )
+;; (package-initialize)
+
+;; (when (not package-archive-contents)
+;;   (package-refresh-contents) )
 
 ;; Is this redundant given list-packages??
 ;; Consider moving into appropriate customization file
@@ -38,16 +37,6 @@
 	persp-mode php-mode project-mode rainbow-delimiters racer
 	rust-mode sql sql-indent sqlup-mode smex toc-org use-package)
   "A list of packages to ensure are installed at launch.")
-
-;; Various JGD and NGender package files will use this
-;; to ensure that their required packages are loaded.
-;; How could we fail gracefully?? This will not!!
-(defun ngender-package-loaded (&rest packages)
-	"ensure that these packages are loaded"
-	(dolist (p packages)
-		(unless (package-installed-p p)
-			(package-install p) ) )
-)
 
 ;; Install the packages we always want:
 (apply 'ngender-package-loaded my-packages)
@@ -79,14 +68,6 @@
 
 ;; add-to-list will put the new items at the front so the
 ;; last added will come first
-
-(defun require-file-pass (path type-test type-name) (
-	(let ( (p (file-chase-links path)) )
-		(if (funcall type-test p) path
-			(lwarn '(init) :warning "Expected %s to be a %s" type-name) ) ) )
-
-(defun require-file (path) (require-file-pass path 'file-regular-p 'file) )
-(defun require-dir (path) (require-file-pass path 'file-directory-p 'directory) )
 
 ;; *** Packages under ~/.emacs.d/vendor
 ;; These are packages or versions of packages not available through the Emacs
