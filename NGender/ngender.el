@@ -37,81 +37,226 @@
   (ngender-set-tab-width n)
 )
 
+;; ** Warnings and Errors
+
+(defun ngender-warn (x type &optional level tag)
+	(lwarn (or level '(type)) (or tag :warning) "Expected %s to be a %s" x type) )
+
+(defun ngender-expect (x type-test type-name &optional level tag)
+	(if (type-test x)
+		x
+		(ngender-warn x type-name (or level '(type)) (or tag :warning)) ) )
+
+(defun ngender-filter (list predicate name)
+	"filter out elements of list which fail predicate expecting them to be name-things; assume failures rare"
+	(let ((bad-list (seq-remove list predicate)))
+		(if (not bad-list)
+			list
+			(do-list (p bad-list)
+				(ngender-expect p name '(init)) )
+			(seq-filter list predicate) ) ) )
+			
 ;; ** Define some functions for managing lists, sets, paths
 
 ;; *** functions for filtering lists
 
-(defun ngender-filter-reverse (items predicate)
-  "reversed sublist of items which satisfy predicate"
-  (let (results)
-    (dolist (item items results)
-      (or (apply predicate item) (push item results)) ) ) )
-
-(defun ngender-update-filter-reverse (symbol predicate)
-  (set symbol (ngender-filter-reverse (symbol-value symbol) predicate)) )
-
-(defun ngender-filter (predicate items)
-  "sublist of items which satisfy predicate"
-  (let* ( (results (list 'results)) (tail results) )
-    (dolist (item items (cdr results))
-      (when (apply predicate item)
-	(setcdr tail (list item))
-	(setq tail (cdr tail)) ) ) ) )
-
 (defun ngender-update-filter (symbol predicate)
-  (set symbol (ngender-filter (symbol-value symbol) predicate)) )
+  (set symbol (if (not (boundp symbol)) '() (seq-filter (symbol-value symbol) predicate))) )
 
 ;; *** Using Lists As Sets
 
 (defun ngender-union-list (bag items)
   "union of bag and items"
-  (dolist (item items bag)
-      (add-to-list 'bag item ) ) )
+	(delete-dups (append bag items)) )
 
 (defun ngender-update-union (symbol &rest items)
-  (set symbol (ngender-union-list (symbol-value symbol) items)) )
+  (set symbol
+		(if (not (boundp symbol))
+			items
+			(ngender-union-list (symbol-value symbol) items) ) ) )
 
-;; *** functions for managing paths
+;; *** functions for managing path set lists
 
-;; Would be better to have a filter
-;; which would remove and warn
-;; of any element already on a path
-;; or non-existent in the filesystem.
-;; Then just append in front or in back.
+(defun ngender-filter-dirs (paths) (ngender-filter paths 'file-directory-p 'directory))
 
-(defun ngender-add-paths (symbol paths &optional append)
-  "add paths onto existing unique list bound to symbol"
-  (dolist (p paths)
-      (or (not (file-directory-p p))
-				(add-to-list symbol (expand-file-name p) append) ) ) )
+(defun ngender-union-lists (left right)
+  "union two set lists"
+  (delete-dups (append left right)) )
+
+(defun ngender-add-paths (symbol paths append)
+  "prepend or append candidate directory set with directory set bound to symbol"
+  (set symbol (let ( (paths (if (boundp symbol) symbol '())) (newbies (ngender-filter-dirs paths)) )
+								(if append
+									(ngender-union-lists paths newbies)
+									(ngender-union-lists newbies paths) ) )) )
 
 (defun ngender-prepend-paths (symbol &rest dirs)
-	(or (boundp symbol) (set symbol '()))
-	;; assert symbol bound to proper list!!
-	(ngender-add-paths symbol dirs) )
+  "prepend candidate directory paths in front of directory set bound to symbol"
+	(funcall 'ngender-add-paths symbol dirs nil) )
 
 (defun ngender-append-paths (symbol &rest dirs)
-	(or (boundp symbol) (set symbol '()))
-	;; assert symbol bound to proper list!!
-	(ngender-add-paths symbol dirs t) )
+  "append candidate directory paths to end of directory set bound to symbol"
+	(funcall 'ngender-add-paths symbol dirs t) )
 
+;; unused??
 (defun ngender-str-member (str item &optional delim)
   "is item a member of delimited string?"
   (let ( (d (or delim ":")) )
     (string-match (concat ".*" delim (regexp-quote item) delim ".*")
 		  (concat delim str delim) ) ) )
 
+;; unused??
 (defun ngender-str-append (str item &optional delim)
   "append item onto delimited string"
   (concat str (or delim ":") item) )
 
+;; unused??
 (defun ngender-update-str-append (symbol item &optional delim)
   (set symbol (ngender-str-append (symbol-value 'symbol) item delim)) )
 
+;; unused??
 (defun ngender-exec-path-from-shell ()
   (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'")))
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator)) ) )
+
+
+;; ** Emacs Repository Support
+
+(require 'package)
+
+(defvar *ngender-package-archives*
+	(if (and (boundp 'package-archives) package-archives)
+		package-archives
+		'( ("gnu" . "http://elpa.gnu.org/packages/") ) )
+	"requested package archives" )
+
+;; improve these with regexp matching!!
+(defun ngender-archive-name-p (name) (stringp name))
+(defun ngender-archive-p (url) (stringp url))
+
+(defun ngender-archive-p (pair)
+	"return the cons archive represented by the list or cons archive pair or nil"
+	(if (not (consp pair))
+		nil
+		(let* ( (name (car pair)) (cdr (cdr pair)) (is-list (consp cdr)) (url (if is-list (car cdr) cdr)) )
+			(if (not (and (archive-name-p name) (archive-url-p url)))
+				nil
+				(if is-list (cons name url) pair) ) ) ) )
+
+(defun list-to-associations (list)
+	"turn a list of pairs into an association list, i.e. list of cons-cells; any leftover paired with nil"
+	(if (null list)
+		nil
+		(if (consp list)
+			(let ((first (car list)) (cdr (cdr list)))
+				(if (not (consp cdr))
+					list
+					(cons (cons first (car cdr)) (list-to-associations (cdr cdr))) ) ) ) ) )
+
+(defun ngender-package-archives (&rest args)
+	(if (oddp args)
+		(progn (ngender-warn args 'even) nil)
+		(let* ( (pairs (list-to-associations args))
+						(pair-count (length paris))
+						(archives (ngender-filter pairs 'ngender-archive-p 'archive))
+						(archive-count (length archives)) )
+			(and
+				(equal pair-count archive-count)
+				(ngender-update-union 'package-archives archives)
+				(progn
+					(package-initialize)
+					(when (not (package-archive-contents)) (package-refresh-contents)) ) ) ) ) )
+
+
+;; Various package files will use this to ensure
+;; that their required packages are loaded.
+;; How could we fail gracefully?? This will not!!
+(defun ngender-package-loaded (&rest packages)
+	"ensure that these packages are loaded"
+	(dolist (p packages)
+		(unless (package-installed-p p)
+			(package-install p) ) )
+)
+
+;; ** File and Directory Support
+
+(defun require-file-path (name type-test type-name &optional parent)
+	(let (( path (expand-file-name (if parent parent *ngender-emacs-home*)) ))
+		(let (( p (file-chase-links path) ))
+			(if (funcall type-test p) path
+				(ngender-warn p type-name '(init)) ) ) ) )
+
+(defun require-file (path &optional parent) (require-file-path path 'file-regular-p 'file parent) )
+(defun require-dir (path &optional parent) (require-file-path path 'file-directory-p 'directory parent) )
+
+;; ** Fancy Emacs Load Path Support
+
+;; The Emacs path will be kept ordered as follows, first to last:
+;; (1) User Subdirectories
+;; (2) Group (Project) Directories
+;; (3) Vendor (3rd party extension) directories
+;; (4) Directories for Packages downloaded from Emacs Repositories
+
+(defvar *ngender-emacs-home*
+	(if (boundp '*ngender-emacs-home*)) (symbol-value '*ngender-emacs-home*) '() )
+(defvar *ngender-user-subdirectories*
+	(if (boundp '*ngender-user-subdirectories*)) (symbol-value '*ngender-user-subdirectories*) '() )
+(defvar *ngender-group-subdirectories*
+	(if (boundp '*ngender-group-subdirectories*)) (symbol-value '*ngender-group-subdirectories*) '() )
+(defvar *ngender-vendor-subdirectories*
+	(if (boundp '*ngender-vendor-subdirectories*)) (symbol-value '*ngender-vendor-subdirectories*) '() )
+(defconst *ngender-path-lists*
+	'(*ngender-vendor-subdirectories* *ngender-group-subdirectories* *ngender-user-subdirectories*) )
+
+
+(defun ngender-emacs-home (path)
+	(setq *ngender-emacs-home* (require-dir path "~")) )
+
+(defun ngender-rebuild-emacs-load-path ()
+	"rebuild emacs load path with elements of lists named in *ngender-path-lists* appearing in front in order"
+	(setq load-path (delete-dups (apply 'append (mapcar 'symbol-value *ngender-path-lists*)))) )
+
+(defun ngender-path-subdirectories (symbol paths)
+	"add directory paths to the front of the list named by symbol and rebuild emacs load path"
+	(dolist (p paths)
+		(add-to-path symbol (require-directory p)) )
+	(ngender-rebuild-emacs-load-path) )
+
+(defun ngender-path-delete (symbol path)
+	"delete paths from the list named by symbol and rebuild emacs load path"
+	(set symbol (delete path (symbol-value symbol)))
+	(ngender-rebuild-emacs-load-path) )
+
+(defun ngender-user-subdirectory (&rest paths)
+	"add paths to user subdirectories and rebuild emacs load path"
+	(ngender-path-subdirectories '*ngender-user-subdirectories* paths)
+)
+
+(defun ngender-user-subdir-delete (path)
+	"delete path from user subdirectories and rebuild emacs load path"
+	(ngender-path-delete '*ngender-user-subdirectories* path)
+)
+
+(defun ngender-group-subdirectory (&rest paths)
+	"add paths to group subdirectories and rebuild emacs load path"
+	(ngender-group-subdirectories '*ngender-user-subdirectories* paths)
+)
+
+(defun ngender-group-subdir-delete (path)
+	"delete path from group subdirectories and rebuild emacs load path"
+	(ngender-path-delete '*ngender-group-subdirectories* path)
+)
+
+(defun ngender-vendor-subdirectory (&rest paths)
+	"add paths to vendor subdirectories and rebuild emacs load path"
+	(ngender-group-subdirectories '*ngender-user-subdirectories* paths)
+)
+
+(defun ngender-vendor-subdir-delete (path)
+	"delete path from vendor subdirectories and rebuild emacs load path"
+	(ngender-path-delete '*ngender-vendor-subdirectories* path)
+)
 
 ;; *** Customize some directory path lists
 
