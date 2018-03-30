@@ -4,8 +4,10 @@
 
 ;; ** Dependencies
 
-(unless (boundp *ngender-rust-packages*)
-	(defvar *ngender-rust-packages* '(rust-mode) "minimal set of rust packages") )
+
+(defvar *ngender-rust-packages*
+	(if (boundp *ngender-rust-packages*) *ngender-rust-packages*'(rust-mode))
+	"minimal set of rust packages")
 (apply 'ngender-package-loaded *ngender-rust-packages*)
 
 (require 'ngender)
