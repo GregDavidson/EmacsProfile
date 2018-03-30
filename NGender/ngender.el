@@ -2,49 +2,47 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
 (provide 'ngender)
-(require 'jit-lock)
 
-;; (require 'x-fonts)
+;; (require 'jit-lock)								; why?
+;; (require 'x-fonts)									; why??
 
 ;; ** Indentation Issues
 
-;; Q: Why do we prefer indentation by tabs in most modes?
-;; A: So we can flexibly change the tab-width!
-;; Note: All indentation choices are frought!
+;; Q: Are tabs or spaces better for indentation?
+
+;; A1: TABS, obviously!  Why?  Many reasons!
+;; Best reason: Adjusting indentation via tab-width!
+
+;; A2: SPACES, obviously!  Why?  Alignment,
+;; flexibility, predictability, reproducibility,
+;; transparency - what you see is what you get!
+
+;; Q: Are tabs or spaces better for indentation?
+;; A: I guess we better support both!
+;; Audit everything for tab/space neutrality/flexibility!!
 
 ;; Define desired indentation in space-equivalents
 (defconst ngender-min-indent 1)
 (defconst ngender-default-indent 2)
 (defconst ngender-default-tab-width 2)
 
-(defun ngender-set-tab-width (n)
-  "Set tab-width as a local variable."
-  (make-local-variable 'tab-width)
-  (setq tab-width (if (< n ngender-min-indent) ngender-default-tab-width n) )
-)
-
-(defun ngender-set-default-tab-width ()
-  "Set tab-width to our default"
-  (ngender-set-tab-width ngender-default-tab-width)
-)
-
 (defun ngender-tab-width (n)
-  "Set tab-width interactively."
+  "Set local tab-width interactively to n=0=>default or min(n, min-indent)"
   (interactive "p")
-  (ngender-set-tab-width n)
-)
+  (make-local-variable 'tab-width)
+  (setq tab-width (if (zerop n) ngender-default-tab-width (max n ngender-min-indent))) )
 
 ;; ** Warnings and Errors
 
+;; what should the "level" actually be??
 (defun ngender-warn (x type &optional level tag)
-	(lwarn (or level '(type)) (or tag :warning) "Expected %s to be a %s" x type) )
+	(lwarn (or level '(type)) (or tag :warning) "Expected %s, got %s" type x) nil )
 
 (defun ngender-expect (x type-test type-name &optional level tag)
-	(if (type-test x)
-		x
+	(if (type-test x)	x
 		(ngender-warn x type-name (or level '(type)) (or tag :warning)) ) )
 
 (defun ngender-filter (list predicate name)
@@ -65,23 +63,19 @@
 
 ;; *** Using Lists As Sets
 
-(defun ngender-union-list (bag items)
-  "union of bag and items"
-	(delete-dups (append bag items)) )
+(defun ngender-union-lists (&rest bags)
+  "return list set union of list bags"
+	(delete-dups (apply 'append bags)) )
 
 (defun ngender-update-union (symbol &rest items)
   (set symbol
 		(if (not (boundp symbol))
 			items
-			(ngender-union-list (symbol-value symbol) items) ) ) )
+			(ngender-union-lists (symbol-value symbol) items) ) ) )
 
 ;; *** functions for managing path set lists
 
 (defun ngender-filter-dirs (paths) (ngender-filter paths 'file-directory-p 'directory))
-
-(defun ngender-union-lists (left right)
-  "union two set lists"
-  (delete-dups (append left right)) )
 
 (defun ngender-add-paths (symbol paths append)
   "prepend or append candidate directory set with directory set bound to symbol"
@@ -484,3 +478,7 @@
        (concat "/sudo:root@localhost:" (buffer-file-name))))
     (goto-char position)))
 
+
+;; ** Provide
+
+(provide 'ngender)

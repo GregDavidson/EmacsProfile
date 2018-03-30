@@ -368,7 +368,7 @@ a placeholder for a correct one!!! "
 )
 
 (defun ngender-sql-mode ()
-	(ngender-set-default-tab-width)
+	(ngender-tab-width 0)
 	(ngender-pitch-mode)
 	(setq orgstruct-heading-prefix-regexp "-- ") ; maybe /* as well?
 	(orgstruct-mode)
