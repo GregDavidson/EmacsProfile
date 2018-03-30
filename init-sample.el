@@ -1,4 +1,4 @@
-;; * Sample init.el file
+;; * Sample Emacs init.el file
 
 ;; Everything after one or more semicolons is a comment for
 ;; humans and is ignored by Emacs.
@@ -11,7 +11,7 @@
 ;; the directory User-Me and the file init-me.el under it.
 ;; Change any of these paths if needed.
 
-(load "~/.emacs.d/NGender/ngender")
+(load "~/.emacs.d/NGender/ngender" t t)
 (ngender-emacs-home "~/.emacs.d")				; this is the default
 ;; Any vendor, group or project directories should go here, e.g.
 ;; (ngender-vendor-subdirectory "Bleeding-Edge")
@@ -22,7 +22,6 @@
 ;; (2) Group (Project) Directories
 ;; (3) Vendor (3rd party extension) directories
 ;; (4) Directories for Packages downloaded from Emacs Repositories
-(load "init-me")
 
 ;; Remember that Emacs will help you better with init
 ;; problems if you call it with emacs --debug-init
