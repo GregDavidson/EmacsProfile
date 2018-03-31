@@ -46,17 +46,17 @@ It is expected to work well
 
 ** Layout of the Repository
 
-- ~/.emacs :: a tiny file to get things started, never needs changing
+- ~/.emacs :: gets a few things started, rarely needs changing
 - ~/.emacs.d/ :: holds main Emacs Configuration
-- ~/.emacs.d/init.el :: a tiny file setting the load path, rarely needs changing
-- ~/.emacs.d/custom-file.el :: stores Emacs Customization System changes
-- ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs "path"
-- ~/.emacs.d/NGender/ngender.el :: core extension loaded by "init.el" file
+- ~/.emacs.d/init.el :: sets load-path, loads two files, rarely needs changing
+- ~/.emacs.d/custom-file.el :: Emacs Customization System settings
+- ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs +load-path++
+- ~/.emacs.d/NGender/ngender.el :: core extension loaded by +init.el+ file
 - ~/.emacs.d/NGender/ngender-NAME.el :: file managing extension NAMD
-- ~/.emacs.d/User-Me/ :: individual extensions, on Emacs "path"
-- ~/.emacs.d/User-Me/init-me.el :: loaded by "init.el" after "ngender.el"
-- ~/.emacs.d/Group-NAME/ :: extensions shared with given group/project, on "path"
-- ~/.emacs.d/init-examples.el :: snippets to copy/paste into "init-me.el" file
+- ~/.emacs.d/User-Me/ :: individual extensions, on Emacs +load-path+
+- ~/.emacs.d/User-Me/init-me.el :: loaded by +init.el+ after +ngender.el+
+- ~/.emacs.d/Group-NAME/ :: extensions shared with given group/project, on +load-path+
+- ~/.emacs.d/init-examples.el :: snippets to copy/paste into +init-me.el+ file
 
 
 ** Installing This Repository
@@ -137,7 +137,7 @@ for examples.
 Eventually
 - ~/.emacs.d/init.el
 will only need to
-1. set the Emacs Load Path variable ~path~
+1. set the Emacs Load Path variable ~load-path~
 2. load ngender
 3. load ~init-me~
 
