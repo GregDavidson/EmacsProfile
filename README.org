@@ -4,10 +4,10 @@ This Directory Tree is a Git Repository.
 
 ** The Purpose of this Repository
 
-Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is do to its extraordinarily
+Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is do to its extraordinary
 customizability through settings and extentions.  Many of
-the most powerful of the extensions, which are available
-from Emacs Package Repositories are themselves highly
+the most powerful extensions (typically available
+from Emacs Package Archives) are themselves highly
 configurable.  Many of the extensions are also designed to
 be combined and/or layered.
 
@@ -20,14 +20,15 @@ to share what they have done with other members of their
 Shared Projects, Groups and with the Emacs Community at
 large.
 
-The files in this Repository are designed to make
+We designed this repository to make
 Customizing Emacs more convenient by
+- adding additional package archives
 - adding and configuring desirable extra packages
 - setting variables to further customize Emacs features
 - defining additional functions and variables
 - adding keymaps for invoking functions more conveniently
 
-In addition it is desired that the customizations in this
+We intend that the customizations in this
 repository can be
 - shared by many people
 - improved by many users for the benefit of all
@@ -45,8 +46,8 @@ It is expected to work well
 
 ** Layout of the Repository
 
-- ~/.emacs :: a tiny file to get things started, never needs changing
-- ~/.emacs.d/ :: holds main Emacs Configuration
+- [[~/.emacs]] :: a tiny file to get things started, never needs changing
+- [[~/.emacs.d/]] :: holds main Emacs Configuration
 - ~/.emacs.d/init.el :: a tiny file setting the load path, rarely needs changing
 - ~/.emacs.d/custom-file.el :: stores Emacs Customization System changes
 - ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs "path"
