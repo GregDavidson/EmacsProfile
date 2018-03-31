@@ -4,13 +4,12 @@
 
 ;; ** Dependencies
 
+(require 'ngender)
 
 (defvar *ngender-rust-packages*
 	(if (boundp *ngender-rust-packages*) *ngender-rust-packages*'(rust-mode))
 	"minimal set of rust packages")
-(apply 'ngender-package-loaded *ngender-rust-packages*)
-
-(require 'ngender)
+(apply #'ngender-package *ngender-rust-packages*)
 
 (unless (boundp *ngender-rust-racer-p*)
 	(defvar *ngender-rust-racer-p* nil "use racer with rust") )

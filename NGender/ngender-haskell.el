@@ -5,9 +5,8 @@
 ;; GHC 2.7.0, November 2009
 ;; Bring up to date!!
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
-(provide 'ngender-haskell)
 (require 'ngender)
 
 ;; ** Everything Else
@@ -48,3 +47,7 @@
 ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-hugs)
+
+;; ** provide
+
+(provide 'ngender-haskell)

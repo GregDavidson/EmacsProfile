@@ -2,9 +2,8 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
-(provide 'ngender-mozart)
 (require 'ngender)
 
 ;; ** Everything Else
@@ -28,3 +27,7 @@
 ;;   (autoload 'oz-mode "oz" "" t)
 ;;   (autoload 'oz-gump-mode "oz" "" t)
 ;;   (autoload 'oz-new-buffer "oz" "" t) ) )
+
+;; ** provide
+
+(provide 'ngender-mozart)

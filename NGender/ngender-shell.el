@@ -2,10 +2,12 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
-(provide 'ngender-shell)
 (require 'ngender)
+
+;; we should check the environment variable SHELL
+;; and set up for the appropriate shell!!
 
 ;; ** Everything Else
 
@@ -34,3 +36,7 @@
 		'(:propertize (:eval (ngender-short-dirpath)) face dired-directory)
 		))
 (add-hook 'shell-mode-hook 'add-mode-line-dirtrack)
+
+;; ** provide
+
+(provide 'ngender-shell)

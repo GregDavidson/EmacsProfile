@@ -4,8 +4,6 @@
 
 ;; ** Dependencies
 
-(provide 'ngender)
-
 ;; (require 'jit-lock)								; why?
 ;; (require 'x-fonts)									; why??
 
@@ -35,80 +33,75 @@
   (make-local-variable 'tab-width)
   (setq tab-width (if (zerop n) ngender-default-tab-width (max n ngender-min-indent))) )
 
-;; ** Warnings and Errors
+;; ** Warnings, Errors, Validating
 
 ;; what should the "level" actually be??
 (defun ngender-warn (x type &optional level tag)
 	(lwarn (or level '(type)) (or tag :warning) "Expected %s, got %s" type x) nil )
 
-(defun ngender-expect (x type-test type-name &optional level tag)
-	(if (type-test x)	x
+(defun ngender-validate (x type-test type-name &optional level tag)
+	(if (funcall type-test x)	x
 		(ngender-warn x type-name (or level '(type)) (or tag :warning)) ) )
 
-(defun ngender-filter (list predicate name)
-	"filter out elements of list which fail predicate expecting them to be name-things; assume failures rare"
-	(let ((bad-list (seq-remove list predicate)))
-		(if (not bad-list)
-			list
-			(do-list (p bad-list)
-				(ngender-expect p name '(init)) )
-			(seq-filter list predicate) ) ) )
-			
+(defun ngender-validate-list (list type-test type-name)
+	"filter out elements of list which fail type-test expecting them to be type-name things"
+	(seq-filter (lambda (x) (ngender-validate x type-test type-name)) list) )
+
 ;; ** Define some functions for managing lists, sets, paths
 
-;; *** functions for filtering lists
+;; *** Filtering Lists
 
 (defun ngender-update-filter (symbol predicate)
-  (set symbol (if (not (boundp symbol)) '() (seq-filter (symbol-value symbol) predicate))) )
+  (set symbol (if (not (boundp symbol)) '() (seq-filter predicate (symbol-value symbol)))) )
 
 ;; *** Using Lists As Sets
 
-(defun ngender-union-lists (&rest bags)
+(defun ngender-union (&rest bags)
   "return list set union of list bags"
-	(delete-dups (apply 'append bags)) )
+	(delete-dups (apply #'append bags)) )
 
 (defun ngender-update-union (symbol &rest items)
   (set symbol
 		(if (not (boundp symbol))
 			items
-			(ngender-union-lists (symbol-value symbol) items) ) ) )
+			(ngender-union (symbol-value symbol) items) ) ) )
 
-;; *** functions for managing path set lists
+;; *** Managing Path Set Lists
 
-(defun ngender-filter-dirs (paths) (ngender-filter paths 'file-directory-p 'directory))
+(defun ngender-filter-dirs (paths) (ngender-validate-list paths 'file-directory-p 'directory))
 
-(defun ngender-add-paths (symbol paths append)
+(defun ngender-add-paths (symbol paths do-append)
   "prepend or append candidate directory set with directory set bound to symbol"
   (set symbol (let ( (paths (if (boundp symbol) symbol '())) (newbies (ngender-filter-dirs paths)) )
-								(if append
-									(ngender-union-lists paths newbies)
-									(ngender-union-lists newbies paths) ) )) )
+								(if do-append
+									(ngender-union paths newbies)
+									(ngender-union newbies paths) ) )) )
 
 (defun ngender-prepend-paths (symbol &rest dirs)
   "prepend candidate directory paths in front of directory set bound to symbol"
-	(funcall 'ngender-add-paths symbol dirs nil) )
+	(funcall #'ngender-add-paths symbol dirs nil) )
 
 (defun ngender-append-paths (symbol &rest dirs)
   "append candidate directory paths to end of directory set bound to symbol"
-	(funcall 'ngender-add-paths symbol dirs t) )
+	(funcall #'ngender-add-paths symbol dirs t) )
 
-;; unused??
+;; unused!!
 (defun ngender-str-member (str item &optional delim)
   "is item a member of delimited string?"
   (let ( (d (or delim ":")) )
     (string-match (concat ".*" delim (regexp-quote item) delim ".*")
 		  (concat delim str delim) ) ) )
 
-;; unused??
+;; unused!! except in next function
 (defun ngender-str-append (str item &optional delim)
   "append item onto delimited string"
   (concat str (or delim ":") item) )
 
-;; unused??
+;; unused!!
 (defun ngender-update-str-append (symbol item &optional delim)
-  (set symbol (ngender-str-append (symbol-value 'symbol) item delim)) )
+  (set symbol (ngender-str-append (symbol-value symbol) item delim)) )
 
-;; unused??
+;; unused!!
 (defun ngender-exec-path-from-shell ()
   (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'")))
     (setenv "PATH" path-from-shell)
@@ -149,29 +142,37 @@
 					(cons (cons first (car cdr)) (list-to-associations (cdr cdr))) ) ) ) ) )
 
 (defun ngender-package-archives (&rest args)
-	(if (oddp args)
-		(progn (ngender-warn args 'even) nil)
+	(if (oddp (length args))
+		(ngender-warn args "even list")
 		(let* ( (pairs (list-to-associations args))
-						(pair-count (length paris))
-						(archives (ngender-filter pairs 'ngender-archive-p 'archive))
+						(pair-count (length pairs))
+						(archives (ngender-validate-list pairs #'ngender-archive-p 'archive))
 						(archive-count (length archives)) )
 			(and
-				(equal pair-count archive-count)
+				(= pair-count archive-count)
 				(ngender-update-union 'package-archives archives)
-				(progn
-					(package-initialize)
-					(when (not (package-archive-contents)) (package-refresh-contents)) ) ) ) ) )
+				(package-refresh-contents)) ) ) )
 
+;; variables
+;; package-archives - where to fetch packages from
+;; package-load-list - which installed packages to load - might be (all)
+;; package-archive-contents - Cache of the contents of the
+;;		Emacs Lisp Package Archive.  This is an alist mapping
+;;		package names (symbols) to non-empty lists of
+;;		`package-desc' structures.
+
+;; functions
+;; package-initialize - load packages from package-load-list and activate them
+;; package-refresh-contents - download descriptions of all packages on package-archives
 
 ;; Various package files will use this to ensure
 ;; that their required packages are loaded.
 ;; How could we fail gracefully?? This will not!!
-(defun ngender-package-loaded (&rest packages)
-	"ensure that these packages are loaded"
+(defun ngender-package (&rest packages)
+	"ensure these packages are loaded"
 	(dolist (p packages)
 		(unless (package-installed-p p)
-			(package-install p) ) )
-)
+			(package-install p) ) ) )
 
 ;; ** File and Directory Support
 
@@ -181,8 +182,8 @@
 			(if (funcall type-test p) path
 				(ngender-warn p type-name '(init)) ) ) ) )
 
-(defun require-file (path &optional parent) (require-file-path path 'file-regular-p 'file parent) )
-(defun require-dir (path &optional parent) (require-file-path path 'file-directory-p 'directory parent) )
+(defun require-file (path &optional parent) (require-file-path path #'file-regular-p 'file parent) )
+(defun require-dir (path &optional parent) (require-file-path path #'file-directory-p 'directory parent) )
 
 ;; ** Fancy Emacs Load Path Support
 
@@ -209,7 +210,7 @@
 
 (defun ngender-rebuild-emacs-load-path ()
 	"rebuild emacs load path with elements of lists named in *ngender-path-lists* appearing in front in order"
-	(setq load-path (delete-dups (apply 'append (mapcar 'symbol-value *ngender-path-lists*)))) )
+	(setq load-path (delete-dups (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
 
 (defun ngender-path-subdirectories (symbol paths)
 	"add directory paths to the front of the list named by symbol and rebuild emacs load path"
@@ -369,12 +370,25 @@
 
 ;;; Define some interactive functions
 
-;; demo getting a numeric argument
-(defun show-interactive-number (n)
-  "show interactive number"
+(defun show-interactive-p (n)
+  "show interactive p"
   (interactive "p")
-  (if (boundp 'n) (message "%d" n) (message "void") )
-)
+  (message "%d" n) )
+
+(defun show-interactive-P (n)
+  "show interactive P"
+  (interactive "P")
+  (message "%s" n) )
+
+(defun show-interactive-n (n)
+  "show interactive n"
+  (interactive "nHow many: ")
+  (message "%d" n) )
+
+(defun show-interactive-N (n)
+  "show interactive N"
+  (interactive "NHow many: ")
+  (message "%d" n) )
 
 ;; The standard command "compile" defaults to running "make -k".
 ;; Define "make" to do the same thing but without the "-k".

@@ -6,7 +6,7 @@
 
 (unless (boundp *ngender-org-packages*)
 	(defvar *ngender-org-packages* '(org) "minimal set of org-mode packages") )
-(apply 'ngender-package-loaded *ngender-org-packages* )
+(apply #'ngender-package *ngender-org-packages* )
 (require 'ngender)
 
 ;; ** Everything Else

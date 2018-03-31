@@ -2,7 +2,7 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
 (require 'ngender-sql)
 																				;

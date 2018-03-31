@@ -3,9 +3,9 @@
 ;;	jgd = J. Greg Davidson
 
 ;; ** requires
-(ngender-package-loaded 'typed-clojure-mode)
+(ngender-package 'typed-clojure-mode)
 (require 'clojure-mode)
-(ngender-package-loaded 'cider)
+(ngender-package 'cider)
 (require 'cider)
 
 ;; Configure cider

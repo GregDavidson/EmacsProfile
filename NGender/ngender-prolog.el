@@ -4,7 +4,6 @@
 
 ;; ** Dependencies - provide and require
 
-(provide 'ngender-prolog)
 (require 'ngender)
 
 ;; ** Everything Else
@@ -19,3 +18,7 @@
 ;; (ngender-update-union 'auto-mode-alist
 ;; 		  '("\\.pl\\'" . prolog-mode)
 ;; 		  '("\\.m\\'" . mercury-mode) )
+
+;; ** provide
+
+(provide 'ngender-prolog)

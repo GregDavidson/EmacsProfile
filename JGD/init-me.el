@@ -17,29 +17,23 @@
 ;; ** Packages
 
 (require 'package)
-(defvar my-archives
-	'( ("gnu" . "http://elpa.gnu.org/packages/")
-		 ("marmalade" . "http://marmalade-repo.org/packages/")
-		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
-		 ("org" . "https://orgmode.org/elpa/") ) )
-(dolist (a my-archives)	(add-to-list 'package-archives a t))
-
-;; (package-initialize)
-
-;; (when (not package-archive-contents)
-;;   (package-refresh-contents) )
+(ngender-package-archives
+	"gnu" "http://elpa.gnu.org/packages/"
+	"marmalade" "http://marmalade-repo.org/packages/"
+	"melpa-stable" "http://melpa-stable.milkbox.net/packages/"
+	"org" "https://orgmode.org/elpa/")
 
 ;; Is this redundant given list-packages??
 ;; Consider moving into appropriate customization file
-(defvar my-packages '(auto-complete company git-commit helm
-	ido-ubiquitous magit magithub markdown-mode multi-term
+(defvar my-packages '(auto-complete company helm
+	ido-ubiquitous markdown-mode multi-term
 	 paredit-everywhere
-	persp-mode php-mode project-mode rainbow-delimiters racer
-	rust-mode sql sql-indent sqlup-mode smex toc-org use-package)
+	persp-mode project-mode rainbow-delimiters racer
+	smex toc-org use-package)
   "A list of packages to ensure are installed at launch.")
 
 ;; Install the packages we always want:
-(apply 'ngender-package-loaded my-packages)
+(apply #'ngender-package my-packages)
 ;; Failed on ngender.org, Friday 21 April 2017!!
 
 ;; ** Font and Pitch Preferences
@@ -95,6 +89,7 @@
 (load "ngender-shell" nil t)
 (load "ngender-elisp" nil t)
 (load "ngender-rx" nil t)
+(defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
 (load "ngender-sql" nil t)
 (load "my-sql-pw" nil t)			 ; encryption would be better!!
 (load "ngender-sql-connect" nil t)
@@ -113,7 +108,8 @@
 
 ;; Magit - Emacs Git integration
 
-;; Package will autoload
+(defvar *ngender-magit-packages* '(magit magithub git-commit))
+(autoload 'magit-status "ngender-magit")
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;; *** Multi-Term - manage multiple terminal emulators

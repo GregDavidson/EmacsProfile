@@ -390,7 +390,7 @@ FORM is of the form `(and FORM1 ...)'."
   "Parse and produce code from FORM, which is `(or FORM1 ...)'."
   (rx-check form)
   (rx-group-if
-   (if (memq nil (mapcar 'stringp (cdr form)))
+   (if (memq nil (mapcar #'stringp (cdr form)))
        (mapconcat (lambda (x) (rx-form x '|)) (cdr form) "\\|")
      (regexp-opt (cdr form)))
    (and (memq rx-parent '(: * t)) rx-parent)))

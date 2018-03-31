@@ -2,10 +2,10 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
-(provide 'ngender-php)
 (require 'ngender)
+(ngender-package 'php-mode)
 
 ;; ** Everything Else
 
@@ -25,3 +25,7 @@
   (c-set-offset 'arglist-close '0)
 )
 (add-hook 'php-mode-hook 'pear/php-mode-init)
+
+;; ** Provides
+
+(provide 'ngender-php)

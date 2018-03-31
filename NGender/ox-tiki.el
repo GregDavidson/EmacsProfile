@@ -203,7 +203,7 @@ a communication channel."
 		      (let ((tag-list (org-export-get-tags headline info)))
 			(and tag-list
 			     (format "     :%s:"
-				     (mapconcat 'identity tag-list ":"))))))
+				     (mapconcat #'identity tag-list ":"))))))
 	   (priority
 	    (and (plist-get info :with-priority)
 		 (let ((char (org-element-property :priority headline)))

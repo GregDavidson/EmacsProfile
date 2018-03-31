@@ -2,9 +2,8 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
-;; ** Dependencies - provide and require
+;; ** Dependencies
 
-(provide 'ngender-elisp)
 (require 'ngender)
 
 ;; ** Everything Else
@@ -16,3 +15,7 @@
 )
 
 (add-hook 'emacs-lisp-mode-hook 'ngender-emacs-lisp-mode-hook)
+
+;; ** provide
+
+(provide 'ngender-elisp)

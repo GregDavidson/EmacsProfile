@@ -7,7 +7,21 @@
 ;; (autoload 'ngender-sql-mode "ngender-sql")
 ;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . ngender-sql-mode)
 
-;; ** require
+;; Consider moving this into a dependent file
+;; and having a new ngender-sql include this
+;; and also ngender-sql-connect!!
+
+;; ** Dependencies
+
+(require 'ngender)
+
+;; Consider adding to your init-me.el some of:
+;; (defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
+
+(defvar *ngender-sql-packages*
+	(if (boundp *ngender-sql-packages*) *ngender-sql-packages*'(sql))
+	"minimal set of sql packages")
+(apply #'ngender-package *ngender-sql-packages*)
 
 (require 'sql)
 (require 'sqlup-mode)
@@ -19,7 +33,7 @@
 
 (defun def-rx-1 (name &rest defs)
 	(or (assq name rx-constituents)
-		(let ( (new-def (cons name (apply 'concat defs))) )
+		(let ( (new-def (cons name (apply #'concat defs))) )
 			(push new-def rx-constituents)
 			new-def) ) )
 
@@ -76,7 +90,7 @@
 
 (defun list-concat (lst)
 	 "concatenate a list of strings"
-	 (apply 'concat lst) )
+	 (apply #'concat lst) )
 
 (defun str-drop-word (str word)
 	"drop given word and adjacent space"
@@ -118,7 +132,7 @@
 	(if (string-match (rx bos s+ eos) params-str)
 		""
 		(let ( (split (split-string params-str (rx s* "," s*) t)) )
-			(list-concat	(list-interpose (mapcar 'sql-param-type split) ","))
+			(list-concat	(list-interpose (mapcar #'sql-param-type split) ","))
 ) ) )
 
 (defun nth-match-region (n &optional matches)
@@ -153,7 +167,7 @@
 	(delete-region (car region) (cdr region))
 	(set-mark (car region))
 	(exchange-point-and-mark)
-	(apply 'insert	strings)
+	(apply #'insert	strings)
 	(pop-mark) )
 
 (defun decompose-str (str)
@@ -170,7 +184,7 @@
 
 (defun smart-decompose (parts)
 	"Disassemble the list of strings into lines and fragments"
-	(apply 'append (mapcar 'decompose-str parts)) )
+	(apply #'append (mapcar #'decompose-str parts)) )
 
 ;	should check if 1st char of head is a space ???
 ; 70 is a bit magic???

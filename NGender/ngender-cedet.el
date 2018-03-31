@@ -2,7 +2,15 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
+;; ** how to load this
+
+;; CEDET is best loaded by calling
+;; (require 'ngender-cedet)
+;; in your init.el file.
+
 ;; ** require
+
+;; add appropriate ngender-package and config var code here!!
 
 (require 'cedet)
 (require 'semantic/tag)
@@ -94,9 +102,3 @@
 ;; ** provide
 
 (provide 'ngender-cedet)
-
-;; ** how to load this
-
-;; CEDET is best loaded by calling
-;; (require 'ngender-cedet)
-;; in your init.el file.

@@ -4,7 +4,7 @@
 
 ;; ** Require
 
-(ngender-package-loaded 'ensime)
+(ngender-package 'ensime)
 (require 'ensime)
 
 ;; ** The Hook
