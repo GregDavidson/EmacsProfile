@@ -46,8 +46,8 @@ It is expected to work well
 
 ** Layout of the Repository
 
-- [[~/.emacs]] :: a tiny file to get things started, never needs changing
-- [[~/.emacs.d/]] :: holds main Emacs Configuration
+- [[file://~/.emacs]] :: a tiny file to get things started, never needs changing
+- ~/.emacs.d/ :: holds main Emacs Configuration
 - ~/.emacs.d/init.el :: a tiny file setting the load path, rarely needs changing
 - ~/.emacs.d/custom-file.el :: stores Emacs Customization System changes
 - ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs "path"
