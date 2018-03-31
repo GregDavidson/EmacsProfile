@@ -176,8 +176,9 @@ separate repositories just as shown in the Individual Level
 Above.  They can be linked in under Emacs-Repository as,
 e.g. Group-NAME and activated by
 - our .gitignore says to ignore files with prefix ~Group-~
-- adding them to ~*my-paths*~ in ~init.el~ _before_ the ~User-Me~ path
-- adding any customization for them to one's ~init-me.el~ file
+- adding to your ~init.el~ or ~init-me.el~ file:
+	- (ngender-group-subdirectory "Group-YOUR-GROUP-NAME")
+- adding other customizations for them to ~init-me.el~ file
 
 Host the Project/Group repository where other members of the
 Project or Group can find it.  Ask the other members to
@@ -187,38 +188,38 @@ repository and submit a pull request!
 		
 ** Current Challenges
 
-*** custom-file.el issues
+*** Emacs Customization System Issues
 
-The Emacs Customization system is the natural mechanism for
+The Emacs Customization System is the natural mechanism for
 Emacs Users who are reluctant to use Emacs Lisp to make
 their changes.
 
-Should we use defcustom for the ngender-* module variables?
-We're currently not doing so because of philosophical
-problems with the Emacs Customization System.
+Should we use ~defcustom~ for the ~ngender-*~ module
+variables?  We're currently not doing so because of
+philosophical problems with the Emacs Customization System.
 
 Problems with the Emacs Customization System
 - It's difficult to browse changes vs. defaults
-	- does not play nicely with git
+	- it does not play nicely with git
 - It's difficult to know the purpose and scope of changes
 	- no mechanism for tagging changes with
 		- which project(s) needed it
 		- which system or location needed it
 		- the scope, i.e. individual/project,community
-	- no comment system
+	- it doesn't capture comments or notes
 
-Currently custom-file.el is going into the git repository
-- handy for propagating such to all one's accounts
-- difficult when the changes are inappropriate!
+Currently ~custom-file.el~ is going into the git repository
+- handy for propagating all such to all one's accounts
+- yet not everything there is appropriate everywhere
 
 Ideally customizations settings would be moved to an
 appropriate initialization file, documented and perhaps
 controlled by some simple or sophisticated Emacs Lisp code.
 
-*** sql-connect issues
+*** Sql-Connect Issues
 
 There are some host-specific parts of various files, e.g.
-NGender/ngender-sql-connect.el
+~NGender/ngender-sql-connect.el~
 
 There is also the sensitive account and password parts of
 such connections.
@@ -229,18 +230,18 @@ Code should be added which stiches together the Individual
 (account/password) and Project (database names, database
 password?) parts.
 
-Only the stiching code should be in the NGender-sql
-directory, along with pulling in the appropriate packages
-and making them nice.
+Only the stiching code should be in the ~NGender/~
+directory.  That code should also pull in the needed
+packages and configure miscellaneous options nicely.
 
 Needed: Easily customizable examples of how to write the
-Project and Individual sql files.
+Project and Individual SQL files.
 
-*** automating byte-recompilation
+*** Automating Byte-Recompilation
 
 How do I ensure that byte-recompilation happens automatically?
 
-Let's add a function to ngender.el to call
+Let's add a function to ~ngender.el~ to call
 ~byte-recompile-directory~ with suitable options.
 
 *** NGendering use of Emacs-Server
@@ -273,49 +274,3 @@ It would seem that it's simpler to just not have a
 - ~/.emacs
 file but unfortunately that will interfere with
 the Emacs Customization System.
-
-**** House-Breaking the Emacs Customization System and .emacs
-
-By default, the Emacs Customization system will add Emacs
-Lisp Code to your ~/.emacs file whenever you use it to change
-the value of any Emacs Variable creating with ~defcustom~,
-which includes most of the variables used to customize the
-features of Emacs Packages and of the Emacs Core.
-
-Objectives:
-1. Have all Emacs Customizations under
-- ~/.emacs.d/
-2. Have all Emacs ~defcustom~ Customizations under
-- ~/.emacs.d/custom-file.el
-
-Solution:
-
-Have ~/.emacs be a symbolic link (shortcut) to
-- ~/.emacs.d/.emacs
-Under Linux, Unix or BSD you would do this with the commands
-- mv -i ~/.emacs ~/.emacs.d/.emacs
-- ln -s .emacs.d/.emacs ~/.emacs
-
-Move any automatically generated code from
-- ~/.emacs.d/.emacs
-to the new file
-- ~/.emacs.d/custom-file.el
-See the example in this directory!
-
-Your ~/.emacs.d/.emacs file will need the lines:
-#+BEGIN_SRC emacs-lisp
-(load "~/.emacs.d/init.el" nil t)
-(setq custom-file "~/.emacs.d/custom-file.el")
-(load custom-file t t)
-#+END_SRC
-and needn't contain anything else.
-
-?  Typically the file
-- ~/.emacs
-will exist and within it will be a line like
-- ~(load "~/.emacs.d/init.el" nil t)~
-
-The directory .emacs.d/ is only a convention.  Emacs is designed to look for configuration files
-
-1. It's expected that ~/.emacs links to ~/.emacs.d/.emacs
-2. (setq custom-file "~/.emacs.d/custom-file.el")
