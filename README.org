@@ -50,7 +50,7 @@ It is expected to work well
 - ~/.emacs.d/ :: holds main Emacs Configuration
 - ~/.emacs.d/init.el :: sets load-path, loads two files, rarely needs changing
 - ~/.emacs.d/custom-file.el :: Emacs Customization System settings
-- ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs ~load-path~~
+- ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs ~load-path~
 - ~/.emacs.d/NGender/ngender.el :: core extension loaded by ~init.el~ file
 - ~/.emacs.d/NGender/ngender-NAME.el :: file managing extension NAMD
 - ~/.emacs.d/User-Me/ :: individual extensions, on Emacs ~load-path~
@@ -67,12 +67,13 @@ It is expected to work well
 	- the file ~.emacs~
 	- the directory ~.emacs.d/~
 4. Create a directory under ~Emacs-Config~ for your things, say ~User-Me/~
-	- the .gitignore file in this Git Repository ignores files with prefix ~User-~ or ~Group-~
+	- note that ~.gitignore~ tells git to anything with prefix ~User-~ or ~Group-~
 5. Move your existing emacs Customizations to ~User-Me/~
 6. Create links (shortcuts) to the new customization files
 	- link ~Emacs-Config/.emacs~ to where you had your ~.emacs~
 	- link ~Emacs-Config/.emacs.d/~ to where you had your ~.emacs.d/~
 7. Copy ~Emacs-Config/.init-sample.el~ to ~Emacs-Config/.init.el~
+	- this may already have been done
 8. Edit your ~Emacs-Config/.init.el~ as described in its comments
 9. Create an empty file named ~init-me.el~ under your ~User-Me~ directory
 10. Check that Emacs is happy with this new configuration
@@ -83,18 +84,18 @@ It is expected to work well
 	- personal things should go in ~init-me.el~
 	- consider putting fancy things in separate files
 14. Improve things as long as you use Emacs
-	- read the README and other files under NGender/
+	- read ~README.org~ and other files under NGender/
 	- study ~init-examples.el~ for ideas
 	- submit a pull request with your improvements
 	- especially for things you've done under NGender/
 
-If you're on a Linux, Unix or BSD system (some modifications
-may be needed on a Macintosh) you can do this from your
+If you're on a Linux, Unix or BSD system
+you can do this from your
 shell with something like this:
 #+BEGIN_SRC shell
 which emacs # this needs to find your emacs program
 emacs --version # this needs to be version 25 or higher
-cd ~/Gits # where you want to keep this repository - and maybe others?
+cd ~/Gits # where you want to keep this repository, and maybe others?
 git clone https://github.com/GregDavidson/EmacsProfile.git
 cd EmacsProfile # the directory you just cloned
 mkdir User-Me # Keep prefix "User-", keep or change "Me" as you like
@@ -102,7 +103,7 @@ mv ~/.emacs User-Me
 mv ~/.emacs.d User-Me
 ln -s `pwd`/.emacs `pwd`/.emacs.d  ~
 # some shells, e.g. bash, let you use ~+ instead of `pwd`
-cp init-sample.el init.el
+cp -i init-sample.el init.el
 # if you changed User-Me, change it in init.el
 touch User-Me
 # Check that Emacs starts up OK:
@@ -114,6 +115,11 @@ emacs --debug-init
 # Carefully (small amounts at a time?) transfer any of your old
 # configurations, if any, from your old config files
 #+END_SRC
+
+Although Macintoshes are based on BSD they have a number of
+deviations from the family.  You'll need to customize these
+instructions appropriately.  Please consider submitting a
+pull request with instructions for how to do that.
 
 If you're installing this Emacs Profile under Microsoft
 Windows and you're successful, please consider submitting a
@@ -132,31 +138,18 @@ Any files which are specific to the needs and tastes of a
 particular user should be put in sibling subdirectories.
 Feel free to examine the files under
 - ~/.emacs.d/JGD/
-for examples.
+for examples.  These examples will soon migrate to
+~init-examples.el~ and JGD will disappear from the public
+repository.
 
-Eventually
-- ~/.emacs.d/init.el
-will only need to
-1. set the Emacs Load Path variable ~load-path~
-2. load ngender
-3. load ~init-me~
+** Individual vs. Group/Project vs. Community
 
-Eventually all that should remain should be
-- The 2-lines of code (+ comments) of ~init-sample.el~
-- The snippets of ~init-examples.el~
-
-
-*** Current Challenges
-
-**** Individual vs. Group/Project vs. Community
-
-***** Community Level
+*** Community Level
 
 Everything under NGender is intended to be helpful for any
 Emacs User.  Where a policy is applied there's a variable
 which can alter it.
-
-***** Individual Level
+**** Individual Level
 
 Everything under User-Me is ignored by the Repository.  To
 manage this with Git, it can be created as a separate Git
@@ -176,7 +169,7 @@ As improvements at this level are better understood, it may
 be appropriate to move some of them to the NGender
 repository and submit a pull request!
 
-***** Project/Group Level
+*** Project/Group Level
 
 Customizations for Projects and Groups can be created as
 separate repositories just as shown in the Individual Level
@@ -192,7 +185,9 @@ participate in the improvement of it.  Move anything which
 is more generic than the Project or Group to the NGender
 repository and submit a pull request!
 		
-**** custom-file.el issues
+** Current Challenges
+
+*** custom-file.el issues
 
 The Emacs Customization system is the natural mechanism for
 Emacs Users who are reluctant to use Emacs Lisp to make
@@ -220,10 +215,10 @@ Ideally customizations settings would be moved to an
 appropriate initialization file, documented and perhaps
 controlled by some simple or sophisticated Emacs Lisp code.
 
-**** sql-connect issues
+*** sql-connect issues
 
 There are some host-specific parts of various files, e.g.
-jgd/jgd-sql-connect.el
+NGender/ngender-sql-connect.el
 
 There is also the sensitive account and password parts of
 such connections.
@@ -241,14 +236,14 @@ and making them nice.
 Needed: Easily customizable examples of how to write the
 Project and Individual sql files.
 
-**** automating byte-recompilation
+*** automating byte-recompilation
 
 How do I ensure that byte-recompilation happens automatically?
 
 Let's add a function to ngender.el to call
 ~byte-recompile-directory~ with suitable options.
 
-**** NGendering use of Emacs-Server
+*** NGendering use of Emacs-Server
 
 Let's add an ngender-emacs-server.el file which does
 byte-recompiles and any other slow things and then starts
