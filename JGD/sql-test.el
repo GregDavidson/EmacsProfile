@@ -6,8 +6,7 @@
 
 ;; ** Dependencies - provide and require
 
-;; (provide 'ngender-sql-test)
-;; (require 'ngender)
+(require 'ngender-sql)
 
 ;; ** Everything Else
 
@@ -163,3 +162,6 @@
 ;; (list-concat (list-interpose '("hello") ", "))
 
 
+;; ** Provide
+
+(provide 'ngender-sql-test)

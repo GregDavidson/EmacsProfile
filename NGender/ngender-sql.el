@@ -23,10 +23,10 @@
 	"minimal set of sql packages")
 (apply #'ngender-package *ngender-sql-packages*)
 
+(require 'rx)
 (require 'sql)
 (require 'sqlup-mode)
 (require 'ngender)
-(require 'ngender-rx)
 
 ;; ** Let's make rx regular expressions extensible
 

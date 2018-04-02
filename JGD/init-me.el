@@ -82,7 +82,6 @@
 (load "ngender-org" nil t)
 (load "ngender-shell" nil t)
 (load "ngender-elisp" nil t)
-(load "ngender-rx" nil t)
 (defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
 (load "ngender-sql" nil t)
 (load "my-sql-pw" nil t)			 ; encryption would be better!!
@@ -264,9 +263,6 @@
 (defvar *ngender-rust-packages '(rust-mode racer)	"desired set of org-mode packages")
 (autoload 'ngender-rust "ngender-rust")
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . ngender-rust))
-;; **** ngender-rx
-;; (autoload 'ngender-rx "ngender-rx")
-;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-rx))
 ;; **** ngender-shell
 ;; (autoload 'ngender-shell "ngender-shell")
 ;; (add-to-list 'auto-mode-alist '("\\.foo\\'" . ngender-shell))
