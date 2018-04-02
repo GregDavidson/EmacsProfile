@@ -5,33 +5,6 @@
 ;; ** Dependencies
 
 ;; (require 'jit-lock)								; why?
-;; (require 'x-fonts)									; why??
-
-;; ** Indentation Issues
-
-;; Q: Are tabs or spaces better for indentation?
-
-;; A1: TABS, obviously!  Why?  Many reasons!
-;; Best reason: Adjusting indentation via tab-width!
-
-;; A2: SPACES, obviously!  Why?  Alignment,
-;; flexibility, predictability, reproducibility,
-;; transparency - what you see is what you get!
-
-;; Q: Are tabs or spaces better for indentation?
-;; A: I guess we better support both!
-;; Audit everything for tab/space neutrality/flexibility!!
-
-;; Define desired indentation in space-equivalents
-(defconst ngender-min-indent 1)
-(defconst ngender-default-indent 2)
-(defconst ngender-default-tab-width 2)
-
-(defun ngender-tab-width (n)
-  "Set local tab-width interactively to n=0=>default or min(n, min-indent)"
-  (interactive "p")
-  (make-local-variable 'tab-width)
-  (setq tab-width (if (zerop n) ngender-default-tab-width (max n ngender-min-indent))) )
 
 ;; ** Warnings, Errors, Validating
 
@@ -51,8 +24,12 @@
 
 ;; *** Filtering Lists
 
+(defun ngender-symbol-value (symbol &optional default)
+"fetch list from global or dynamic variable"
+(if (boundp symbol) (symbol-value symbol) default) )
+
 (defun ngender-update-filter (symbol predicate)
-  (set symbol (if (not (boundp symbol)) '() (seq-filter predicate (symbol-value symbol)))) )
+  (set symbol (seq-filter predicate (ngender-symbol-value symbol))) )
 
 ;; *** Using Lists As Sets
 
@@ -61,10 +38,7 @@
 	(delete-dups (apply #'append bags)) )
 
 (defun ngender-update-union (symbol &rest items)
-  (set symbol
-		(if (not (boundp symbol))
-			items
-			(ngender-union (symbol-value symbol) items) ) ) )
+  (set symbol (ngender-union (ngender-symbol-value symbol) items) ) )
 
 ;; *** Managing Path Set Lists
 
@@ -72,10 +46,11 @@
 
 (defun ngender-add-paths (symbol paths do-append)
   "prepend or append candidate directory set with directory set bound to symbol"
-  (set symbol (let ( (paths (if (boundp symbol) symbol '())) (newbies (ngender-filter-dirs paths)) )
-								(if do-append
-									(ngender-union paths newbies)
-									(ngender-union newbies paths) ) )) )
+  (set symbol (let ( (paths (ngender-symbol-value symbol))
+		     (newbies (ngender-filter-dirs paths)) )
+		(if do-append
+		    (ngender-union paths newbies)
+		  (ngender-union newbies paths) ) )) )
 
 (defun ngender-prepend-paths (symbol &rest dirs)
   "prepend candidate directory paths in front of directory set bound to symbol"
@@ -113,9 +88,7 @@
 (require 'package)
 
 (defvar *ngender-package-archives*
-	(if (and (boundp 'package-archives) package-archives)
-		package-archives
-		'( ("gnu" . "http://elpa.gnu.org/packages/") ) )
+	(ngender-symbol-value 'package-archives '( ("gnu" . "http://elpa.gnu.org/packages/") ) )
 	"requested package archives" )
 
 ;; improve these with regexp matching!!
@@ -141,7 +114,7 @@
 					list
 					(cons (cons first (car cdr)) (list-to-associations (cdr cdr))) ) ) ) ) )
 
-(defun ngender-package-archives (&rest args)
+(defun ngender-package-archive (&rest args)
 	(if (oddp (length args))
 		(ngender-warn args "even list")
 		(let* ( (pairs (list-to-associations args))
@@ -152,6 +125,10 @@
 				(= pair-count archive-count)
 				(ngender-update-union 'package-archives archives)
 				(package-refresh-contents)) ) ) )
+
+(defun ngender-package-archive-delete (key)
+  (setq package-archives (assoc-delete-all key package-archives))
+)
 
 ;; variables
 ;; package-archives - where to fetch packages from
@@ -185,7 +162,7 @@
 (defun require-file (path &optional parent) (require-file-path path #'file-regular-p 'file parent) )
 (defun require-dir (path &optional parent) (require-file-path path #'file-directory-p 'directory parent) )
 
-;; ** Fancy Emacs Load Path Support
+;; ** Fancy Emacs Load-Path Support
 
 ;; The Emacs path will be kept ordered as follows, first to last:
 ;; (1) User Subdirectories
@@ -193,63 +170,59 @@
 ;; (3) Vendor (3rd party extension) directories
 ;; (4) Directories for Packages downloaded from Emacs Repositories
 
-(defvar *ngender-emacs-home*
-	(if (boundp '*ngender-emacs-home*)) (symbol-value '*ngender-emacs-home*) '() )
-(defvar *ngender-user-subdirectories*
-	(if (boundp '*ngender-user-subdirectories*)) (symbol-value '*ngender-user-subdirectories*) '() )
-(defvar *ngender-group-subdirectories*
-	(if (boundp '*ngender-group-subdirectories*)) (symbol-value '*ngender-group-subdirectories*) '() )
-(defvar *ngender-vendor-subdirectories*
-	(if (boundp '*ngender-vendor-subdirectories*)) (symbol-value '*ngender-vendor-subdirectories*) '() )
-(defconst *ngender-path-lists*
-	'(*ngender-vendor-subdirectories* *ngender-group-subdirectories* *ngender-user-subdirectories*) )
+(defvar *ngender-emacs-home* (ngender-symbol-value '*ngender-emacs-home* "~/.emacs.d"))
+(defvar *ngender-user-subdirectories* (ngender-symbol-value '*ngender-user-subdirectories*))
+(defvar *ngender-group-subdirectories* (ngender-symbol-value '*ngender-group-subdirectories*))
+(defvar *ngender-vendor-subdirectories* (ngender-symbol-value '*ngender-vendor-subdirectories*))
 
+(defconst *ngender-path-lists*
+	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* load-path)
+"load-path will be reconstructed from these sublists, deduped, left-to-right; ensure load-path is on this list!" )
 
 (defun ngender-emacs-home (path)
 	(setq *ngender-emacs-home* (require-dir path "~")) )
 
-(defun ngender-rebuild-emacs-load-path ()
-	"rebuild emacs load path with elements of lists named in *ngender-path-lists* appearing in front in order"
+(defun ngender-rebuild-load-path ()
+	"rebuild emacs load-path with elements of lists named in *ngender-path-lists* appearing in front in order"
 	(setq load-path (delete-dups (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
 
 (defun ngender-path-subdirectories (symbol paths)
-	"add directory paths to the front of the list named by symbol and rebuild emacs load path"
-	(dolist (p paths)
-		(add-to-path symbol (require-directory p)) )
-	(ngender-rebuild-emacs-load-path) )
+	"add directory paths to the front of the list named by symbol and rebuild emacs load-path"
+	(set symbol (ngender-filter-directories path))
+	(ngender-rebuild-load-path) )
 
 (defun ngender-path-delete (symbol path)
-	"delete paths from the list named by symbol and rebuild emacs load path"
+	"delete paths from the list named by symbol and rebuild emacs load-path"
 	(set symbol (delete path (symbol-value symbol)))
-	(ngender-rebuild-emacs-load-path) )
+	(ngender-rebuild-load-path) )
 
 (defun ngender-user-subdirectory (&rest paths)
-	"add paths to user subdirectories and rebuild emacs load path"
+	"add paths to user subdirectories and rebuild emacs load-path"
 	(ngender-path-subdirectories '*ngender-user-subdirectories* paths)
 )
 
 (defun ngender-user-subdir-delete (path)
-	"delete path from user subdirectories and rebuild emacs load path"
+	"delete path from user subdirectories and rebuild emacs load-path"
 	(ngender-path-delete '*ngender-user-subdirectories* path)
 )
 
 (defun ngender-group-subdirectory (&rest paths)
-	"add paths to group subdirectories and rebuild emacs load path"
-	(ngender-group-subdirectories '*ngender-user-subdirectories* paths)
+	"add paths to group subdirectories and rebuild emacs load-path"
+	(ngender-path-subdirectories '*ngender-user-subdirectories* paths)
 )
 
 (defun ngender-group-subdir-delete (path)
-	"delete path from group subdirectories and rebuild emacs load path"
+	"delete path from group subdirectories and rebuild emacs load-path"
 	(ngender-path-delete '*ngender-group-subdirectories* path)
 )
 
 (defun ngender-vendor-subdirectory (&rest paths)
-	"add paths to vendor subdirectories and rebuild emacs load path"
-	(ngender-group-subdirectories '*ngender-user-subdirectories* paths)
+	"add paths to vendor subdirectories and rebuild emacs load-path"
+	(ngender-path-subdirectories '*ngender-user-subdirectories* paths)
 )
 
 (defun ngender-vendor-subdir-delete (path)
-	"delete path from vendor subdirectories and rebuild emacs load path"
+	"delete path from vendor subdirectories and rebuild emacs load-path"
 	(ngender-path-delete '*ngender-vendor-subdirectories* path)
 )
 

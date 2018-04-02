@@ -58,7 +58,6 @@ It is expected to work well
 - ~/.emacs.d/Group-NAME/ :: extensions shared with given group/project, on ~load-path~
 - ~/.emacs.d/init-examples.el :: snippets to copy/paste into ~init-me.el~ file
 
-
 ** Installing This Repository
 
 1. Clone or otherwise download this repository into a convenient location on your filesystem, say ~Emacs-Config~
@@ -125,8 +124,7 @@ If you're installing this Emacs Profile under Microsoft
 Windows and you're successful, please consider submitting a
 pull request with instructions for how to do that.
 
-
-** Current Status of this Project
+** Status of this Project
 
 This project is currently being evolved from a small number
 of large customization files which have served the needs of
@@ -142,7 +140,7 @@ for examples.  These examples will soon migrate to
 ~init-examples.el~ and JGD will disappear from the public
 repository.
 
-** Individual vs. Group/Project vs. Community
+** Individual vs. (Project) Group vs. Community
 
 *** Community Level
 
@@ -251,6 +249,66 @@ byte-recompiles and any other slow things and then starts
 the Emacs Server.
 
 ** Rationale for the Curious
+
+*** Emacs Thrives on Extensibility & Configurability
+
+An early Emacs Manual described Emacs as "A Beautiful Flower that
+Smells Bad".  On the Beautiful side, Emacs is
+- Elegant - Power with Simplicity
+- Open - Easy to Understand and to Adapt to your needs
+The bad "Code Smell" comes from insufficient structure
+- Buffers are mutable arrays with unstable integer indices
+- Emacs-Lisp inherited some of the worst features of early lisps
+	- no module system, everything mutable, dynamic binding
+
+To take advantage of Emacs' power one must add extensive customization
+and load many packages most of which then require significant
+customization.
+
+*** Some Worthy Approaches
+
+Although Emacs-Lisp doesn't have modules, it's possible to create
+structure providing some of the features of proper modules.  One of
+these approaches has evolved into the current Emacs Package System.  A
+package is a chunk of Emacs-Lisp code with metadata (name,
+description, date, version, dependencies, etc.) which can be stored in
+public Package Archives or distributed as tarballs.  Emacs now comes
+with a tool for browsing available packages and installing or removing
+them.  Limitations include
+- The user must write code listing one or more archives
+- Most packages require additional code to configure them well
+- Many packages are not available from public archives
+- It's not always clear which package version is appropriate
+- Package dependencies can be difficult to resolve
+- Packages can interfere with one another - they're not true modules
+
+Emacs comes with a [[https://www.emacswiki.org/emacs/CustomizingAndSaving][Customization System]] which allows the user to
+browse Settings and Options from structured Emacs Custom-Mode Buffers.
+Limitations include
+- It's often difficult to find the right Setting or Option
+- Customizations may interact badly with one another and with other code
+- Customizations are stored without any context as to where they're applicable
+
+You can put all of your extensions, including lists of Package
+Archives, the Packages one wants to download from them and all of the
+configuration options in one well-documented, well structured file,
+generally referred to as a Prelude.  Others can copy that Prelude,
+delete what they don't want and change what they want to change.  This
+works well as long as the user is a good Emacs-Lisp hacker, not only
+knowing the language well but also being well steeped in the way Emacs
+does things.  Some examples:
+- [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua's Emacs Prelude]]
+- [[https://github.com/bbatsov/prelude]]
+These are all a good source of ideas for our configurations!
+
+You can impose a layered architecture to Emacs Extensions.  A good example of this is
+- [[http://spacemacs.org]
+Alas, the packages spacemacs uses don't always cooperate well with the layering system.
+
+You can write a new, more ambitious Package Manager such as
+- [[https://github.com/raxod502/straight.el]]
+
+
 
 *** Configuration Files
 

@@ -1,4 +1,8 @@
-;; * Sample init.el file
+;; * JGD/init-me.el
+;; Features requiring significant customization
+;; are in separate byte-compiled files under
+;; - NGender/ if likely to be useful to others
+;; - JGD/ otherwise
 
 ;; Everything after one or more semicolons is a comment for
 ;; humans and is ignored by Emacs.
@@ -12,17 +16,17 @@
 ;; Change any of these paths if needed.
 
 (load "~/.emacs.d/NGender/ngender")
-(ngender-emacs-home "~/.emacs.d")				; this is the default
-;; Any vendor, group or project directories should go here, e.g.
-;; (ngender-vendor-subdirectory "Bleeding-Edge")
-;; (ngender-group-subdirectory "Group-FOO")
+(ngender-emacs-home "~/.emacs.d")	; this is the default
+;; Vendor and/or (Project) Group could go here, e.g.
+(ngender-vendor-subdirectory "vendor")
+;; (ngender-group-subdirectory "Group-RPTUG")
 (ngender-user-subdirectory "User-Me")
 ;; The Emacs path will be kept ordered as follows, first to last:
 ;; (1) User Subdirectories
 ;; (2) Group (Project) Directories
 ;; (3) Vendor (3rd party extension) directories
 ;; (4) Directories for Packages downloaded from Emacs Repositories
-(load "init-me")
+(load "init-me")		      ; Your personal Emacs Extensions
 
 ;; Remember that Emacs will help you better with init
 ;; problems if you call it with emacs --debug-init
