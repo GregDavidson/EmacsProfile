@@ -4,6 +4,17 @@
 ;; - NGender/ if likely to be useful to others
 ;; - JGD/ otherwise
 
+;; Everything after one or more semicolons is a comment for
+;; humans and is ignored by Emacs.
+
+;; This file should be loaded by ~/.emacs
+;; which should be linked to ~/.emacs.d/.emacs
+;; See README.org file in this directory
+
+;; Study the README.org file to understand the purpose of
+;; the directory User-Me and the file init-me.el under it.
+;; Change any of these paths if needed.
+
 ;; ** Attempted workaround for font prem in 24.3.1
 ;; (setq initial-frame-alist '(
 ;; 	 (font . "Monospace-10")
@@ -17,7 +28,7 @@
 ;; ** Packages
 
 (require 'package)
-(ngender-package-archives
+(ngender-package-archive
 	"gnu" "http://elpa.gnu.org/packages/"
 	"marmalade" "http://marmalade-repo.org/packages/"
 	"melpa-stable" "http://melpa-stable.milkbox.net/packages/"
@@ -36,27 +47,10 @@
 (apply #'ngender-package my-packages)
 ;; Failed on ngender.org, Friday 21 April 2017!!
 
-;; ** Font and Pitch Preferences
+;; ** Font, Face, Pitch, Indentation
 
-;; Use a %d format spec where the font size goes, e.g.
-;;	"-adobe-courier-medium-r-normal--%d-*-*-*-m-*-iso8859-1"
-;; otherwise it will be put at the end as will happen here:
-(defvar *ngender-fixed-font* "Dejavu Sans Mono")
-(defvar *ngender-variable-font* "Dejavu Sans Condensed")
-(defvar *ngender-pitch-mode* :variable)					; vs. :fixed
-(defvar *ngender-font*
-	(cond
-		( (eq *ngender-pitch-mode* :variable ) *ngender-variable-font* )
-		( (eq *ngender-pitch-mode* :fixed ) *ngender-fixed-font* ) ) )
-(defvar *ngender-frame-font* *ngender-font*)
-
-;; make it easy to switch the default for the current buffer:
-(setq buffer-face-mode-face
-	(cond
-		( (eq *ngender-font* *ngender-variable-font*)	'fixed-pitch)
-		( (eq *ngender-font* *ngender-fixed-font*) 'variable-pitch) ) )
-;; Switches face to buffer-face-mode-face
-(global-set-key "\C-cv" 'buffer-face-mode)
+(defvar *ngender-pitch-mode* :variable)				; vs. :fixed
+(load "ngender-font")
 
 ;; ** Load-Paths
 
