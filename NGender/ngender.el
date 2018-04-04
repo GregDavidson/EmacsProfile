@@ -160,17 +160,6 @@
 		(unless (package-installed-p p)
 			(package-install p) ) ) )
 
-;; ** File and Directory Support
-
-(defun require-file-path (name type-test type-name &optional parent)
-	(let (( path (expand-file-name (if parent parent *ngender-emacs-home*)) ))
-		(let (( p (file-chase-links path) ))
-			(if (funcall type-test p) path
-				(ngender-warn p type-name '(init)) ) ) ) )
-
-(defun require-file (path &optional parent) (require-file-path path #'file-regular-p 'file parent) )
-(defun require-dir (path &optional parent) (require-file-path path #'file-directory-p 'directory parent) )
-
 ;; ** Fancy Emacs Load-Path Support
 
 ;; The Emacs path will be kept ordered as follows, first to last:
@@ -192,11 +181,14 @@
 	(setq *ngender-emacs-home* (require-dir path "~")) )
 
 (defun ngender-rebuild-load-path ()
-	"rebuild emacs load-path with elements of lists named in *ngender-path-lists* appearing in front in order"
-	(setq load-path (delete-dups (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
+  "rebuild emacs load-path with elements of lists named in
+*ngender-path-lists* appearing in front in order"
+  (setq load-path (delete-dups
+	 (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
 
 (defun ngender-path-subdirectories (symbol paths)
-	"add directory paths to the front of the list named by symbol and rebuild emacs load-path"
+	"add directory paths to the front of the list named by
+symbol and rebuild emacs load-path"
 	(set symbol (ngender-filter-dirs paths))
 	(ngender-rebuild-load-path) )
 
@@ -234,6 +226,17 @@
 	"delete path from vendor subdirectories and rebuild emacs load-path"
 	(ngender-path-delete '*ngender-vendor-subdirectories* path)
 )
+
+;; ** File and Directory Support
+
+(defun require-file-path (name type-test type-name &optional parent)
+	(let (( path (expand-file-name name (if parent parent *ngender-emacs-home*)) ))
+		(let (( p (file-chase-links path) ))
+			(if (funcall type-test p) path
+				(ngender-warn p type-name '(init)) ) ) ) )
+
+(defun require-file (path &optional parent) (require-file-path path #'file-regular-p 'file parent) )
+(defun require-dir (path &optional parent) (require-file-path path #'file-directory-p 'directory parent) )
 
 ;; *** Customize some directory path lists
 
