@@ -1,8 +1,8 @@
-;; * JGD/init-me.el
+;; * User-Me/init-me.el
 ;; Features requiring significant customization
 ;; are in separate byte-compiled files under
 ;; - NGender/ if likely to be useful to others
-;; - JGD/ otherwise
+;; - User-Me/ otherwise
 
 ;; Everything after one or more semicolons is a comment for
 ;; humans and is ignored by Emacs.
@@ -15,16 +15,6 @@
 ;; the directory User-Me and the file init-me.el under it.
 ;; Change any of these paths if needed.
 
-;; ** Attempted workaround for font prem in 24.3.1
-;; (setq initial-frame-alist '(
-;; 	 (font . "Monospace-10")
-;; 	 (vertical-scroll-bars . right)
-;; ))
-;; (setq default-frame-alist '(
-;;   (font . "Monospace-10")
-;; 	 (vertical-scroll-bars . right)
-;; ))
-
 ;; ** Packages
 
 (require 'package)
@@ -36,10 +26,10 @@
 
 ;; Is this redundant given list-packages??
 ;; Consider moving into appropriate customization file
-(defvar my-packages '(auto-complete company helm
+(defvar my-packages '(auto-complete company
 	ido-ubiquitous markdown-mode multi-term
 	 paredit-everywhere
-	persp-mode project-mode rainbow-delimiters racer
+	rainbow-delimiters racer
 	smex toc-org use-package)
   "A list of packages to ensure are installed at launch.")
 
