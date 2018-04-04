@@ -2,9 +2,18 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
+;; Yikes: We lost our macros:
+;; ngender-defvar-list
+;; ngender-defmacro-quote-args
+;; -- did we lose anything else?
+
 ;; ** Dependencies
 
 ;; (require 'jit-lock)								; why?
+(require 'cl-lib)
+;; for:
+;; oddp
+;; what else??
 
 ;; ** Warnings, Errors, Validating
 
@@ -93,14 +102,14 @@
 
 ;; improve these with regexp matching!!
 (defun ngender-archive-name-p (name) (stringp name))
-(defun ngender-archive-p (url) (stringp url))
+(defun ngender-archive-url-p (url) (stringp url))
 
 (defun ngender-archive-p (pair)
 	"return the cons archive represented by the list or cons archive pair or nil"
 	(if (not (consp pair))
 		nil
 		(let* ( (name (car pair)) (cdr (cdr pair)) (is-list (consp cdr)) (url (if is-list (car cdr) cdr)) )
-			(if (not (and (archive-name-p name) (archive-url-p url)))
+			(if (not (and (ngender-archive-name-p name) (ngender-archive-url-p url)))
 				nil
 				(if is-list (cons name url) pair) ) ) ) )
 
@@ -115,7 +124,7 @@
 					(cons (cons first (car cdr)) (list-to-associations (cdr cdr))) ) ) ) ) )
 
 (defun ngender-package-archive (&rest args)
-	(if (oddp (length args))
+	(if (cl-oddp (length args))
 		(ngender-warn args "even list")
 		(let* ( (pairs (list-to-associations args))
 						(pair-count (length pairs))
@@ -188,7 +197,7 @@
 
 (defun ngender-path-subdirectories (symbol paths)
 	"add directory paths to the front of the list named by symbol and rebuild emacs load-path"
-	(set symbol (ngender-filter-directories path))
+	(set symbol (ngender-filter-dirs paths))
 	(ngender-rebuild-load-path) )
 
 (defun ngender-path-delete (symbol path)
