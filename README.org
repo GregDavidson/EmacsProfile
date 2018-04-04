@@ -52,7 +52,7 @@ It is expected to work well
 - ~/.emacs.d/custom-file.el :: Emacs Customization System settings
 - ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs ~load-path~
 - ~/.emacs.d/NGender/ngender.el :: core extension loaded by ~init.el~ file
-- ~/.emacs.d/NGender/ngender-NAME.el :: file managing extension NAMD
+- ~/.emacs.d/NGender/ngender-NAME.el :: file managing extension NAME
 - ~/.emacs.d/User-Me/ :: individual extensions, on Emacs ~load-path~
 - ~/.emacs.d/User-Me/init-me.el :: loaded by ~init.el~ after ~ngender.el~
 - ~/.emacs.d/Group-NAME/ :: extensions shared with given group/project, on ~load-path~
@@ -92,20 +92,40 @@ If you're on a Linux, Unix or BSD system
 you can do this from your
 shell with something like this:
 #+BEGIN_SRC shell
+# 1. You will need a modern Emacs installed, version 25 or later
 which emacs # this needs to find your emacs program
 emacs --version # this needs to be version 25 or higher
-cd ~/Gits # where you want to keep this repository, and maybe others?
+# 2. Find your existing Emacs Customizations, e.g.
+# Typically you'll find them here:
+ls -ld ~/.emacs*
+ls ~/.emacs.d
+# Anywhere we're using ~ (your home directory) and that's
+# not right, change it to your desired path
+# 3. Create or choose a place to put a Git repository
+mkdir ~/Gits
+cd ~/Gits
+# ~/Gits is just a suggestion, use what you like
+# 4. Clone our repository under that directory and go into it
 git clone https://github.com/GregDavidson/EmacsProfile.git
-cd EmacsProfile # the directory you just cloned
+cd EmacsProfile # the directory holding the repository
+# 5. Make a place for your old and new special things
 mkdir User-Me # Keep prefix "User-", keep or change "Me" as you like
-mv ~/.emacs User-Me
-mv ~/.emacs.d User-Me
-ln -s `pwd`/.emacs `pwd`/.emacs.d  ~
+# 6. Move your old special things there
+mv ~/.emacs User-Me/old.emacs
+mv ~/.emacs.d User-Me/old.emacs.d
+#6. Link the new ones in where the old ones were:
+ln -s `pwd`/.emacs  ~
+ln -s `pwd`/.emacs.d  ~
 # some shells, e.g. bash, let you use ~+ instead of `pwd`
+# 7. If these are not in ~, correct that in your  .emacs file
+vi .emacs
+# 8. Create your top-level init file:
 cp -i init-sample.el init.el
 # if you changed User-Me, change it in init.el
-touch User-Me
-# Check that Emacs starts up OK:
+vi init.el
+# 9. Make a file for your new special changes
+touch User-Me/init-me.el
+# 10. Check that Emacs starts up OK:
 emacs --debug-init
 # If emacs didn't like things, fix them somehow!
 # Once emacs is happy with this vanilla-flavored configuration:
