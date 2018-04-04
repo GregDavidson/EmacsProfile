@@ -9,7 +9,7 @@
 
 ;; ** Dependencies
 
-;; (require 'jit-lock)								; why?
+;; (require 'jit-lock)	; why?
 (require 'cl-lib)
 ;; for:
 ;; oddp
@@ -42,12 +42,19 @@
 
 ;; *** Using Lists As Sets
 
-(defun ngender-union (&rest bags)
-  "return list set union of list bags"
+(defun ngender-union-sublists (bags)
+  "return list set union of list of bag lists"
 	(delete-dups (apply #'append bags)) )
 
+(defun ngender-union (&rest bags)
+  "return list set union of list of bag lists"
+	(ngender-union-sublists bags) )
+
+(defun ngender-update-union-list (symbol items)
+  (set symbol (ngender-union-sublists (ngender-symbol-value symbol) items) ) )
+
 (defun ngender-update-union (symbol &rest items)
-  (set symbol (ngender-union (ngender-symbol-value symbol) items) ) )
+  (ngender-update-union-list symbol items) )
 
 ;; *** Managing Path Set Lists
 
@@ -96,9 +103,9 @@
 
 (require 'package)
 
-(defvar *ngender-package-archives*
-	(ngender-symbol-value 'package-archives '( ("gnu" . "http://elpa.gnu.org/packages/") ) )
-	"requested package archives" )
+(defvar package-archives
+  (ngender-symbol-value 'package-archives '( ("gnu" . "http://elpa.gnu.org/packages/") ) )
+  "requested package archives" )
 
 ;; improve these with regexp matching!!
 (defun ngender-archive-name-p (name) (stringp name))
@@ -132,7 +139,7 @@
 						(archive-count (length archives)) )
 			(and
 				(= pair-count archive-count)
-				(ngender-update-union 'package-archives archives)
+				(ngender-update-union-list 'package-archives archives)
 				(package-refresh-contents)) ) ) )
 
 (defun ngender-package-archive-delete (key)
