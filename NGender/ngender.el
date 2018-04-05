@@ -58,7 +58,7 @@
 
 ;; *** Managing Path Set Lists
 
-(defun ngender-filter-dirs (paths) (ngender-validate-list paths 'file-directory-p 'directory))
+(defun ngender-filter-dirs (paths) (ngender-validate-list (mapcar 'expand-file-name paths) 'file-directory-p 'directory))
 
 (defun ngender-add-paths (symbol paths do-append)
   "prepend or append candidate directory set with directory set bound to symbol"
@@ -103,6 +103,14 @@
 
 (require 'package)
 
+(defvar *ngender-known-package-archives*
+  (ngender-symbol-value '*ngender-known-package-archives*
+			'( ("gnu" . "http://elpa.gnu.org/packages/")
+			   ("marmalade" . "http://marmalade-repo.org/packages/")
+			   ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+			   ("org" . "https://orgmode.org/elpa/")
+			   ) ) "package archives known to exist" )
+
 (defvar package-archives
   (ngender-symbol-value 'package-archives '( ("gnu" . "http://elpa.gnu.org/packages/") ) )
   "requested package archives" )
@@ -131,16 +139,18 @@
 					(cons (cons first (car cdr)) (list-to-associations (cdr cdr))) ) ) ) ) )
 
 (defun ngender-package-archive (&rest args)
-	(if (cl-oddp (length args))
-		(ngender-warn args "even list")
-		(let* ( (pairs (list-to-associations args))
-						(pair-count (length pairs))
-						(archives (ngender-validate-list pairs #'ngender-archive-p 'archive))
-						(archive-count (length archives)) )
-			(and
-				(= pair-count archive-count)
-				(ngender-update-union-list 'package-archives archives)
-				(package-refresh-contents)) ) ) )
+  (if (cl-oddp (length args))
+      (ngender-warn args "even list")
+    (let* ( (pairs (list-to-associations args))
+	    (pair-count (length pairs))
+	    (archives (ngender-validate-list pairs #'ngender-archive-p 'archive))
+	    (archive-count (length archives)) )
+      (and
+       (= pair-count archive-count)
+       (ngender-update-union-list 'package-archives archives)
+       (package-initialize)
+       (package-refresh-contents)
+       ) ) ) )
 
 (defun ngender-package-archive-delete (key)
   (setq package-archives (assoc-delete-all key package-archives))
@@ -155,7 +165,7 @@
 ;;		`package-desc' structures.
 
 ;; functions
-;; package-initialize - load packages from package-load-list and activate them
+;; package-initialize - load packages from package-load-list
 ;; package-refresh-contents - download descriptions of all packages on package-archives
 
 ;; Various package files will use this to ensure
@@ -166,6 +176,17 @@
 	(dolist (p packages)
 		(unless (package-installed-p p)
 			(package-install p) ) ) )
+
+;; ** File and Directory Support
+
+(defun require-file-path (name type-test type-name &optional parent)
+	(let (( path (expand-file-name name (if parent parent *ngender-emacs-home*)) ))
+		(let (( p (file-chase-links path) ))
+			(if (funcall type-test p) path
+				(ngender-warn p type-name '(init)) ) ) ) )
+
+(defun require-file (path &optional parent) (require-file-path path #'file-regular-p 'file parent) )
+(defun require-dir (path &optional parent) (require-file-path path #'file-directory-p 'directory parent) )
 
 ;; ** Fancy Emacs Load-Path Support
 
@@ -179,9 +200,10 @@
 (defvar *ngender-user-subdirectories* (ngender-symbol-value '*ngender-user-subdirectories*))
 (defvar *ngender-group-subdirectories* (ngender-symbol-value '*ngender-group-subdirectories*))
 (defvar *ngender-vendor-subdirectories* (ngender-symbol-value '*ngender-vendor-subdirectories*))
+(defvar *ngender-subdirectories* (list (require-dir "NGender" *ngender-emacs-home*)))
 
 (defconst *ngender-path-lists*
-	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* load-path)
+	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* *ngender-subdirectories* load-path)
 "load-path will be reconstructed from these sublists, deduped, left-to-right; ensure load-path is on this list!" )
 
 (defun ngender-emacs-home (path)
@@ -234,17 +256,6 @@ symbol and rebuild emacs load-path"
 	(ngender-path-delete '*ngender-vendor-subdirectories* path)
 )
 
-;; ** File and Directory Support
-
-(defun require-file-path (name type-test type-name &optional parent)
-	(let (( path (expand-file-name name (if parent parent *ngender-emacs-home*)) ))
-		(let (( p (file-chase-links path) ))
-			(if (funcall type-test p) path
-				(ngender-warn p type-name '(init)) ) ) ) )
-
-(defun require-file (path &optional parent) (require-file-path path #'file-regular-p 'file parent) )
-(defun require-dir (path &optional parent) (require-file-path path #'file-directory-p 'directory parent) )
-
 ;; *** Customize some directory path lists
 
 ;; Can we make any of this generic?
@@ -264,17 +275,10 @@ symbol and rebuild emacs load-path"
 ;;              "/opt/gnome/share/info"
               )
 
-(ngender-append-paths 'load-path
-	"/usr/share/emacs/site-lisp/"
-	"/usr/share/emacs/site-lisp/w3m/"
-	)
-
 (ngender-prepend-paths 'load-path
               "~/Lib/Emacs/"
-              "~/Lib/Emacs/Scala/"
+;;              "~/Lib/Emacs/Scala/"
               "/usr/share/emacs/site-lisp"
-              "/usr/share/emacs/site-lisp/w3"
-              "/usr/share/emacs/site-lisp/w3m"
 ;;              "/data/greg/Lib/Emacs/lisp"
 ;;              "/usr/local/Mercury/lib/mercury/elisp"
 ;;              "/usr/local/src/flora2/emacs"

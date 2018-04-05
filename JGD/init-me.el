@@ -18,6 +18,7 @@
 ;; ** Packages
 
 (require 'package)
+(require 'ngender)
 (ngender-package-archive
 	"gnu" "http://elpa.gnu.org/packages/"
 	"marmalade" "http://marmalade-repo.org/packages/"
@@ -40,42 +41,20 @@
 ;; ** Font, Face, Pitch, Indentation
 
 (defvar *ngender-pitch-mode* :variable)				; vs. :fixed
-(load "ngender-font")
+(require 'ngender-font)
 
-;; ** Load-Paths
-
-;; add-to-list will put the new items at the front so the
-;; last added will come first
-
-;; *** Packages under ~/.emacs.d/vendor
-;; These are packages or versions of packages not available through the Emacs
-;; package system.  Remove them from here and from the vendor directory
-;; when no longer needed.
-(dolist (path '(	"~/.emacs.d/vendor"
-;;								"~/.emacs.d/vendor/ensime/elisp" ;; standard package now good??
-									"~/.emacs.d/vendor/html5-el" ) )
-	(let ( (p (require-directory path)) )
-		(when p (add-to-list 'load-path p) ) ) )
-
-;; *** Personal and NGender Emacs Code Directories
-(dolist (path '(	"~/Lib/Emacs" "~/.emacs.d/NGender" "~/.emacs.d/JGD" ) )
-	(let ( (p (require-directory path)) )
-		(when p (add-to-list 'load-path p) ) ) )
-
-;; ** Load NGender Packages
+;; ** LoadNGender Packages
 ;; Can/should any of these autoload??
 
-;; Report an error if not found, say nothing if all goes well
-(load "ngender" nil t)
 (defvar *ngender-org-packages '(mysql-to-org org org-autolist org-bullets org-page
 	org-projectile org-tree-slide ox-gfm) "desired set of org-mode packages")
-(load "ngender-org" nil t)
-(load "ngender-shell" nil t)
-(load "ngender-elisp" nil t)
+(require 'ngender-org)
+(require 'ngender-shell)
+(require 'ngender-elisp)
 (defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
-(load "ngender-sql" nil t)
-(load "my-sql-pw" nil t)			 ; encryption would be better!!
-(load "ngender-sql-connect" nil t)
+(require 'ngender-sql)
+(require 'my-sql-pw)			 ; encryption would be better!!
+(require 'ngender-sql-connect)
 
 ;; ** Load JGD Packages
 
