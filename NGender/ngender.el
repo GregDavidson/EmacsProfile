@@ -51,7 +51,7 @@
 	(ngender-union-sublists bags) )
 
 (defun ngender-update-union-list (symbol items)
-  (set symbol (ngender-union-sublists (ngender-symbol-value symbol) items) ) )
+  (set symbol (ngender-union (ngender-symbol-value symbol) items) ) )
 
 (defun ngender-update-union (symbol &rest items)
   (ngender-update-union-list symbol items) )
