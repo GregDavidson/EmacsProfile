@@ -202,6 +202,8 @@
 ;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . ngender-sql-mode)
 ;; (require 'ngender-sql-connect)
 ;; (require 'my-sql-pw)
+(require 'ngender-tcl)
+(require 'ngender-printing)
 
 ;; ** Not Yet Loading NGender and JGD Modules
 ;; *** ngender-cedet
