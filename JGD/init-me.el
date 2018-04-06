@@ -30,7 +30,7 @@
 
 ;; ** Themes
 
-(do (d '("~/.emacs.d/themes" "~/.emacs.d/User-Me/themes"))
+(dolist (d '("~/.emacs.d/themes" "~/.emacs.d/User-Me/themes"))
 	(when (file-directory-p d)
 		(ngender-prepend-paths 'custom-theme-load-path d)
 		(ngender-prepend-paths 'load-path d) ) )
