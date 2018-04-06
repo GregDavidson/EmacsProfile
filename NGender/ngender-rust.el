@@ -7,20 +7,19 @@
 (require 'ngender)
 
 (defvar *ngender-rust-packages*
-	(if (boundp '*ngender-rust-packages*) *ngender-rust-packages*'(rust-mode))
+	(ngender-symbol-value '*ngender-rust-packages* (rust-mode))
 	"minimal set of rust packages")
 (apply #'ngender-package *ngender-rust-packages*)
 
-(unless (boundp '*ngender-rust-racer-p*)
-	(defvar *ngender-rust-racer-p* nil "use racer with rust") )
-(unless (boundp '*ngender-rust-flycheck-p*)
-	(defvar *ngender-rust-flycheck-p*
-		(member 'flycheck-mode *ngender-rust-packages*)
-			"use flycheck-mode with rust" ) )
-(unless (boundp '*ngender-rust-company-p*)
-	(defvar *ngender-rust-company-p*
-		(member 'flycheck-mode *ngender-rust-packages*)
-		"use company-mode with rust") )
+(defvar *ngender-rust-racer-p*
+	(ngender-symbol-value '*ngender-rust-racer-p*)
+	"use racer with rust")
+(defvar *ngender-rust-flycheck-p*
+	(ngender-symbol-value '*ngender-rust-flycheck-p* (member 'flycheck-mode *ngender-rust-packages*))
+	"use flycheck-mode with rust" )
+(defvar *ngender-rust-company-p*
+	(ngender-symbol-value '*ngender-rust-company-p*	(member 'flycheck-mode *ngender-rust-packages*))
+	"use company-mode with rust")
 
 ;; ** Racer for Rust
 

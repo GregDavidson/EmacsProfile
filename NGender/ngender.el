@@ -196,7 +196,6 @@
 ;; (3) Vendor (3rd party extension) directories
 ;; (4) Directories for Packages downloaded from Emacs Repositories
 
-(defvar *ngender-emacs-home* (ngender-symbol-value '*ngender-emacs-home* "~/.emacs.d"))
 (defvar *ngender-user-subdirectories* (ngender-symbol-value '*ngender-user-subdirectories*))
 (defvar *ngender-group-subdirectories* (ngender-symbol-value '*ngender-group-subdirectories*))
 (defvar *ngender-vendor-subdirectories* (ngender-symbol-value '*ngender-vendor-subdirectories*))
@@ -205,9 +204,6 @@
 (defconst *ngender-path-lists*
 	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* *ngender-subdirectories* load-path)
 "load-path will be reconstructed from these sublists, deduped, left-to-right; ensure load-path is on this list!" )
-
-(defun ngender-emacs-home (path)
-	(setq *ngender-emacs-home* (require-dir path "~")) )
 
 (defun ngender-rebuild-load-path ()
   "rebuild emacs load-path with elements of lists named in
@@ -256,36 +252,6 @@ symbol and rebuild emacs load-path"
 	(ngender-path-delete '*ngender-vendor-subdirectories* path)
 )
 
-;; *** Customize some directory path lists
-
-;; Can we make any of this generic?
-;; How much of this can we discover?
-;; Otherwise we should move it out of the NGender Profile!
-;; These paths need to be checked for existence!!
-;; When should we warn of non-existence??
-
-;; (ngender-prepend-paths (if (boundp 'Info-directory-list)
-;; 		     'Info-directory-list 'Info-default-directory-list)
-(ngender-prepend-paths 'Info-directory-list
-              "/usr/share/info/"
-              "/usr/share/info/emacs-24/"
-              "/usr/local/share/info/"
-              "/usr/share/texmf/doc/info/"
-;;              "/usr/local/mercury-0.11.1-beta-2004-06-30/info"
-;;              "/opt/gnome/share/info"
-              )
-
-(ngender-prepend-paths 'load-path
-              "~/Lib/Emacs/"
-;;              "~/Lib/Emacs/Scala/"
-              "/usr/share/emacs/site-lisp"
-;;              "/data/greg/Lib/Emacs/lisp"
-;;              "/usr/local/Mercury/lib/mercury/elisp"
-;;              "/usr/local/src/flora2/emacs"
-;;              "/usr/local/src/XSB/etc"
-;;              "/usr/share/doc/ruby-1.6.4/misc"
-              )
-
 ;; ** Window Management Functions
 
 ;; Assumes an X-Window System Window Manager!!
@@ -322,14 +288,15 @@ symbol and rebuild emacs load-path"
 ;; Are we running under a window-system?
 ;; The variable window-system will be nil if not,
 ;; otherwise it will tell us which gui we're using!
-(defun using-gui-p () window-system)
+(defun using-gui-p () (and bound-p 'window-system) window-system)
 
-;; ideally minor would be optional, and maybe a sub-minor
-;; could be allowed as well?
-(defun version>= (major minor)
-  (or (> emacs-major-version major)
-	  (and (= emacs-major-version major)
-		   (>= emacs-minor-version minor) ) ) )
+;; do we want subminor??
+;; should we burst minor-version on "."?? and have &rest minors??
+(defun version>= (major &optional minor)
+	(or (> emacs-major-version major)
+		(and (= emacs-major-version major)
+			(or (null minor)
+				(>= emacs-minor-version minor) ) ) ) )
 
 ;; ** Font Issues
 

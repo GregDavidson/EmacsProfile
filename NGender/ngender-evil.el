@@ -5,7 +5,7 @@
 ;; ** Dependencies
 
 (defvar *ngender-evil-packages*
-	(if (boundp '*ngender-evil-packages*) *ngender-evil-packages*'(evil))
+	(ngender-symbol-value '*ngender-evil-packages*'(evil))
 	"minimal set of evil packages")
 
 ;; ** Evil packages available as of 29 March 2018
