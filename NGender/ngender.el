@@ -423,39 +423,6 @@ symbol and rebuild emacs load-path"
   (other-window (- n))
 )
 
-;; ** Theme Preferences
-
-;;; Tcl Preferences
-
-(require 'tcl)
-
-(defun ngender-tcl-preferences ()
-  (setq tcl-application "tclsh"
-	tcl-indent-level ngender-default-indent
-	tcl-continued-indent-level ngender-default-indent
-	tcl-use-smart-word-finder t)  )
-
-(add-hook 'tcl-mode-hook 'ngender-pitch-mode)
-
-;;; Require some things in ~/Lib/Emacs
-
-;; ** Printing Support from lynn.el
-
-(defun lbd-ps-landscape ()
-  "Change to landscape mode in ps"
-  (interactive)
-  (setq ps-landscape-mode t )
-  )
-
-(defun lbd-ps-portrait ()
-  "Change to portrait mode in ps"
-  (interactive)
-  (setq ps-landscape-mode nil )
-  )
-
-(global-set-key [?\s-l] 'lbd-ps-landscape ) 
-(global-set-key [?\s-p] 'lbd-ps-portrait ) 
-
 ;; ** Tramp
 
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
