@@ -19,7 +19,7 @@
 ;;       (setenv "PATH" (concat (getenv "PATH") ":" oz-bin)) )
 ;;   (ngender-prepend-paths 'load-path oz-elisp)
   
-;;   (ngender-update-union 'auto-mode-alist
+;;   (ngender-update-union-with-items 'auto-mode-alist
 ;; 		    '("\\.oz\\'" . oz-mode)
 ;; 		    '("\\.ozg\\'" . oz-gump-mode) )
   

@@ -42,19 +42,22 @@
 
 ;; *** Using Lists As Sets
 
-(defun ngender-union-sublists (bags)
+(defun ngender-union-list-of-bags (bags)
   "return list set union of list of bag lists"
 	(delete-dups (apply #'append bags)) )
 
-(defun ngender-union (&rest bags)
+(defun ngender-union-bags (&rest bags)
   "return list set union of list of bag lists"
-	(ngender-union-sublists bags) )
+	(ngender-union-list-of-bags bags) )
 
-(defun ngender-update-union-list (symbol items)
-  (set symbol (ngender-union (ngender-symbol-value symbol) items) ) )
+(defun ngender-update-union-with-list-of-bags (symbol list-of-bags)
+  (set symbol (ngender-union-list-of-bags (cons (ngender-symbol-value symbol) list-of-bags)) ) )
 
-(defun ngender-update-union (symbol &rest items)
-  (ngender-update-union-list symbol items) )
+(defun ngender-update-union-with-bags (symbol &rest bags)
+  (ngender-update-union-with-list-of-bags symbol bags) )
+
+(defun ngender-update-union-with-items (symbol &rest items)
+  (ngender-update-union-with-bags symbol items) )
 
 ;; *** Managing Path Set Lists
 
@@ -65,8 +68,8 @@
   (set symbol (let ( (paths (ngender-symbol-value symbol))
 		     (newbies (ngender-filter-dirs paths)) )
 		(if do-append
-		    (ngender-union paths newbies)
-		  (ngender-union newbies paths) ) )) )
+		    (ngender-union-bags paths newbies)
+		  (ngender-union-bags newbies paths) ) )) )
 
 (defun ngender-prepend-paths (symbol &rest dirs)
   "prepend candidate directory paths in front of directory set bound to symbol"
@@ -97,7 +100,6 @@
   (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'")))
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator)) ) )
-
 
 ;; ** Emacs Repository Support
 
@@ -138,22 +140,47 @@
 					list
 					(cons (cons first (car cdr)) (list-to-associations (cdr cdr))) ) ) ) ) )
 
+
+(defun ngender-add-package-archive-pair (symbol new-pair)
+	(let* ( (key (cdr new-pair)) (alist (symbol-value symbol)) (old-pair (assoc key alist)) )
+		(if (equal old-pair new-pair) t
+			(when old-pair
+				(lwarn "changing url for %s from %s to %s in %s" key (cdr old-pair) (cdr new-pair) symbol)
+				(setq symbol (assoc-delete-all key alist)) )
+			(setq symbol (cons new-pair (symbol-value symbol))) ) ) )
+
+(defun ngender-add-package-archive-by-key (key)
+	(let ( (pair (assoc key *ngender-known-package-archives*)) )
+		(cond
+			( (symbolp key) (ngender-package-archive-by-key (symbol-name key)) )
+			( (not (stringp key)) (lwarn "expected string archive key: %s" key) )
+			( (null pair) (lwarn "expected known archive key: %s" key) )
+			( t (ngender-add-package-archive-pair 'package-archives pair) ) ) ) )
+
 (defun ngender-package-archive (&rest args)
-  (if (cl-oddp (length args))
-      (ngender-warn args "even list")
-    (let* ( (pairs (list-to-associations args))
-	    (pair-count (length pairs))
-	    (archives (ngender-validate-list pairs #'ngender-archive-p 'archive))
-	    (archive-count (length archives)) )
-      (and
-       (= pair-count archive-count)
-       (ngender-update-union-list 'package-archives archives)
-       (package-initialize)
-       (package-refresh-contents)
-       ) ) ) )
+	"add archives to package-archives and new ones to *ngender-known-package-archives*"
+	(dolist (a args)
+		(cond
+			( (consp a) (let* ( (pair (ngender-archive-p a)) )
+										(if (not pair)
+											(lwarn "expected archive: %s" a)
+											(ngender-add-package-archive-pair '*ngender-known-package-archives* pair)
+											(ngender-add-package-archive-pair 'package-archives pair) ) ) )
+			( (or (stringp a) (symbolp a)) (ngender-add-package-archive-by-key a) )
+			( t (lwarn "expected archive name or pair %s" a) ) ) ) )
+
+
+(defun ngender-drop-assoc-by-key (symbol key)
+  (set symbol (assoc-delete-all key (symbol-value symbol)))
+)
 
 (defun ngender-package-archive-delete (key)
-  (setq package-archives (assoc-delete-all key package-archives))
+	(ngender-drop-assoc-without 'package-archives key)
+)
+
+(defun ngender-package-archive-forget (key)
+	(ngender-drop-assoc-without 'package-archives key)
+	(ngender-drop-assoc-without '*ngender-known-package-archives* key)
 )
 
 ;; variables
@@ -194,15 +221,18 @@
 ;; (1) User Subdirectories
 ;; (2) Group (Project) Directories
 ;; (3) Vendor (3rd party extension) directories
-;; (4) Directories for Packages downloaded from Emacs Repositories
+;; (4) Everything that was there initially, including NGender (established in .emacs)
+
+;; Note: it seems that packages add their load directories
+;; at the front of load-path!!  Anytime we want to fix this
+;; we can call (ngender-rebuild-load-path)
 
 (defvar *ngender-user-subdirectories* (ngender-symbol-value '*ngender-user-subdirectories*))
 (defvar *ngender-group-subdirectories* (ngender-symbol-value '*ngender-group-subdirectories*))
 (defvar *ngender-vendor-subdirectories* (ngender-symbol-value '*ngender-vendor-subdirectories*))
-(defvar *ngender-subdirectories* (list (require-dir "NGender" *ngender-emacs-home*)))
 
 (defconst *ngender-path-lists*
-	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* *ngender-subdirectories* load-path)
+	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* load-path)
 "load-path will be reconstructed from these sublists, deduped, left-to-right; ensure load-path is on this list!" )
 
 (defun ngender-rebuild-load-path ()
@@ -395,13 +425,6 @@ symbol and rebuild emacs load-path"
 
 ;; ** Theme Preferences
 
-;; Themes
-(ngender-prepend-paths 'custom-theme-load-path "~/.emacs.d/themes")
-(ngender-prepend-paths 'load-path "~/.emacs.d/themes")
-;(load-theme 'tomorrow-night-bright t); example - not one I like!
-
-;; ** Preferences for Major Modes
-
 ;;; Tcl Preferences
 
 (require 'tcl)
@@ -432,10 +455,6 @@ symbol and rebuild emacs load-path"
 
 (global-set-key [?\s-l] 'lbd-ps-landscape ) 
 (global-set-key [?\s-p] 'lbd-ps-portrait ) 
-
-;; ** Markdown Mode
-
-(ngender-update-union 'auto-mode-alist '("\\.mmd\\'" . markdown-mode) )
 
 ;; ** Tramp
 

@@ -15,7 +15,7 @@
 ;; (autoload 'mercury-mode "prolog"
 ;; 	"Major mode for editing Mercury programs." t )
 ;; (defvar prolog-system 'swi)
-;; (ngender-update-union 'auto-mode-alist
+;; (ngender-update-union-with-items 'auto-mode-alist
 ;; 		  '("\\.pl\\'" . prolog-mode)
 ;; 		  '("\\.m\\'" . mercury-mode) )
 

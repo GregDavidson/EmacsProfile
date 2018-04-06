@@ -49,7 +49,7 @@
 
 ;; Configure Clojure-Mode
 
-(ngender-update-union 'auto-mode-alist '("\\.cljs\\'" . clojure-mode) )
+(ngender-update-union-with-items 'auto-mode-alist '("\\.cljs\\'" . clojure-mode) )
 
 ;; (add-hook 'nrepl-mode-hook 'subword-mode)
 

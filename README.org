@@ -2,9 +2,21 @@
 
 This Directory Tree is a Git Repository.
 
+** Summary: TL/DR
+
+- This is an *Emacs Profile*
+- It is for the use of Emacs by *Power Users*
+- You need to be moderately comfort
+	- With Emacs & very basic Emacs-Lisp
+	- With Filesystems and very simple Git
+		- Files, Directories, Paths, Links
+- What you'll get if you use it:
+	- Ease in setting up lots of
+		- powerful packages & useful customization
+
 ** The Purpose of this Repository
 
-Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is do to its extraordinary
+Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is due to its extraordinary
 customizability through settings and extentions.  Many of
 the most powerful extensions (typically available
 from Emacs Package Archives) are themselves highly
@@ -60,37 +72,16 @@ It is expected to work well
 
 ** Installing This Repository
 
-1. Clone or otherwise download this repository into a convenient location on your filesystem, say ~Emacs-Config~
-2. You will need a modern Emacs installed, version 25 or later
-3. Find your existing Emacs Customizations, e.g.
-	- the file ~.emacs~
-	- the directory ~.emacs.d/~
-4. Create a directory under ~Emacs-Config~ for your things, say ~User-Me/~
-	- note that ~.gitignore~ tells git to anything with prefix ~User-~ or ~Group-~
-5. Move your existing emacs Customizations to ~User-Me/~
-6. Create links (shortcuts) to the new customization files
-	- link ~Emacs-Config/.emacs~ to where you had your ~.emacs~
-	- link ~Emacs-Config/.emacs.d/~ to where you had your ~.emacs.d/~
-7. Copy ~Emacs-Config/.init-sample.el~ to ~Emacs-Config/.init.el~
-	- this may already have been done
-8. Edit your ~Emacs-Config/.init.el~ as described in its comments
-9. Create an empty file named ~init-me.el~ under your ~User-Me~ directory
-10. Check that Emacs is happy with this new configuration
-11. Fix any problems - let us know with an issue?
-12. Byte-Compile the files in the NGender/ subdirectory
-13. Transfer any old configurations you like to the new places
-	- if you have a lot, do this a small amount at a time
-	- personal things should go in ~init-me.el~
-	- consider putting fancy things in separate files
-14. Improve things as long as you use Emacs
-	- read ~README.org~ and other files under NGender/
-	- study ~init-examples.el~ for ideas
-	- submit a pull request with your improvements
-	- especially for things you've done under NGender/
+The shell commands following each numbered step assume
+you're on a Linux, BSD or other Unix-like.
 
-If you're on a Linux, Unix or BSD system
-you can do this from your
-shell with something like this:
+If you're using an Apple Macintosh you will need to make
+some small changes.  If you're on a Microsoft Windows system
+you'll need to figure out an equivalent.
+
+It would be helpful to the community if you were to record
+any adjustments that you had to make to get this to work in
+_your environment_ and contribute those alternative steps!
 #+BEGIN_SRC shell
 # 1. You will need a modern Emacs installed, version 25 or later
 which emacs # this needs to find your emacs program
@@ -99,8 +90,6 @@ emacs --version # this needs to be version 25 or higher
 # Typically you'll find them here:
 ls -ld ~/.emacs*
 ls ~/.emacs.d
-# Anywhere we're using ~ (your home directory) and that's
-# not right, change it to your desired path
 # 3. Create or choose a place to put a Git repository
 mkdir ~/Gits
 cd ~/Gits
@@ -113,53 +102,48 @@ mkdir User-Me # Keep prefix "User-", keep or change "Me" as you like
 # 6. Move your old special things there
 mv ~/.emacs User-Me/old.emacs
 mv ~/.emacs.d User-Me/old.emacs.d
-#6. Link the new ones in where the old ones were:
+# 7. Correct any incorrect paths in .emacs file
+emacs .emacs	# or use another editor if emacs is unhappy
+# 8. Link the new ones in where the old ones were:
 ln -s `pwd`/.emacs  ~
 ln -s `pwd`/.emacs.d  ~
 # some shells, e.g. bash, let you use ~+ instead of `pwd`
-# 7. If these are not in ~, correct that in your  .emacs file
-vi .emacs
-# 8. Create your top-level init file:
+# 9. Create your top-level init file:
 cp -i init-sample.el init.el
 # if you changed User-Me, change it in init.el
 vi init.el
-# 9. Make a file for your new special changes
+# 10. Make a file for your new special changes
 touch User-Me/init-me.el
-# 10. Check that Emacs starts up OK:
+# 11. Check that Emacs starts up OK:
 emacs --debug-init
 # If emacs didn't like things, fix them somehow!
 # Once emacs is happy with this vanilla-flavored configuration:
-# C-u 0 M-x byte-recompile-directory Emacs-Profile/NGender/
 # Restart Emacs to make sure it's still happy
 # Carefully (small amounts at a time?) transfer any of your old
 # configurations, if any, from your old config files
 #+END_SRC
 
-Although Macintoshes are based on BSD they have a number of
-deviations from the family.  You'll need to customize these
-instructions appropriately.  Please consider submitting a
-pull request with instructions for how to do that.
+It would be nice to have a flexible and fault-tolerant shell
+script which could do all of this setup work - please feel
+free to submit one!
 
-If you're installing this Emacs Profile under Microsoft
-Windows and you're successful, please consider submitting a
-pull request with instructions for how to do that.
+** Customizing Your New Profile
 
-** Status of this Project
+As soon as the new systems is stable and example of things you might want in your
+- ~.emacs.d/User-Me/init-me.el~
+will be placed in
+- ~.emacs.d/init-me-examples.el~
+so you can create a very rich environment by
+#+BEGIN_SRC shell
+# 1. Copying the examples file to ~User-Me~
+cp init-me-examples.el User-Me/init-me.el
+# 2. Deleting or commenting out what you don't like
+# within Emacs: Control-X Control-F User-Me/init-me.el
+#+END_SRC
 
-This project is currently being evolved from a small number
-of large customization files which have served the needs of
-- JGD = J. Greg Davidson
-by separating out logically cohesive customizations into
-small files under the New Subdirectory
-- ~/.emacs.d/NGender/
-Any files which are specific to the needs and tastes of a
-particular user should be put in sibling subdirectories.
-Feel free to examine the files under
-- ~/.emacs.d/JGD/
-for examples.  These examples will soon migrate to
-~init-examples.el~ and JGD will disappear from the public
-repository.
-
+Put any files which are specific to your needs and tastes 
+under a sibling subdirectories
+- e.g. under ~.emacs.d/User-Me/~.
 ** Individual vs. (Project) Group vs. Community
 
 *** Community Level
@@ -328,7 +312,18 @@ Alas, the packages spacemacs uses don't always cooperate well with the layering 
 You can write a new, more ambitious Package Manager such as
 - [[https://github.com/raxod502/straight.el]]
 
+*** Where this project came from
 
+This project started with a small number of large
+customization files which have served the needs of one of
+the NGender Partners, JGD = J. Greg Davidson for decades.
+
+THe idea was to pull out the bits which would likely be
+useful for others, clean them up for portability and move
+the more complex features into their own files.
+
+The challenge of making this accessible for others has
+inspired some creative solutions!
 
 *** Configuration Files
 

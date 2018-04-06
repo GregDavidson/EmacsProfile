@@ -15,8 +15,7 @@
 ;; the directory User-Me and the file init-me.el under it.
 ;; Change any of these paths if needed.
 
-(defvar *ngender-emacs-home* "~/.emacs.d")	; this is the default
-(load "~/.emacs.d/NGender/ngender")
+(load "ngender")
 ;; Vendor and/or (Project) Group could go here, e.g.
 (ngender-vendor-subdirectory "vendor")
 ;; (ngender-group-subdirectory "Group-RPTUG")
