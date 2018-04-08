@@ -60,37 +60,21 @@ It is expected to work well
 
 ** Installing This Repository
 
-1. Clone or otherwise download this repository into a convenient location on your filesystem, say ~Emacs-Config~
-2. You will need a modern Emacs installed, version 25 or later
-3. Find your existing Emacs Customizations, e.g.
-	- the file ~.emacs~
-	- the directory ~.emacs.d/~
-4. Create a directory under ~Emacs-Config~ for your things, say ~User-Me/~
-	- note that ~.gitignore~ tells git to anything with prefix ~User-~ or ~Group-~
-5. Move your existing emacs Customizations to ~User-Me/~
-6. Create links (shortcuts) to the new customization files
-	- link ~Emacs-Config/.emacs~ to where you had your ~.emacs~
-	- link ~Emacs-Config/.emacs.d/~ to where you had your ~.emacs.d/~
-7. Copy ~Emacs-Config/.init-sample.el~ to ~Emacs-Config/.init.el~
-	- this may already have been done
-8. Edit your ~Emacs-Config/.init.el~ as described in its comments
-9. Create an empty file named ~init-me.el~ under your ~User-Me~ directory
-10. Check that Emacs is happy with this new configuration
-11. Fix any problems - let us know with an issue?
-12. Byte-Compile the files in the NGender/ subdirectory
-13. Transfer any old configurations you like to the new places
-	- if you have a lot, do this a small amount at a time
-	- personal things should go in ~init-me.el~
-	- consider putting fancy things in separate files
-14. Improve things as long as you use Emacs
-	- read ~README.org~ and other files under NGender/
-	- study ~init-examples.el~ for ideas
-	- submit a pull request with your improvements
-	- especially for things you've done under NGender/
+These installation instructions assume
+- a Unix-Like system, e.g. Unix, BSD, Linux, MacOS
+- some familiarity with using a command shell, e.g. BASH
+	- the comment character is # (hash)
+	- cp old new # copies things
+	- your home directory is ~ (tilda)
+- some familiarity with Emacs and/or another editor, e.g. vi
+- very simple understanding of Emacs-Lisp
+	- the comment character is ; (semicolon)
+	- Commands are enclosed in parentheses
+	- Command arguments separated by spaces, NOT commas
+	- Strings are in double quotes
 
-If you're on a Linux, Unix or BSD system
-you can do this from your
-shell with something like this:
+Instructions with example commands:
+
 #+BEGIN_SRC shell
 # 1. You will need a modern Emacs installed, version 25 or later
 which emacs # this needs to find your emacs program
@@ -110,6 +94,8 @@ git clone https://github.com/GregDavidson/EmacsProfile.git
 cd EmacsProfile # the directory holding the repository
 # 5. Make a place for your old and new special things
 mkdir User-Me # Keep prefix "User-", keep or change "Me" as you like
+# note that .gitignore tells git to anything with prefix User- or Group-
+# so your private directories should be prefixed accordingly
 # 6. Move your old special things there
 mv ~/.emacs User-Me/old.emacs
 mv ~/.emacs.d User-Me/old.emacs.d
@@ -123,17 +109,26 @@ vi .emacs
 cp -i init-sample.el init.el
 # if you changed User-Me, change it in init.el
 vi init.el
-# 9. Make a file for your new special changes
+# 9. Make a new file for your new special changes
 touch User-Me/init-me.el
 # 10. Check that Emacs starts up OK:
 emacs --debug-init
 # If emacs didn't like things, fix them somehow!
-# Once emacs is happy with this vanilla-flavored configuration:
-# C-u 0 M-x byte-recompile-directory Emacs-Profile/NGender/
-# Restart Emacs to make sure it's still happy
+# 11. Start using Emacs
+emacs &
+# 12. Merge any old configurations into the new system
 # Carefully (small amounts at a time?) transfer any of your old
 # configurations, if any, from your old config files
+#13. 
 #+END_SRC
+
+*** Post-Installation Possibilities
+
+- read ~README.org~ and other files under NGender/
+- study ~init-examples.el~ for ideas
+- submit an issue reporting problems or requested features
+- submit a pull request with your improvements
+	- respecially for things you've added under NGender/
 
 Although Macintoshes are based on BSD they have a number of
 deviations from the family.  You'll need to customize these
@@ -154,11 +149,6 @@ small files under the New Subdirectory
 - ~/.emacs.d/NGender/
 Any files which are specific to the needs and tastes of a
 particular user should be put in sibling subdirectories.
-Feel free to examine the files under
-- ~/.emacs.d/JGD/
-for examples.  These examples will soon migrate to
-~init-examples.el~ and JGD will disappear from the public
-repository.
 
 ** Individual vs. (Project) Group vs. Community
 
@@ -327,8 +317,6 @@ Alas, the packages spacemacs uses don't always cooperate well with the layering 
 
 You can write a new, more ambitious Package Manager such as
 - [[https://github.com/raxod502/straight.el]]
-
-
 
 *** Configuration Files
 

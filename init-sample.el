@@ -3,16 +3,25 @@
 ;; Everything after one or more semicolons is a comment for
 ;; humans and is ignored by Emacs.
 
+;; You might want to copy this to init.el so you can
+;; change it without messing up this sample, e.g.
+;;	cp init-sample.el init.el
+
 ;; This file should be loaded by ~/.emacs
 ;; which should be linked to ~/.emacs.d/.emacs
 ;; See README.org file in this directory
 
 ;; Study the README.org file to understand the purpose of
-;; the directory User-Me and the file init-me.el under it.
-;; Change any of these paths if needed.
+;; the directory User-Me and the file User-Me/init-me.el
+;; (You are expected to create both of these!)
+;; Change any of these paths if needed or desired.
 
+;; Change this default if your .emacs.d is somewhere else:
+(defvar *ngender-emacs-home* "~/.emacs.d")
+;; Then load the ngender extensions:
 (load "~/.emacs.d/NGender/ngender" t t)
-(ngender-emacs-home "~/.emacs.d")				; this is the default
+;; For help on load (or any other function) do: Control-h f load
+
 ;; Any vendor, group or project directories should go here, e.g.
 ;; (ngender-vendor-subdirectory "Bleeding-Edge")
 ;; (ngender-group-subdirectory "Group-FOO")
