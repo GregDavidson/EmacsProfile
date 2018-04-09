@@ -26,7 +26,7 @@
 														ido-ubiquitous multi-term
 														paredit-everywhere
 														rainbow-delimiters racer
-														smex toc-org use-package))
+														smex use-package))
 
 ;; ** Themes
 
@@ -48,8 +48,8 @@
 ;; ** LoadNGender Packages
 ;; Can/should any of these autoload??
 
-(defvar *ngender-org-packages '(mysql-to-org org org-autolist org-bullets org-page
-	org-projectile org-tree-slide ox-gfm) "desired set of org-mode packages")
+(defvar *ngender-org-packages* '(mysql-to-org org org-autolist org-bullets org-page
+	org-projectile org-tree-slide ox-gfm toc-org) "desired set of org-mode packages")
 (require 'ngender-org)
 (require 'ngender-shell)
 (require 'ngender-elisp)
