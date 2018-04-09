@@ -28,8 +28,8 @@
 ;; (3) Vendor (3rd party extension) directories
 ;; (4) Directories for Packages downloaded from Emacs Repositories
 
-Now it's time to load your personal customizations:
-(load "init-me")		      ; Your personal Emacs Extensions
+;; Now it's time to load your personal customizations:
+(load "init-me")
 
 ;; Remember that Emacs will help you better with init problems if you
 ;; call it with emacs --debug-init
