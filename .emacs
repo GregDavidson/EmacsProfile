@@ -1,17 +1,35 @@
-;; GNU-Emacs User Profile [ ~/.emacs ]
-;; I prefer to keep everything emacs under .emacs.d/
-;; so I symlink this file to ~/.emacs.d/.emacs
+;; GNU-Emacs User Profile, typically ~/.emacs
+;; I keep the real copy of this under *ngender-emacs-home*
+;; and simply symlink it to ~ or *ngender-user-home*
 
-;; SuSE has a fallback of "/etc/skel/.gnu-emacs"
-;; I may have a trimmed down version of it:
+;; Change these paths if appropriate!
 
-;; (package-initialize)
+(defvar *ngender-user-home* (expand-file-name "~")
+	"where you keep your customizations: your home or profile directory" )
 
-(load "~/.gnu-emacs" t t)
+;; your *ngender-emacs-home* goes under your *ngender-user-home*
+(defvar *ngender-emacs-home*
+	(expand-file-name ".emacs.d" *ngender-user-home*)
+	"where you keep your Emacs customizations" )
+;; How do we make this the place where packages will be kept???
 
-; A common place to start user customizations
-(load "~/.emacs.d/init.el" nil t)
+(package-initialize)
 
-;; Emacs Options & Settings automatically put here:
-(setq custom-file "~/.emacs.d/custom-file.el")
-(load custom-file t t)
+;; your custom-file
+;; holds your Emacs Customization System customizations
+;; goes under your *ngender-emacs-home*
+(setq custom-file
+	(expand-file-name "custom-file.el" *ngender-emacs-home*) )
+(load custom-file)
+
+;; You may have an additional, system-added customization file
+(load (expand-file-name ".gnu-emacs" *ngender-user-home*) t t) ; ignore its absence
+
+;; Make sure the NGender subdirectory is on the load-path
+(let ( (ngender-dir (expand-file-name "NGender" *ngender-emacs-home*)) )
+	(if (file-directory-p ngender-dir)
+		(setq load-path (delete-dups (cons ngender-dir load-path)))
+		(lwarn "Expected directory %s" ngender-dir) ) )
+
+; init.el should orchestrate everything else
+(load (expand-file-name "init.el" *ngender-emacs-home*))

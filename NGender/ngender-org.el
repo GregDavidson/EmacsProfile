@@ -4,10 +4,13 @@
 
 ;; ** Dependencies
 
-(unless (boundp *ngender-org-packages*)
-	(defvar *ngender-org-packages* '(org) "minimal set of org-mode packages") )
+(defvar *ngender-org-packages*
+	(ngender-symbol-value '*ngender-org-packages* '(org))
+	"minimal set of org-mode packages")
 (apply #'ngender-package *ngender-org-packages* )
 (require 'ngender)
+(ngender-package 'org)
+(require 'org)
 
 ;; ** Everything Else
 

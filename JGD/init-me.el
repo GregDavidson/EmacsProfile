@@ -18,64 +18,45 @@
 ;; ** Packages
 
 (require 'package)
-(ngender-package-archive
-	"gnu" "http://elpa.gnu.org/packages/"
-	"marmalade" "http://marmalade-repo.org/packages/"
-	"melpa-stable" "http://melpa-stable.milkbox.net/packages/"
-	"org" "https://orgmode.org/elpa/")
+(require 'ngender)
+(ngender-package-archive "gnu" "marmalade" "melpa-stable" "org")
 
-;; Is this redundant given list-packages??
 ;; Consider moving into appropriate customization file
-(defvar my-packages '(auto-complete company
-	ido-ubiquitous markdown-mode multi-term
-	 paredit-everywhere
-	rainbow-delimiters racer
-	smex toc-org use-package)
-  "A list of packages to ensure are installed at launch.")
+(apply #'ngender-package '(auto-complete company
+														ido-ubiquitous multi-term
+														paredit-everywhere
+														rainbow-delimiters racer
+														smex toc-org use-package))
 
-;; Install the packages we always want:
-(apply #'ngender-package my-packages)
-;; Failed on ngender.org, Friday 21 April 2017!!
+;; ** Themes
+
+(dolist (d '("~/.emacs.d/themes" "~/.emacs.d/User-Me/themes"))
+	(when (file-directory-p d)
+		(ngender-prepend-paths 'custom-theme-load-path d)
+		(ngender-prepend-paths 'load-path d) ) )
+;(load-theme 'tomorrow-night-bright t); example - not one I like!
+
+;; ** Preferences for Major Modes
 
 ;; ** Font, Face, Pitch, Indentation
 
-(defvar *ngender-pitch-mode* :variable)				; vs. :fixed
-(load "ngender-font")
+;; uncomment one of these two options:
+;; (defvar *ngender-pitch-mode* :fixed)
+(defvar *ngender-pitch-mode* :variable)
+(require 'ngender-font)
 
-;; ** Load-Paths
-
-;; add-to-list will put the new items at the front so the
-;; last added will come first
-
-;; *** Packages under ~/.emacs.d/vendor
-;; These are packages or versions of packages not available through the Emacs
-;; package system.  Remove them from here and from the vendor directory
-;; when no longer needed.
-(dolist (path '(	"~/.emacs.d/vendor"
-;;								"~/.emacs.d/vendor/ensime/elisp" ;; standard package now good??
-									"~/.emacs.d/vendor/html5-el" ) )
-	(let ( (p (require-directory path)) )
-		(when p (add-to-list 'load-path p) ) ) )
-
-;; *** Personal and NGender Emacs Code Directories
-(dolist (path '(	"~/Lib/Emacs" "~/.emacs.d/NGender" "~/.emacs.d/JGD" ) )
-	(let ( (p (require-directory path)) )
-		(when p (add-to-list 'load-path p) ) ) )
-
-;; ** Load NGender Packages
+;; ** LoadNGender Packages
 ;; Can/should any of these autoload??
 
-;; Report an error if not found, say nothing if all goes well
-(load "ngender" nil t)
 (defvar *ngender-org-packages '(mysql-to-org org org-autolist org-bullets org-page
 	org-projectile org-tree-slide ox-gfm) "desired set of org-mode packages")
-(load "ngender-org" nil t)
-(load "ngender-shell" nil t)
-(load "ngender-elisp" nil t)
+(require 'ngender-org)
+(require 'ngender-shell)
+(require 'ngender-elisp)
 (defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
-(load "ngender-sql" nil t)
-(load "my-sql-pw" nil t)			 ; encryption would be better!!
-(load "ngender-sql-connect" nil t)
+(require 'ngender-sql)
+(require 'my-sql-pw)			 ; encryption would be better!!
+(require 'ngender-sql-connect)
 
 ;; ** Load JGD Packages
 
@@ -85,6 +66,14 @@
 ;; *** Key Bindings - (Re)Define some keyboard shortcuts
 
 ;; ** Load Miscellaneous Simple Packages
+
+;; ** Markdown Mode
+
+;; This looks like boilerplate - how should we automate it??
+(defun ngender-markdown-mode ()
+	(ngender-package markdown-mode)
+	(markdown-mode) )
+(ngender-update-union-with-items 'auto-mode-alist '("\\.mmd\\'" . ngender-markdown-mode) )
 
 ;; *** bs - menu for selecting and displaying buffers
 (global-set-key "\C-x\C-b" 'bs-show)
@@ -213,6 +202,8 @@
 ;; (add-to-list 'auto-mode-alist '("\\.sql\\'" . ngender-sql-mode)
 ;; (require 'ngender-sql-connect)
 ;; (require 'my-sql-pw)
+(require 'ngender-tcl)
+(require 'ngender-printing)
 
 ;; ** Not Yet Loading NGender and JGD Modules
 ;; *** ngender-cedet

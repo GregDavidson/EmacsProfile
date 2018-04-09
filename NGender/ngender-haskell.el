@@ -15,7 +15,7 @@
 
 ;; (load "haskell-site-file")
 
-;; (ngender-update-union 'auto-mode-alist
+;; (ngender-update-union-with-items 'auto-mode-alist
 ;; 		  '("\\.[hg]s\\'"  . haskell-mode)
 ;; 		  '("\\.hi\\'"     . haskell-mode)
 ;; 		  '("\\.l[hg]s\\'" . literate-haskell-mode) )

@@ -2,23 +2,36 @@
 
 This Directory Tree is a Git Repository.
 
+** Summary: TL/DR
+
+- This is an *Emacs Profile*
+- It is for the use of Emacs by *Power Users*
+- You need to be moderately comfortable with
+	- Emacs & very basic Emacs-Lisp
+	- Filesystems
+		- Files, Directories, Paths, Links
+		- Maybe some Git
+- What you'll get if you use this Profile:
+	- Ease in setting up many powerful packages
+	- Ease in establishing many useful customizations
+
 ** The Purpose of this Repository
 
-Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is do to its extraordinary
+Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is due to its extraordinary
 customizability through settings and extentions.  Many of
 the most powerful extensions (typically available
 from Emacs Package Archives) are themselves highly
 configurable.  Many of the extensions are also designed to
 be combined and/or layered.
 
-We would like to make configuring and extending Emacs easier
-for Users, especially Power Users and especially Power Users
-who are willing to do simple editing of configuration files.
+We would like to make configuring and extending Emacs easier for
+Users, especially Power Users who are willing to do simple editing of
+configuration files.
 
 We would *also* like to make it easier for these Power Users
 to share what they have done with other members of their
 Shared Projects, Groups and with the Emacs Community at
-large.
+large.  This is what Git enables.
 
 We designed this repository to make
 Customizing Emacs more convenient by
@@ -28,8 +41,7 @@ Customizing Emacs more convenient by
 - defining additional functions and variables
 - adding keymaps for invoking functions more conveniently
 
-We intend that the customizations in this
-repository can be
+We intend that the customizations in this repository can be
 - shared by many people
 - improved by many users for the benefit of all
 - independent of any individual users' tastes
@@ -46,9 +58,9 @@ It is expected to work well
 
 ** Layout of the Repository
 
-- ~/.emacs :: gets a few things started, rarely needs changing
+- ~/.emacs :: gets things started, won't need changing once paths are correct
 - ~/.emacs.d/ :: holds main Emacs Configuration
-- ~/.emacs.d/init.el :: sets load-path, loads two files, rarely needs changing
+- ~/.emacs.d/init.el :: extends load-path, loads other init files, rarely needs changing
 - ~/.emacs.d/custom-file.el :: Emacs Customization System settings
 - ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs ~load-path~
 - ~/.emacs.d/NGender/ngender.el :: core extension loaded by ~init.el~ file
@@ -67,13 +79,22 @@ These installation instructions assume
 	- cp old new # copies things
 	- your home directory is ~ (tilda)
 - some familiarity with Emacs and/or another editor, e.g. vi
-- very simple understanding of Emacs-Lisp
+- simple understanding of Emacs-Lisp
 	- the comment character is ; (semicolon)
 	- Commands are enclosed in parentheses
-	- Command arguments separated by spaces, NOT commas
-	- Strings are in double quotes
+	- Arguments separated by spaces, NOT commas
+	- Strings in double quotes
+	- A single single quote quotes the next object
 
-Instructions with example commands:
+If you're using an Apple Macintosh you will need to make
+some small changes.  If you're on a Microsoft Windows system
+you'll need to figure out an equivalent.
+
+It would be helpful to the community if you were to record
+any adjustments that you had to make to get this to work in
+_your environment_ and contribute those alternative steps!
+
+*** Instructions with example commands:
 
 #+BEGIN_SRC shell
 # 1. You will need a modern Emacs installed, version 25 or later
@@ -83,8 +104,6 @@ emacs --version # this needs to be version 25 or higher
 # Typically you'll find them here:
 ls -ld ~/.emacs*
 ls ~/.emacs.d
-# Anywhere we're using ~ (your home directory) and that's
-# not right, change it to your desired path
 # 3. Create or choose a place to put a Git repository
 mkdir ~/Gits
 cd ~/Gits
@@ -99,27 +118,27 @@ mkdir User-Me # Keep prefix "User-", keep or change "Me" as you like
 # 6. Move your old special things there
 mv ~/.emacs User-Me/old.emacs
 mv ~/.emacs.d User-Me/old.emacs.d
-#6. Link the new ones in where the old ones were:
+# 7. Correct any incorrect paths in .emacs file
+emacs .emacs	# or use another editor if emacs is unhappy
+# 8. Link the new ones in where the old ones were:
 ln -s `pwd`/.emacs  ~
 ln -s `pwd`/.emacs.d  ~
 # some shells, e.g. bash, let you use ~+ instead of `pwd`
-# 7. If these are not in ~, correct that in your  .emacs file
-vi .emacs
-# 8. Create your top-level init file:
+# 9. Create your top-level init file:
 cp -i init-sample.el init.el
-# if you changed User-Me, change it in init.el
+# if you changed the name User-Me, change it in init.el
 vi init.el
-# 9. Make a new file for your new special changes
+# 10. Make a file for your new special changes
 touch User-Me/init-me.el
-# 10. Check that Emacs starts up OK:
+# 11. Check that Emacs starts up OK:
 emacs --debug-init
 # If emacs didn't like things, fix them somehow!
-# 11. Start using Emacs
+# Once emacs is happy with this vanilla-flavored configuration:
+# Restart Emacs to make sure it's still happy
 emacs &
-# 12. Merge any old configurations into the new system
-# Carefully (small amounts at a time?) transfer any of your old
-# configurations, if any, from your old config files
-#13. 
+#12. Carefully (small amounts at a time?) transfer any of your old
+# configurations, if any, from your old config files in to the appropriate
+# places in the new system.
 #+END_SRC
 
 *** Post-Installation Possibilities
@@ -150,13 +169,37 @@ small files under the New Subdirectory
 Any files which are specific to the needs and tastes of a
 particular user should be put in sibling subdirectories.
 
+It would be nice to have a flexible and fault-tolerant shell
+script which could do all of this setup work - please feel
+free to submit one!
+
+** Customizing Your New Profile
+
+Git will ignore files and directories matching patterns in the file
+~.gitignore~ which includes anything beginning with the prefix ~User-~
+or ~Group-~.
+
+Any files which are specific to your individual needs and tastes go
+under a sibling subdirectory which we've been calling
+~.emacs.d/User-Me/~ in these instructions.  Call it what you want and
+if it begins with ~User-~ Git will ignore it.
+
+If you are collaborating with partners on various projects, there may
+be some Emacs extensions which you may want to share with members of
+your group.  Consider putting those changes in a directory beginning
+with ~Group-~ which is another pattern Git will ignore.
 ** Individual vs. (Project) Group vs. Community
 
+As your improvements mature you may find it appropriate to share your
+improvements with others by moving them to a higher level and doing a
+git push or submitting a pull request.
+   
 *** Community Level
 
-Everything under NGender is intended to be helpful for any
-Emacs User.  Where a policy is applied there's a variable
-which can alter it.
+Everything under NGender is intended to be helpful for any Emacs User.
+Where a policy is applied we try to have a variable or function which can alter it
+coherently.
+
 **** Individual Level
 
 Everything under User-Me is ignored by the Repository.  To
@@ -181,9 +224,8 @@ repository and submit a pull request!
 
 Customizations for Projects and Groups can be created as
 separate repositories just as shown in the Individual Level
-Above.  They can be linked in under Emacs-Repository as,
+above.  They can be linked in under Emacs-Repository as,
 e.g. Group-NAME and activated by
-- our .gitignore says to ignore files with prefix ~Group-~
 - adding to your ~init.el~ or ~init-me.el~ file:
 	- (ngender-group-subdirectory "Group-YOUR-GROUP-NAME")
 - adding other customizations for them to ~init-me.el~ file
@@ -277,7 +319,9 @@ customization.
 
 *** Some Worthy Approaches
 
-Although Emacs-Lisp doesn't have modules, it's possible to create
+**** The Emacs Package System
+
+Although Emacs-Lisp doesn't have modules, it's possible to add
 structure providing some of the features of proper modules.  One of
 these approaches has evolved into the current Emacs Package System.  A
 package is a chunk of Emacs-Lisp code with metadata (name,
@@ -292,12 +336,16 @@ them.  Limitations include
 - Package dependencies can be difficult to resolve
 - Packages can interfere with one another - they're not true modules
 
+**** The Emacs Customization System
+
 Emacs comes with a [[https://www.emacswiki.org/emacs/CustomizingAndSaving][Customization System]] which allows the user to
 browse Settings and Options from structured Emacs Custom-Mode Buffers.
 Limitations include
 - It's often difficult to find the right Setting or Option
 - Customizations may interact badly with one another and with other code
 - Customizations are stored without any context as to where they're applicable
+
+**** An Emacs Prelude
 
 You can put all of your extensions, including lists of Package
 Archives, the Packages one wants to download from them and all of the
@@ -311,12 +359,27 @@ does things.  Some examples:
 - [[https://github.com/bbatsov/prelude]]
 These are all a good source of ideas for our configurations!
 
+**** More Advanced Approaches
+
 You can impose a layered architecture to Emacs Extensions.  A good example of this is
 - [[http://spacemacs.org]
 Alas, the packages spacemacs uses don't always cooperate well with the layering system.
 
 You can write a new, more ambitious Package Manager such as
 - [[https://github.com/raxod502/straight.el]]
+
+*** Where this project came from
+
+This project started with a small number of large
+customization files which have served the needs of one of
+the NGender Partners, JGD = J. Greg Davidson for decades.
+
+THe idea was to pull out the bits which would likely be
+useful for others, clean them up for portability and move
+the more complex features into their own files.
+
+The challenge of making this accessible for others has
+inspired some creative solutions!
 
 *** Configuration Files
 
