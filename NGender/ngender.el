@@ -11,9 +11,6 @@
 
 ;; (require 'jit-lock)	; why?
 (require 'cl-lib)
-;; for:
-;; oddp
-;; what else??
 
 ;; ** Warnings, Errors, Validating
 
