@@ -1,15 +1,15 @@
-;; * Org Mode Support -*- lexical-binding: t; -*-
+;; * Org Mode Support
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
 ;; ** Dependencies
 
-(defvar *ngender-org-packages*
-	(ngender-symbol-value '*ngender-org-packages* '(org))
-	"minimal set of org-mode packages")
-(apply #'ngender-package *ngender-org-packages* )
 (require 'ngender)
-(ngender-package 'org)
+(defvar *ngender-org-packages*
+  (delete-dups (cons 'org (ngender-symbol-value '*ngender-org-packages*)))
+  "packages to support org-mode with package org first")
+(apply #'ngender-package *ngender-org-packages* )
+;; Do I need to require the rest of the org packages?? Or exactly what??
 (require 'org)
 
 ;; ** Everything Else
@@ -49,6 +49,7 @@
 	(append (mapcar (lambda (x) (cons x t)) my-org-babel-t) (mapcar (lambda (x) (cons x nil)) my-org-babel-nil) )
 	"See http://orgmode.org/manual/Languages.html#Languages and what I do with this value" )
 
+;; don't we want set comparison??  Order matters!!
 (unless (equal (mapcar #'car my-org-babel) (mapcar #'car org-babel-load-languages))
 	(org-babel-do-load-languages 'org-babel-load-languages my-org-babel) )
 
