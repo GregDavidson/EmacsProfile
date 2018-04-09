@@ -395,11 +395,10 @@ and load it, i.e. Emacs will treat the contents of that file
 as Emacs-Lisp code (so it better be that) and Emacs will
 execute that code.
 
-Therefore, if you have *both* files, Emacs will, by default, ignore your
-- ~/.emacs.d/
-directory and everything in it!
+Therefore, if you have *both* files, Emacs will, by default, ignore
+your ~/.emacs.d/ directory and everything in it!
 
-It would seem that it's simpler to just not have a
-- ~/.emacs
-file but unfortunately that will interfere with
-the Emacs Customization System.
+It would seem that it's simpler to just not have a ~/.emacs file but
+unfortunately that will interfere with the Emacs Customization System.
+
+Thus, we use a ~.emacs~ file to get everything started.
