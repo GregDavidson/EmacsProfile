@@ -7,7 +7,7 @@
 (require 'ngender)
 (defvar *ngender-org-packages*
   (delete-dups (cons 'org (ngender-symbol-value '*ngender-org-packages*)))
-  "packages to support org-mode with package org first")
+  "packages to support org-mode with package org first" )
 (apply #'ngender-package *ngender-org-packages* )
 ;; Do I need to require the rest of the org packages?? Or exactly what??
 (require 'org)

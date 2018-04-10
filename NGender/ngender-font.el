@@ -43,15 +43,14 @@
 ;; Use a %d format spec where the font size goes, e.g.
 ;;	"-adobe-courier-medium-r-normal--%d-*-*-*-m-*-iso8859-1"
 ;; otherwise it will be put at the end as will happen here:
-(defvar *ngender-fixed-font* (ngender-symbol-value '*ngender-fixed-font* "Dejavu Sans Mono"))
-(defvar *ngender-variable-font* (ngender-symbol-value '*ngender-variable-font* "Dejavu Sans Condensed"))
-(defvar *ngender-pitch-mode* (ngender-symbol-value '*ngender-pitch-mode* :fixed)) ; vs. :variable
+(defvar *ngender-fixed-font* "Dejavu Sans Mono")
+(defvar *ngender-variable-font* "Dejavu Sans Condensed")
+(defvar *ngender-pitch-mode* :fixed) ; vs. :variable
 (defvar *ngender-font*
-  (ngender-symbol-value '*ngender-font*
 	(cond
 		( (eq *ngender-pitch-mode* :variable ) *ngender-variable-font* )
-		( (eq *ngender-pitch-mode* :fixed ) *ngender-fixed-font* ) ) ) )
-(defvar *ngender-frame-font* (ngender-symbol-value '*ngender-frame-font* *ngender-font*))
+		( (eq *ngender-pitch-mode* :fixed ) *ngender-fixed-font* ) ) )
+(defvar *ngender-frame-font* *ngender-font*)
 
 ;; make it easy to switch the default for the current buffer:
 (setq buffer-face-mode-face

@@ -103,15 +103,14 @@
 (require 'package)
 
 (defvar *ngender-known-package-archives*
-  (ngender-symbol-value '*ngender-known-package-archives*
-			'( ("gnu" . "http://elpa.gnu.org/packages/")
-			   ("marmalade" . "http://marmalade-repo.org/packages/")
-			   ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
-			   ("org" . "https://orgmode.org/elpa/")
-			   ) ) "package archives known to exist" )
+	'( ("gnu" . "http://elpa.gnu.org/packages/")
+		 ("marmalade" . "http://marmalade-repo.org/packages/")
+		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+		 ("org" . "https://orgmode.org/elpa/")
+		 ) "package archives known to exist" )
 
 (defvar package-archives
-  (ngender-symbol-value 'package-archives '( ("gnu" . "http://elpa.gnu.org/packages/") ) )
+	'( ("gnu" . "http://elpa.gnu.org/packages/") )
   "requested package archives" )
 
 ;; improve these with regexp matching!!
@@ -224,9 +223,9 @@
 ;; at the front of load-path!!  Anytime we want to fix this
 ;; we can call (ngender-rebuild-load-path)
 
-(defvar *ngender-user-subdirectories* (ngender-symbol-value '*ngender-user-subdirectories*))
-(defvar *ngender-group-subdirectories* (ngender-symbol-value '*ngender-group-subdirectories*))
-(defvar *ngender-vendor-subdirectories* (ngender-symbol-value '*ngender-vendor-subdirectories*))
+(defvar *ngender-user-subdirectories* '())
+(defvar *ngender-group-subdirectories* '())
+(defvar *ngender-vendor-subdirectories* '())
 
 (defconst *ngender-path-lists*
 	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* load-path)

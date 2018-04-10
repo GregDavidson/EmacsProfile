@@ -18,9 +18,8 @@
 ;; Consider adding to your init-me.el some of:
 ;; (defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
 
-(defvar *ngender-sql-packages*
-	(ngender-symbol-value '*ngender-sql-packages* '(sql))
-	"minimal set of sql packages")
+(defvar *ngender-sql-packages* '(sql)
+	"minimal set of sql packages" )
 (apply #'ngender-package *ngender-sql-packages*)
 
 (require 'rx)

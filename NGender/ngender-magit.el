@@ -6,9 +6,8 @@
 
 (require 'ngender)
 
-(defvar *ngender-magit-packages*
-	(ngender-symbol-value '*ngender-magit-packages* '(magit))
-	"minimal set of magit packages")
+(defvar *ngender-magit-packages* '(magit)
+	"minimal set of magit packages" )
 (apply #'ngender-package *ngender-magit-packages*)
 
 (require 'magit)
