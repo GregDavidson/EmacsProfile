@@ -5,9 +5,11 @@
 ;; ** Dependencies
 
 (require 'ngender)
-(defvar *ngender-org-packages*
-  (delete-dups (cons 'org (ngender-symbol-value '*ngender-org-packages*)))
-  "packages to support org-mode with package org first" )
+(defvar *ngender-org-packages* '()
+  "packages to support org-mode" )
+;; Ensure org package is on the list at the front:
+(setq *ngender-org-packages*
+  (delete-dups (cons 'org *ngender-org-packages*)) )
 (apply #'ngender-package *ngender-org-packages* )
 ;; Do I need to require the rest of the org packages?? Or exactly what??
 (require 'org)
