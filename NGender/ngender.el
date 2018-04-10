@@ -39,21 +39,28 @@
 
 ;; *** Using Lists As Sets
 
+;; A bag is a list of items
+;; A list-set is a bag without duplicates (using equal)
+
 (defun ngender-union-list-of-bags (bags)
   "return list set union of list of bag lists"
 	(delete-dups (apply #'append bags)) )
 
 (defun ngender-union-bags (&rest bags)
-  "return list set union of list of bag lists"
+  "return list set union of multiple bag lists"
 	(ngender-union-list-of-bags bags) )
 
 (defun ngender-update-union-with-list-of-bags (symbol list-of-bags)
-  (set symbol (ngender-union-list-of-bags (cons (ngender-symbol-value symbol) list-of-bags)) ) )
+	"update symbol as set list from current value and bags in list"
+  (set symbol
+		(ngender-union-list-of-bags (cons (ngender-symbol-value symbol) list-of-bags)) ) )
 
 (defun ngender-update-union-with-bags (symbol &rest bags)
+	"update symbol as set list from current value and multiple bags"
   (ngender-update-union-with-list-of-bags symbol bags) )
 
 (defun ngender-update-union-with-items (symbol &rest items)
+	"update symbol as set list from current value and multiple items"
   (ngender-update-union-with-bags symbol items) )
 
 ;; *** Managing Path Set Lists
