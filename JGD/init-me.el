@@ -82,7 +82,6 @@
 
 (defvar *ngender-magit-packages* '(magit magithub git-commit))
 (autoload 'magit-status "ngender-magit")
-(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; *** Multi-Term - manage multiple terminal emulators
 
