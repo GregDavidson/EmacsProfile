@@ -240,7 +240,7 @@
 ;; (autoload 'ngender-prolog "ngender-prolog")
 ;; (add-to-list 'auto-mode-alist '("\\.pl\\'" . ngender-prolog))
 ;; **** ngender-rust
-(defvar *ngender-rust-packages '(rust-mode racer)	"desired set of org-mode packages")
+(defvar *ngender-rust-packages* '(rust-mode racer)	"desired set of org-mode packages")
 (autoload 'ngender-rust "ngender-rust")
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . ngender-rust))
 ;; **** ngender-shell
