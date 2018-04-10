@@ -35,6 +35,7 @@
 (if (boundp symbol) (symbol-value symbol) default) )
 
 (defun ngender-update-filter (symbol predicate)
+	"symbol should be sequence; ensure symbol's value is nil, filter it with predicate"
   (set symbol (seq-filter predicate (ngender-symbol-value symbol))) )
 
 ;; *** Using Lists As Sets
