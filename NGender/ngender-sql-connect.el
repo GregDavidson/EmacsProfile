@@ -39,9 +39,9 @@
 
 ;; **  server list
 
-(set sql-connection-alist
+(setq sql-connection-alist
 	'(
-		 (keith.local
+		 ("keith.local"
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
