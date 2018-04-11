@@ -15,11 +15,16 @@
 
 (package-initialize)
 
+;; your *ngender-user-me* goes under your *ngender-emacs-home*
+(defvar *ngender-user-me*
+	(expand-file-name "User-Me" *ngender-emacs-home*)
+	"where you keep your personal Emacs customizations" )
+
 ;; your custom-file
-;; holds your Emacs Customization System customizations
-;; goes under your *ngender-emacs-home*
+;; holds your personal Emacs Customization System customizations
+;; goes under your *ngender-user-me*
 (setq custom-file
-	(expand-file-name "custom-file.el" *ngender-emacs-home*) )
+	(expand-file-name "custom-file.el" *ngender-user-me*) )
 (load custom-file)
 
 ;; You may have an additional, system-added customization file
