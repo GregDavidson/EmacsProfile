@@ -52,12 +52,11 @@
 ;; evil-visual-rep... :: search/replace commands for evil visual state, inc. blocks
 ;; evil-visualstar :: Starts a * or # search from the visual selection
 
-
-
 (apply #'ngender-package *ngender-evil-packages*)
 
 (require 'ngender)
 (require 'evil)
+(evil-mode)
 
 ;; ** Provides
 
