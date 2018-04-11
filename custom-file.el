@@ -33,7 +33,7 @@
  '(org-log-done (quote time))
 	'(package-selected-packages
 		 (quote
-			 (evil fuck use-package typed-clojure-mode toc-org sqlup-mode sql-indent smex rainbow-delimiters racer prolog project-mode php-mode persp-mode paredit-everywhere ox-gfm org-tree-slide org-projectile org-pdfview org-page org-bullets org-autolist ob-prolog nov mysql-to-org multi-term markdown-mode magithub ido-ubiquitous idle-highlight-mode helm haskell-mode ghci-completion find-file-in-project company closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc biblio auto-complete)))
+			 (db magit evil fuck use-package typed-clojure-mode toc-org sqlup-mode sql-indent smex rainbow-delimiters racer prolog project-mode php-mode persp-mode paredit-everywhere ox-gfm org-tree-slide org-projectile org-pdfview org-page org-bullets org-autolist ob-prolog nov mysql-to-org multi-term markdown-mode magithub ido-ubiquitous idle-highlight-mode helm haskell-mode ghci-completion find-file-in-project company closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc biblio auto-complete)))
  '(paperless-capture-directory "~/Scan/ScansNew")
  '(paperless-root-directory "/More/Greg/Archives/2017")
  '(pr-faces-p t)
@@ -86,7 +86,7 @@
  '(tcl-indent-level 8)
  '(tool-bar-mode nil)
  '(tramp-default-host "nil")
- '(tramp-default-host-alist nil nil (tramp))
+ '(tramp-default-host-alist nil)
  '(transient-mark-mode 1)
  '(uniquify-buffer-name-style (quote reverse) nil (uniquify))
  '(xsl-element-indent-step 2))
