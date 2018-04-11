@@ -257,7 +257,3 @@
 
 (winner-mode 1)
 (menu-bar-mode 1)              ;  it got disabled somewhere!
-
-;; ** Start the Emacs-Server
-
-(server-start)
