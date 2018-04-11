@@ -44,7 +44,7 @@ Customizing Emacs more convenient by
 We intend that the customizations in this repository can be
 - shared by many people
 - improved by many users for the benefit of all
-- independent of any individual users' tastes
+- independent of any individual user's tastes
 - easily configured to each user's taste!
 
 This is a project of *RPTUG*, the
@@ -63,7 +63,7 @@ It is expected to work well
 - ~/.emacs.d/init.el :: extends load-path, loads other init files, rarely needs changing
 - ~/.emacs.d/custom-file.el :: Emacs Customization System settings
 - ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs ~load-path~
-- ~/.emacs.d/NGender/ngender.el :: core extension loaded by ~init.el~ file
+- ~/.emacs.d/NGender/ngender.el :: core extension loaded by ~.emacs~ file
 - ~/.emacs.d/NGender/ngender-NAME.el :: file managing extension NAME
 - ~/.emacs.d/User-Me/ :: individual extensions, on Emacs ~load-path~
 - ~/.emacs.d/User-Me/init-me.el :: loaded by ~init.el~ after ~ngender.el~
