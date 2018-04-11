@@ -28,7 +28,8 @@
 ;; Make sure the NGender subdirectory is on the load-path
 (let ( (ngender-dir (expand-file-name "NGender" *ngender-emacs-home*)) )
 	(if (file-directory-p ngender-dir)
-		(setq load-path (delete-dups (cons ngender-dir load-path)))
+		(prog (setq load-path (delete-dups (cons ngender-dir load-path)))
+			(load "ngender") )
 		(lwarn "Expected directory %s" ngender-dir) ) )
 
 ; init.el should orchestrate everything else
