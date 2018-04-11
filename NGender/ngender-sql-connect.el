@@ -41,15 +41,12 @@
 
 (set sql-connection-alist
 	'(
-<<<<<<< HEAD:jgd/jgd-sql-connect.el
 		 (keith.local
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
 			 (sql-user "keith")
 			 (sql-database "keith") )
-		 (wicci.local
-=======
 		 ("greg.local"
 			 (sql-product 'postgres)
 			 (sql-port 5432)
@@ -57,7 +54,6 @@
 			 (sql-user "greg")
 			 (sql-database "greg") )
 		 ("wicci.local"
->>>>>>> d9df9154e81d7363f9dd32fdd1d4a99ea357a931:NGender/ngender-sql-connect.el
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
