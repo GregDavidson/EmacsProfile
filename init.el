@@ -15,7 +15,6 @@
 ;; the directory User-Me and the file init-me.el under it.
 ;; Change any of these paths if needed.
 
-(load "ngender")
 ;; Declare any Vendor (3rd-party library) directories here, e.g.
 (ngender-vendor-subdirectory "vendor")
 ;; Declare any (Project) Group directories here, e.g.

@@ -31,5 +31,7 @@
 		(setq load-path (delete-dups (cons ngender-dir load-path)))
 		(lwarn "Expected directory %s" ngender-dir) ) )
 
+(require 'ngender)
+
 ; init.el should orchestrate everything else
 (load (expand-file-name "init.el" *ngender-emacs-home*))
