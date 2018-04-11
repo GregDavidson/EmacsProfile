@@ -1,0 +1,152 @@
+* NGender Emacs Extensions Directory
+
+Except where explicit calls to require indicate
+dependencies, the packages (files) in this directory stand
+alone.  You will want to arrange for their loading in your
+[[~/emacs.d/init.el][init.el]] file, either with an explicit require or
+by arranging an autoload.  Some further customization may
+also be required in your [[~/.emacs.d/init.el][init.el]] to get the full
+functionality of the package.
+
+** Files:
+- [[org-list-files]] :: Generate Org-Mode list of *.el files in this directory
+- [[ngender.el]] :: NGender Emacs Profile Base
+- [[ngender-cedet.el]] :: Semantic Bovinator (CEDET) Support
+- [[ngender-c.el]] :: C/C++ Hacking Support
+- [[ngender-clisp.el]] :: Common Lisp Hacking Support
+- [[ngender-clojure.el]] :: Clojure Hacking Support
+- [[ngender-elisp.el]] :: Emacs-Lisp Hacking Support
+- [[ngender-haskell.el]] :: Haskell Hacking Support
+- [[ngender-mozart.el]] :: Mozart/Oz Hacking Support
+- [[ngender-org.el]] :: Org Mode Support
+- [[ngender-php.el]] :: PHP Hacking Support
+- [[ngender-prolog.el]] :: Prolog Hacking Support
+- [[ngender-rust.el]] :: Rust Hacking Support
+- [[ngender-scala.el]] :: Ensime Scala Support
+- [[ngender-rx.el]] :: sexp notation for regular expressions
+- [[ngender-shell.el]] :: Support for Bourne-Compatible Shells
+- [[ngender-sql.el]] :: Fancy SQL Editing Support
+- [[ngender-sql-connect.el]] :: Connect SQLi to Database
+- [[ox-tiki.el]] :: Tiki Wiki Back-End for Org Export Engine
+
+** Compile Log Tue Mar 27 14:37:52 PDT 2018
+
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-c.el at Tue Mar 27 14:31:39 2018
+ngender-c.el:15:36:Warning: reference to free variable
+    ‘ngender-default-indent’
+
+In ngender-c-mode:
+ngender-c.el:48:20:Warning: reference to free variable
+    ‘ngender-default-indent’
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-cedet.el at Tue Mar 27 14:32:33 2018
+ngender-cedet.el:15:7:Warning: assignment to free variable
+    ‘my-semantic-submodes’
+ngender-cedet.el:25:18:Warning: reference to free variable
+    ‘my-semantic-submodes’
+
+In end of data:
+ngender-cedet.el:103:1:Warning: the following functions are not known to be defined:
+    semantic-load-enable-primary-ectags-support,
+    ede-enable-generic-projects
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-clisp.el at Tue Mar 27 14:33:39 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-clojure.el at Tue Mar 27 14:33:41 2018
+ngender-clojure.el:17:7:Warning: assignment to free variable
+    ‘cider-repl-popup-stacktraces’
+
+In end of data:
+ngender-clojure.el:69:1:Warning: the following functions are not known to be defined:
+    ngender-package-loaded, ngender-update-union
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-elisp.el at Tue Mar 27 14:35:03 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-haskell.el at Tue Mar 27 14:35:41 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-mozart.el at Tue Mar 27 14:35:53 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-org.el at Tue Mar 27 14:35:59 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-php.el at Tue Mar 27 14:36:09 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-prolog.el at Tue Mar 27 14:36:14 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-rust.el at Tue Mar 27 14:36:23 2018
+
+In rust-mode-ngender:
+ngender-rust.el:24:8:Warning: ‘racer-activate’ is an obsolete function; use
+    ‘racer-mode’ instead.
+ngender-rust.el:27:4:Warning: ‘racer-turn-on-eldoc’ is an obsolete function;
+    use ‘eldoc-mode’ instead.
+
+In end of data:
+ngender-rust.el:49:1:Warning: the function ‘racer-complete-or-indent’ is not
+    known to be defined.
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-rx.el at Tue Mar 27 14:36:26 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-scala.el at Tue Mar 27 14:36:29 2018
+ngender-scala.el:8:1:Error: Cannot open load file: No such file or directory, ensime
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-shell.el at Tue Mar 27 14:36:31 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-sql-connect.el at Tue Mar 27 14:36:34 2018
+
+In ngender-sql-connect:
+ngender-sql-connect.el:97:49:Warning: reference to free variable ‘my-sql-pw’
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-sql.el at Tue Mar 27 14:36:44 2018
+ngender-sql.el:138:1:Warning: Unused lexical argument ‘matches’
+
+In sql-startup:
+ngender-sql.el:321:9:Warning: assignment to free variable
+    ‘buffer-face-mode-face’
+
+In sql-outline-minor-mode:
+ngender-sql.el:347:9:Warning: assignment to free variable
+    ‘variable-pitch-mode’
+
+In end of data:
+ngender-sql.el:384:1:Warning: the function ‘sql-args-list’ is not known to be
+    defined.
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-workgroups.el at Tue Mar 27 14:36:47 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender.el at Tue Mar 27 14:36:50 2018
+
+In ngender-union-list:
+ngender.el:68:17:Error: ‘add-to-list’ can’t use lexical var ‘bag’; use ‘push’
+    or ‘cl-pushnew’
+ngender.el:98:1:Warning: Unused lexical variable ‘d’
+
+In ngender-pitch-mode:
+ngender.el:211:11:Warning: assignment to free variable ‘variable-pitch-mode’
+ngender.el:245:1:Warning: Unused lexical argument ‘n’
+
+In lbd-ps-landscape:
+ngender.el:308:9:Warning: assignment to free variable ‘ps-landscape-mode’
+
+In lbd-ps-portrait:
+ngender.el:314:9:Warning: assignment to free variable ‘ps-landscape-mode’
+
+Compiling file /home/greg/.emacs.d/NGender/ox-tiki.el at Tue Mar 27 14:36:56 2018
+ox-tiki.el:316:1:Warning: Unused lexical variable ‘struct’
+
+
+Compiling no file at Tue Mar 27 14:38:54 2018
+Leaving directory ‘/home/greg/.emacs.d/JGD’
+
+Compiling file /home/greg/.emacs.d/JGD/jgd.el at Tue Mar 27 14:39:06 2018
+Entering directory ‘/home/greg/.emacs.d/JGD/’
+
+In variable-pitch-mode-jgd:
+jgd.el:217:9:Warning: assignment to free variable ‘variable-pitch-mode’
+jgd.el:598:7:Warning: assignment to free variable ‘org-capture-templates’
+
+In lbd-ps-landscape:
+jgd.el:720:9:Warning: assignment to free variable ‘ps-landscape-mode’
+
+In lbd-ps-portrait:
+jgd.el:726:9:Warning: assignment to free variable ‘ps-landscape-mode’

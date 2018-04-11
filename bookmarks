@@ -4,12 +4,7 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
 	(filename . "~/Notes/GTD/ideas.org")
-	(front-context-string . "** Social Media ")
-	(rear-context-string . "onsidered later\n")
-	(position . 52))
-("org-refile-last-stored"
-	(filename . "~/GTD/gtd.org")
-	(front-context-string . "*** TODO use sam")
-	(rear-context-string . "erever possible\n")
-	(position . 937))
+	(front-context-string . "** Repository of")
+	(rear-context-string . "dship Project]]\n")
+	(position . 2590))
 )

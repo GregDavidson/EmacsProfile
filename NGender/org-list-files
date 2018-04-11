@@ -1,0 +1,8 @@
+#!/bin/bash
+: << 'EOF'
+;; * Generate Org-Mode list of *.el files in this directory -*- -*-
+EOF
+for f in ${0##*/} *.el; do
+printf -- '- [[%s]] :: %s\n' "$f" \
+	"$(head "$f" | sed -n 's/^;; \* \(.*[^[:space:]]\)[[:space:]]*-\*-.*-\*-.*/\1/p')"
+done

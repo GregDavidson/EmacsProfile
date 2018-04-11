@@ -6,8 +6,9 @@
 *.dat
 TAGS
 TAGS-*
-*pw.*
-Makefile.depends
+*-pw.*
+User-*
+Group-*
 *.elc
 ede-projects.el
 srecode-map.el
@@ -22,6 +23,7 @@ icons
 places
 nrepl-history
 Limbo
+tutorial
 magithub
 RCS
 semanticdb

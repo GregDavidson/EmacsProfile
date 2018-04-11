@@ -1,4 +1,14 @@
-;;; Following https://github.com/tmtxt/.emacs.d ... tmtxt-sql.el
+;; * Connect SQLi to Database -*- lexical-binding: t; -*-
+;; Authors:
+;;	jgd = J. Greg Davidson
+
+;; ** Dependencies
+
+(require 'ngender-sql)
+																				;
+;; Following https://github.com/tmtxt/.emacs.d ... tmtxt-sql.el
+
+;; ** Login Parameters
 
 ;;; default PostgreSQL login params
 (setq sql-postgres-login-params
@@ -14,7 +24,8 @@
 		 (server :default "localhost")
 		 (port :default 3306) ) )
 
-;;; hooks
+;; ** Hooks
+
 (add-hook 'sql-interactive-mode-hook
 	(lambda ()
 		(toggle-truncate-lines t)
@@ -26,9 +37,11 @@
 		(setq-local ac-ignore-case t)
 		(auto-complete-mode) ) )
 
-;;; server list
-(setq sql-connection-alist
+;; **  server list
+
+(set sql-connection-alist
 	'(
+<<<<<<< HEAD:jgd/jgd-sql-connect.el
 		 (keith.local
 			 (sql-product 'postgres)
 			 (sql-port 5432)
@@ -36,44 +49,58 @@
 			 (sql-user "keith")
 			 (sql-database "keith") )
 		 (wicci.local
+=======
+		 ("greg.local"
+			 (sql-product 'postgres)
+			 (sql-port 5432)
+			 (sql-server "localhost")
+			 (sql-user "greg")
+			 (sql-database "greg") )
+		 ("wicci.local"
+>>>>>>> d9df9154e81d7363f9dd32fdd1d4a99ea357a931:NGender/ngender-sql-connect.el
 			 (sql-product 'postgres)
 			 (sql-port 5432)
 			 (sql-server "localhost")
 			 (sql-user "keith")
 			 (sql-database "wicci1") )
-		 (tiki.local
+		 ("tiki.local"
 			 (sql-product 'mysql)
 			 (sql-port 3306)
 			 (sql-server "localhost")
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") )
-		 (tiki.ngender
+		 ("tiki.ngender"
 			 (sql-product 'mysql)
 			 (sql-port 3306)
 			 (sql-server "localhost")
 			 (sql-default-directory "/ssh:ngender.org:")
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") )
-		 (tiki.office
+		 ("tiki.office"
 			 (sql-product 'mysql)
 			 (sql-port 3306)
 			 (sql-server "keith@ngender-org.office")
 			 (sql-user "phpmyadmin")
 			 (sql-database "tiki") ) ) )
 
-;;; TODO update this function
-(defun jgd-sql-connect (connection)
+;; ** Function ngender-sql-connect
+
+;; TODO update this function - Why??
+;; New reason:  Need to merge account as well as password info
+;; with the connection information!!
+(defun ngender-sql-connect (connection)
   "Connect to the input server using sql-connection-alist"
   (interactive
    (helm-comp-read "Select server: "
 		 (mapcar (lambda (item)
 							 (list
-								 (symbol-name (nth 0 item))
+								 ; (symbol-name (nth 0 item))
+								 (nth 0 item)
 								 (nth 0 item)))
 			 sql-connection-alist ) ) )
   ;; password
-;  (require 'my-sql-pw "jgd-sql-pw.el.gpg")
-  (require 'my-sql-pw "jgd-sql-pw.el")
+;  (require 'my-sql-pw "my-sql-pw.el.gpg")
+  (require 'my-sql-pw "my-sql-pw.el")
   ;; get the sql connection info and product from the sql-connection-alist
   (let* ((connection-info (assoc connection sql-connection-alist))
          (connection-product (nth 1 (nth 1 (assoc 'sql-product connection-info))))
@@ -94,4 +121,6 @@
         (sql-connect connection connection)
       (sql-connect connection))))
 
-(provide 'jgd-sql-connect)
+;; ** Provides
+
+(provide 'ngender-sql-connect)

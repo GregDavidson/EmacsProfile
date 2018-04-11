@@ -1,23 +1,404 @@
-* Emacs Configuration Directory: ~/.emacs.d
+* NGender Emacs Configuration Directory
 
-This directory is managed with git.
-It is expected to work on any account with an up-to-date Emacs
-This means that any host-specific features need to be expressed conditionally!
+This Directory Tree is a Git Repository.
 
-Notes:
+** Summary: TL/DR
 
-1. It's expected that ~/.emacs links to ~/.emacs.d/.emacs
-2. (setq custom-file "~/.emacs.d/custom-file.el")
+- This is an *Emacs Profile*
+- It is for the use of Emacs by *Power Users*
+- You need to be moderately comfortable with
+	- Emacs & very basic Emacs-Lisp
+	- Filesystems
+		- Files, Directories, Paths, Links
+		- Maybe some Git
+- What you'll get if you use this Profile:
+	- Ease in setting up many powerful packages
+	- Ease in establishing many useful customizations
 
-Problems:
+** The Purpose of this Repository
 
-1. There are some host-specific parts of various files, e.g.
-jgd/jgd-sql-connect.el
+Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is due to its extraordinary
+customizability through settings and extentions.  Many of
+the most powerful extensions (typically available
+from Emacs Package Archives) are themselves highly
+configurable.  Many of the extensions are also designed to
+be combined and/or layered.
 
-2. custom-file.el
-- Customization settings changes seem rather unstable
-- I'd rather have some of these in my .el files
-- How am I going to curate & propagage changes to this file?
+We would like to make configuring and extending Emacs easier for
+Users, especially Power Users who are willing to do simple editing of
+configuration files.
 
-3. I should split the parts of this which apply to jgd from the
-parts which might work well for anyone.
+We would *also* like to make it easier for these Power Users
+to share what they have done with other members of their
+Shared Projects, Groups and with the Emacs Community at
+large.  This is what Git enables.
+
+We designed this repository to make
+Customizing Emacs more convenient by
+- adding additional package archives
+- adding and configuring desirable extra packages
+- setting variables to further customize Emacs features
+- defining additional functions and variables
+- adding keymaps for invoking functions more conveniently
+
+We intend that the customizations in this repository can be
+- shared by many people
+- improved by many users for the benefit of all
+- independent of any individual users' tastes
+- easily configured to each user's taste!
+
+This is a project of *RPTUG*, the
+- Radical Productivity Tools Users Group
+- [[https://ngender.org/tiki-index.php?page=RPTUG+Creation+Project]]
+
+It is expected to work well
+- on any account
+- on any operating system supporting Emacs
+- with any up-to-date Emacs
+
+** Layout of the Repository
+
+- ~/.emacs :: gets things started, won't need changing once paths are correct
+- ~/.emacs.d/ :: holds main Emacs Configuration
+- ~/.emacs.d/init.el :: extends load-path, loads other init files, rarely needs changing
+- ~/.emacs.d/custom-file.el :: Emacs Customization System settings
+- ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs ~load-path~
+- ~/.emacs.d/NGender/ngender.el :: core extension loaded by ~init.el~ file
+- ~/.emacs.d/NGender/ngender-NAME.el :: file managing extension NAME
+- ~/.emacs.d/User-Me/ :: individual extensions, on Emacs ~load-path~
+- ~/.emacs.d/User-Me/init-me.el :: loaded by ~init.el~ after ~ngender.el~
+- ~/.emacs.d/Group-NAME/ :: extensions shared with given group/project, on ~load-path~
+- ~/.emacs.d/init-examples.el :: snippets to copy/paste into ~init-me.el~ file
+
+** Installing This Repository
+
+These installation instructions assume
+- a Unix-Like system, e.g. Unix, BSD, Linux, MacOS
+- some familiarity with using a command shell, e.g. BASH
+	- the comment character is # (hash)
+	- cp old new # copies things
+	- your home directory is ~ (tilda)
+- some familiarity with Emacs and/or another editor, e.g. vi
+- simple understanding of Emacs-Lisp
+	- the comment character is ; (semicolon)
+	- Commands are enclosed in parentheses
+	- Arguments separated by spaces, NOT commas
+	- Strings in double quotes
+	- A single single quote quotes the next object
+
+If you're using an Apple Macintosh you will need to make
+some small changes.  If you're on a Microsoft Windows system
+you'll need to figure out an equivalent.
+
+It would be helpful to the community if you were to record
+any adjustments that you had to make to get this to work in
+_your environment_ and contribute those alternative steps!
+
+*** Instructions with example commands:
+
+#+BEGIN_SRC shell
+# 1. You will need a modern Emacs installed, version 25 or later
+which emacs # this needs to find your emacs program
+emacs --version # this needs to be version 25 or higher
+# 2. Find your existing Emacs Customizations, e.g.
+# Typically you'll find them here:
+ls -ld ~/.emacs*
+ls ~/.emacs.d
+# 3. Create or choose a place to put a Git repository
+mkdir ~/Gits
+cd ~/Gits
+# ~/Gits is just a suggestion, use what you like
+# 4. Clone our repository under that directory and go into it
+git clone https://github.com/GregDavidson/EmacsProfile.git
+cd EmacsProfile # the directory holding the repository
+# 5. Make a place for your old and new special things
+mkdir User-Me # Keep prefix "User-", keep or change "Me" as you like
+# note that .gitignore tells git to anything with prefix User- or Group-
+# so your private directories should be prefixed accordingly
+# 6. Move your old special things there
+mv ~/.emacs User-Me/old.emacs
+mv ~/.emacs.d User-Me/old.emacs.d
+# 7. Correct any incorrect paths in .emacs file
+emacs .emacs	# or use another editor if emacs is unhappy
+# 8. Link the new ones in where the old ones were:
+ln -s `pwd`/.emacs  ~
+ln -s `pwd`/.emacs.d  ~
+# some shells, e.g. bash, let you use ~+ instead of `pwd`
+# 9. Create your top-level init file:
+cp -i init-sample.el init.el
+# if you changed the name User-Me, change it in init.el
+vi init.el
+# 10. Make a file for your new special changes
+touch User-Me/init-me.el
+# 11. Check that Emacs starts up OK:
+emacs --debug-init
+# If emacs didn't like things, fix them somehow!
+# Once emacs is happy with this vanilla-flavored configuration:
+# Restart Emacs to make sure it's still happy
+emacs &
+#12. Carefully (small amounts at a time?) transfer any of your old
+# configurations, if any, from your old config files in to the appropriate
+# places in the new system.
+#+END_SRC
+
+*** Post-Installation Possibilities
+
+- read ~README.org~ and other files under NGender/
+- study ~init-examples.el~ for ideas
+- submit an issue reporting problems or requested features
+- submit a pull request with your improvements
+	- respecially for things you've added under NGender/
+
+Although Macintoshes are based on BSD they have a number of
+deviations from the family.  You'll need to customize these
+instructions appropriately.  Please consider submitting a
+pull request with instructions for how to do that.
+
+If you're installing this Emacs Profile under Microsoft
+Windows and you're successful, please consider submitting a
+pull request with instructions for how to do that.
+
+** Status of this Project
+
+This project is currently being evolved from a small number
+of large customization files which have served the needs of
+- JGD = J. Greg Davidson
+by separating out logically cohesive customizations into
+small files under the New Subdirectory
+- ~/.emacs.d/NGender/
+Any files which are specific to the needs and tastes of a
+particular user should be put in sibling subdirectories.
+
+It would be nice to have a flexible and fault-tolerant shell
+script which could do all of this setup work - please feel
+free to submit one!
+
+** Customizing Your New Profile
+
+Git will ignore files and directories matching patterns in the file
+~.gitignore~ which includes anything beginning with the prefix ~User-~
+or ~Group-~.
+
+Any files which are specific to your individual needs and tastes go
+under a sibling subdirectory which we've been calling
+~.emacs.d/User-Me/~ in these instructions.  Call it what you want and
+if it begins with ~User-~ Git will ignore it.
+
+If you are collaborating with partners on various projects, there may
+be some Emacs extensions which you may want to share with members of
+your group.  Consider putting those changes in a directory beginning
+with ~Group-~ which is another pattern Git will ignore.
+** Individual vs. (Project) Group vs. Community
+
+As your improvements mature you may find it appropriate to share your
+improvements with others by moving them to a higher level and doing a
+git push or submitting a pull request.
+   
+*** Community Level
+
+Everything under NGender is intended to be helpful for any Emacs User.
+Where a policy is applied we try to have a variable or function which can alter it
+coherently.
+
+**** Individual Level
+
+Everything under User-Me is ignored by the Repository.  To
+manage this with Git, it can be created as a separate Git
+repository, e.g. by doing:
+#+BEGIN_SRC
+cd ~/Gits  # wherever you keep your repositories
+mv Emacs-Repository/User-Me Emacs-User-Me
+cd Emacs-User-Me
+git init
+cp ~/Gits/Emacs-Repository/.gitignore .
+# delete anything unwanted from .gitignore
+cd ~/Gits/Emacs-Repository
+ln -s ~/Gits/Emacs-User-Me User-Me
+#+END_SRC
+
+As improvements at this level are better understood, it may
+be appropriate to move some of them to the NGender
+repository and submit a pull request!
+
+*** Project/Group Level
+
+Customizations for Projects and Groups can be created as
+separate repositories just as shown in the Individual Level
+above.  They can be linked in under Emacs-Repository as,
+e.g. Group-NAME and activated by
+- adding to your ~init.el~ or ~init-me.el~ file:
+	- (ngender-group-subdirectory "Group-YOUR-GROUP-NAME")
+- adding other customizations for them to ~init-me.el~ file
+
+Host the Project/Group repository where other members of the
+Project or Group can find it.  Ask the other members to
+participate in the improvement of it.  Move anything which
+is more generic than the Project or Group to the NGender
+repository and submit a pull request!
+		
+** Current Challenges
+
+*** Emacs Customization System Issues
+
+The Emacs Customization System is the natural mechanism for
+Emacs Users who are reluctant to use Emacs Lisp to make
+their changes.
+
+Should we use ~defcustom~ for the ~ngender-*~ module
+variables?  We're currently not doing so because of
+philosophical problems with the Emacs Customization System.
+
+Problems with the Emacs Customization System
+- It's difficult to browse changes vs. defaults
+	- it does not play nicely with git
+- It's difficult to know the purpose and scope of changes
+	- no mechanism for tagging changes with
+		- which project(s) needed it
+		- which system or location needed it
+		- the scope, i.e. individual/project,community
+	- it doesn't capture comments or notes
+
+Currently ~custom-file.el~ is going into the git repository
+- handy for propagating all such to all one's accounts
+- yet not everything there is appropriate everywhere
+
+Ideally customizations settings would be moved to an
+appropriate initialization file, documented and perhaps
+controlled by some simple or sophisticated Emacs Lisp code.
+
+*** Sql-Connect Issues
+
+There are some host-specific parts of various files, e.g.
+~NGender/ngender-sql-connect.el~
+
+There is also the sensitive account and password parts of
+such connections.
+
+Some parts should be moved to Project Repositories.
+
+Code should be added which stiches together the Individual
+(account/password) and Project (database names, database
+password?) parts.
+
+Only the stiching code should be in the ~NGender/~
+directory.  That code should also pull in the needed
+packages and configure miscellaneous options nicely.
+
+Needed: Easily customizable examples of how to write the
+Project and Individual SQL files.
+
+*** Automating Byte-Recompilation
+
+How do I ensure that byte-recompilation happens automatically?
+
+Let's add a function to ~ngender.el~ to call
+~byte-recompile-directory~ with suitable options.
+
+*** NGendering use of Emacs-Server
+
+Let's add an ngender-emacs-server.el file which does
+byte-recompiles and any other slow things and then starts
+the Emacs Server.
+
+** Rationale for the Curious
+
+*** Emacs Thrives on Extensibility & Configurability
+
+An early Emacs Manual described Emacs as "A Beautiful Flower that
+Smells Bad".  On the Beautiful side, Emacs is
+- Elegant - Power with Simplicity
+- Open - Easy to Understand and to Adapt to your needs
+The bad "Code Smell" comes from insufficient structure
+- Buffers are mutable arrays with unstable integer indices
+- Emacs-Lisp inherited some of the worst features of early lisps
+	- no module system, everything mutable, dynamic binding
+
+To take advantage of Emacs' power one must add extensive customization
+and load many packages most of which then require significant
+customization.
+
+*** Some Worthy Approaches
+
+**** The Emacs Package System
+
+Although Emacs-Lisp doesn't have modules, it's possible to add
+structure providing some of the features of proper modules.  One of
+these approaches has evolved into the current Emacs Package System.  A
+package is a chunk of Emacs-Lisp code with metadata (name,
+description, date, version, dependencies, etc.) which can be stored in
+public Package Archives or distributed as tarballs.  Emacs now comes
+with a tool for browsing available packages and installing or removing
+them.  Limitations include
+- The user must write code listing one or more archives
+- Most packages require additional code to configure them well
+- Many packages are not available from public archives
+- It's not always clear which package version is appropriate
+- Package dependencies can be difficult to resolve
+- Packages can interfere with one another - they're not true modules
+
+**** The Emacs Customization System
+
+Emacs comes with a [[https://www.emacswiki.org/emacs/CustomizingAndSaving][Customization System]] which allows the user to
+browse Settings and Options from structured Emacs Custom-Mode Buffers.
+Limitations include
+- It's often difficult to find the right Setting or Option
+- Customizations may interact badly with one another and with other code
+- Customizations are stored without any context as to where they're applicable
+
+**** An Emacs Prelude
+
+You can put all of your extensions, including lists of Package
+Archives, the Packages one wants to download from them and all of the
+configuration options in one well-documented, well structured file,
+generally referred to as a Prelude.  Others can copy that Prelude,
+delete what they don't want and change what they want to change.  This
+works well as long as the user is a good Emacs-Lisp hacker, not only
+knowing the language well but also being well steeped in the way Emacs
+does things.  Some examples:
+- [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua's Emacs Prelude]]
+- [[https://github.com/bbatsov/prelude]]
+These are all a good source of ideas for our configurations!
+
+**** More Advanced Approaches
+
+You can impose a layered architecture to Emacs Extensions.  A good example of this is
+- [[http://spacemacs.org]
+Alas, the packages spacemacs uses don't always cooperate well with the layering system.
+
+You can write a new, more ambitious Package Manager such as
+- [[https://github.com/raxod502/straight.el]]
+
+*** Where this project came from
+
+This project started with a small number of large
+customization files which have served the needs of one of
+the NGender Partners, JGD = J. Greg Davidson for decades.
+
+THe idea was to pull out the bits which would likely be
+useful for others, clean them up for portability and move
+the more complex features into their own files.
+
+The challenge of making this accessible for others has
+inspired some creative solutions!
+
+*** Configuration Files
+
+When emacs starts up Emacs will look for a configuration
+file in your Home Directory as specified by the environment
+variable HOME.  Emacs understands any path beginning with
+tilde slash (~/) starts from your Home Directory.
+
+Emacs will take the first file it finds in the list
+1. ~/.emacs
+2. ~/.emacs.d/init.el
+and load it, i.e. Emacs will treat the contents of that file
+as Emacs-Lisp code (so it better be that) and Emacs will
+execute that code.
+
+Therefore, if you have *both* files, Emacs will, by default, ignore
+your ~/.emacs.d/ directory and everything in it!
+
+It would seem that it's simpler to just not have a ~/.emacs file but
+unfortunately that will interfere with the Emacs Customization System.
+
+Thus, we use a ~.emacs~ file to get everything started.

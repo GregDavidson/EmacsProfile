@@ -1,0 +1,11 @@
+#!bash is /bin/bash
+# tlist the .el files
+# Not yet working, gives lines like:
+# ngender-sql-connect.el (require 'ngender-sql) 
+
+for f in *.el; do
+	echo -n "$f "
+	grep "^(require 'ngender-" "$f" |
+	 sed "s/(require '(\\(ngender-[^ )]*\\).*/\\1/" | tr '\n' ' '
+	echo
+done

@@ -15,7 +15,7 @@
  ;; If there is more than one, they won't work right.
  '(blink-matching-paren-distance 300000)
  '(browse-url-browser-function (quote eww-browse-url))
- '(buffer-face-mode-face (quote fixed-pitch))
+ '(buffer-face-mode-face (quote fixed-pitch) t)
  '(custom-buffer-indent 8)
  '(delete-selection-mode nil)
  '(desktop-save-mode t)
@@ -31,6 +31,9 @@
  '(mark-even-if-inactive t)
  '(org-agenda-files (quote ("~/Notes/Languages/javascript.org")))
  '(org-log-done (quote time))
+	'(package-selected-packages
+		 (quote
+			 (fuck use-package typed-clojure-mode toc-org sqlup-mode sql-indent smex rainbow-delimiters racer prolog project-mode php-mode persp-mode paredit-everywhere ox-gfm org-tree-slide org-projectile org-pdfview org-page org-bullets org-autolist ob-prolog nov mysql-to-org multi-term markdown-mode magithub ido-ubiquitous idle-highlight-mode helm haskell-mode ghci-completion find-file-in-project company closure-lint-mode clojure-mode-extra-font-locking cljsbuild-mode cljdoc biblio auto-complete)))
  '(paperless-capture-directory "~/Scan/ScansNew")
  '(paperless-root-directory "/More/Greg/Archives/2017")
  '(pr-faces-p t)
