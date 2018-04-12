@@ -1,0 +1,84 @@
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-c.el at Thu Apr 12 16:30:08 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-cedet.el at Thu Apr 12 16:30:08 2018
+ngender-cedet.el:23:7:Warning: assignment to free variable
+    ‘my-semantic-submodes’
+ngender-cedet.el:33:18:Warning: reference to free variable
+    ‘my-semantic-submodes’
+
+In end of data:
+ngender-cedet.el:105:1:Warning: the following functions are not known to be defined:
+    semantic-load-enable-primary-ectags-support,
+    ede-enable-generic-projects
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-clisp.el at Thu Apr 12 16:30:09 2018
+ngender-clisp.el:7:1:Error: Cannot open load file: No such file or directory, slime
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-clojure.el at Thu Apr 12 16:30:09 2018
+ngender-clojure.el:17:7:Warning: assignment to free variable
+    ‘cider-repl-popup-stacktraces’
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-completion.el at Thu Apr 12 16:30:10 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-elisp.el at Thu Apr 12 16:30:10 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-evil.el at Thu Apr 12 16:30:10 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-font.el at Thu Apr 12 16:30:11 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-haskell.el at Thu Apr 12 16:30:11 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-magit.el at Thu Apr 12 16:30:11 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-mozart.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-org.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-php.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-prolog.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-rust.el at Thu Apr 12 16:30:13 2018
+ngender-rust.el:24:1:Error: End of file during parsing
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-scala.el at Thu Apr 12 16:30:13 2018
+ngender-scala.el:8:1:Error: Cannot open load file: No such file or directory, ensime
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-shell.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-sql.el at Thu Apr 12 16:30:13 2018
+ngender-sql.el:151:1:Warning: Unused lexical argument ‘matches’
+
+In end of data:
+ngender-sql.el:431:1:Warning: the function ‘sql-args-list’ is not known to be
+    defined.
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-tcl.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-workgroups.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender-workspace.el at Thu Apr 12 16:30:13 2018
+
+Compiling file /home/greg/.emacs.d/NGender/ngender.el at Thu Apr 12 16:30:13 2018
+ngender.el:91:1:Warning: Unused lexical variable ‘d’
+
+In ngender-add-package-archive-by-key:
+ngender.el:152:30:Warning: lwarn called with 2 arguments, but requires 3+
+ngender.el:154:63:Warning: lwarn called with 2 arguments, but requires 3+
+
+In ngender-package-archive:
+ngender.el:162:24:Warning: lwarn called with 2 arguments, but requires 3+
+ngender.el:166:9:Warning: lwarn called with 2 arguments, but requires 3+
+
+In using-gui-p:
+ngender.el:323:28:Warning: reference to free variable ‘bound-p’
+ngender.el:393:1:Warning: Unused lexical argument ‘n’
+
+In end of data:
+ngender.el:450:1:Warning: the following functions are not known to be defined:
+    ngender-package-archive-by-key,
+    ngender-drop-assoc-without
+
+Compiling file /home/greg/.emacs.d/NGender/ox-tiki.el at Thu Apr 12 16:30:14 2018
+ox-tiki.el:316:1:Warning: Unused lexical variable ‘struct’
