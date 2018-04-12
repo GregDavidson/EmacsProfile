@@ -66,45 +66,48 @@
 
 ;; *** Managing Path Set Lists
 
-(defun ngender-filter-dirs (paths) (ngender-validate-list (mapcar 'expand-file-name paths) 'file-directory-p 'directory))
+(defun ngender-filter-dirs (paths)
+	(ngender-validate-list
+		(mapcar (lambda (f) (expand-file-name f (ngender-load-dir))) paths)
+		#'file-directory-p 'directory ) )
 
 (defun ngender-add-paths (symbol paths do-append)
-  "prepend or append candidate directory set with directory set bound to symbol"
-  (set symbol (let ( (paths (ngender-symbol-value symbol))
-		     (newbies (ngender-filter-dirs paths)) )
-		(if do-append
-		    (ngender-union-bags paths newbies)
-		  (ngender-union-bags newbies paths) ) )) )
+	"prepend or append candidate directory set with directory set bound to symbol"
+	(set symbol (let ( (paths (ngender-symbol-value symbol))
+										 (newbies (ngender-filter-dirs paths)) )
+								(if do-append
+									(ngender-union-bags paths newbies)
+									(ngender-union-bags newbies paths) ) )) )
 
 (defun ngender-prepend-paths (symbol &rest dirs)
-  "prepend candidate directory paths in front of directory set bound to symbol"
+	"prepend candidate directory paths in front of directory set bound to symbol"
 	(funcall #'ngender-add-paths symbol dirs nil) )
 
 (defun ngender-append-paths (symbol &rest dirs)
-  "append candidate directory paths to end of directory set bound to symbol"
+	"append candidate directory paths to end of directory set bound to symbol"
 	(funcall #'ngender-add-paths symbol dirs t) )
 
 ;; unused!!
 (defun ngender-str-member (str item &optional delim)
-  "is item a member of delimited string?"
-  (let ( (d (or delim ":")) )
-    (string-match (concat ".*" delim (regexp-quote item) delim ".*")
-		  (concat delim str delim) ) ) )
+	"is item a member of delimited string?"
+	(let ( (d (or delim ":")) )
+		(string-match (concat ".*" delim (regexp-quote item) delim ".*")
+			(concat delim str delim) ) ) )
 
 ;; unused!! except in next function
 (defun ngender-str-append (str item &optional delim)
-  "append item onto delimited string"
-  (concat str (or delim ":") item) )
+	"append item onto delimited string"
+	(concat str (or delim ":") item) )
 
 ;; unused!!
 (defun ngender-update-str-append (symbol item &optional delim)
-  (set symbol (ngender-str-append (symbol-value symbol) item delim)) )
+	(set symbol (ngender-str-append (symbol-value symbol) item delim)) )
 
 ;; unused!!
 (defun ngender-exec-path-from-shell ()
-  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'")))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator)) ) )
+	(let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'")))
+		(setenv "PATH" path-from-shell)
+		(setq exec-path (split-string path-from-shell path-separator)) ) )
 
 ;; ** Emacs Repository Support
 
@@ -198,6 +201,12 @@
 			(package-install p) ) ) )
 
 ;; ** File and Directory Support
+
+(defun ngender-load-dir ()
+	"the directory of the file calling for a load or the current directory"
+	(if load-file-name
+		(or (file-name-directory load-file-name) ".")
+		default-directory ) )
 
 (defun require-file-path (name type-test type-name &optional parent)
 	(let (( path (expand-file-name name (if parent parent *ngender-emacs-home*)) ))
