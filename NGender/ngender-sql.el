@@ -18,13 +18,15 @@
 ;; Consider adding to your init-me.el some of:
 ;; (defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
 
-(defvar *ngender-sql-packages* '(sql)
+(defvar *ngender-sql-packages* '(sql helm)
 	"minimal set of sql packages" )
 (apply #'ngender-package *ngender-sql-packages*)
 
 (require 'rx)
 (require 'sql)
-(require 'sqlup-mode)
+(require 'helm)
+;; (require 'sqlup-mode)
+;; (require 'sql-indent)
 
 ;; ** Let's make rx regular expressions extensible
 
@@ -403,9 +405,6 @@ a placeholder for a correct one!!! "
 								 (nth 0 item)
 								 (nth 0 item)))
 			 sql-connection-alist ) ) )
-  ;; password
-;  (require 'my-sql-pw "my-sql-pw.el.gpg")
-  (require 'my-sql-pw "my-sql-pw.el")
   ;; get the sql connection info and product from the sql-connection-alist
   (let* ((connection-info (assoc connection sql-connection-alist))
          (connection-product (nth 1 (nth 1 (assoc 'sql-product connection-info))))
