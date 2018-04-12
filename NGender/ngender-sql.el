@@ -25,10 +25,8 @@
 (require 'rx)
 (require 'sql)
 (require 'sqlup-mode)
-(require 'ngender)
 
 ;; ** Let's make rx regular expressions extensible
-
 
 (defun def-rx-1 (name &rest defs)
 	(or (assq name rx-constituents)
@@ -389,6 +387,44 @@ a placeholder for a correct one!!! "
 	(ngender-bind-sql-magic-functions)
 )
 (add-hook 'sql-mode-hook 'ngender-sql-mode)
+
+;; ** Function ngender-sql-connect
+
+;; TODO update this function - Why??
+;; New reason:  Need to merge account as well as password info
+;; with the connection information!!
+(defun ngender-sql-connect (connection)
+  "Connect to the input server using sql-connection-alist"
+  (interactive
+   (helm-comp-read "Select server: "
+		 (mapcar (lambda (item)
+							 (list
+								 ; (symbol-name (nth 0 item))
+								 (nth 0 item)
+								 (nth 0 item)))
+			 sql-connection-alist ) ) )
+  ;; password
+;  (require 'my-sql-pw "my-sql-pw.el.gpg")
+  (require 'my-sql-pw "my-sql-pw.el")
+  ;; get the sql connection info and product from the sql-connection-alist
+  (let* ((connection-info (assoc connection sql-connection-alist))
+         (connection-product (nth 1 (nth 1 (assoc 'sql-product connection-info))))
+         (sql-password (nth 1 (assoc connection my-sql-pw))))
+    ;; delete the connection info from the sql-connection-alist
+    (setq sql-connection-alist (assq-delete-all connection sql-connection-alist))
+    ;; delete the old password from the connection-info
+    (setq connection-info (assq-delete-all 'sql-password connection-info))
+    ;; add the password to the connection-info
+    (nconc connection-info `((sql-password ,sql-password)))
+    ;; add back the connection info to the beginning of sql-connection-alist
+    ;; (last used server will appear first for the next prompt)
+    (add-to-list 'sql-connection-alist connection-info)
+    ;; override the sql-product by the product of this connection
+    (setq sql-product connection-product)
+    ;; connect
+    (if current-prefix-arg
+        (sql-connect connection connection)
+      (sql-connect connection))))
 
 ;; ** provide
 
