@@ -19,18 +19,18 @@
 (require 'semantic/bovine/gcc)
 (require 'srecode)
 
-;; select which submodes we want to activate
-(setq my-semantic-submodes '(
+;; select which 
+(defvar ngender-cedet-semantic-submodes '(
 			     global-semantic-mru-bookmark-mode
 			     global-semanticdb-minor-mode
 			     global-semantic-idle-scheduler-mode
 			     global-semantic-stickyfunc-mode
 ;;			     global-cedet-m3-minor-mode
 			     global-semantic-highlight-func-mode
-			     global-semanticdb-minor-mode
-			     ))
+			     global-semanticdb-minor-mode )
+	"cedet semantic submodes to activate" )
 
-(dolist (submode my-semantic-submodes)
+(dolist (submode ngender-cedet-semantic-submodes)
   (add-to-list 'semantic-default-submodes submode) )
  
 ;; Activate semantic
