@@ -3,10 +3,10 @@
 ;;	jgd = J. Greg Davidson
 
 ;; ** requires
-(ngender-package 'typed-clojure-mode)
-(require 'clojure-mode)
-(ngender-package 'cider)
-(require 'cider)
+
+(defvar *ngender-clojure-packages* '( clojure-mode typed-clojure-mode cider ) "packages that need loading")
+(apply #'ngender-package *ngender-clojure-packages*)
+(apply #'require *ngender-clojure-packages*)
 
 ;; Configure cider
 

@@ -2,6 +2,9 @@
 ;; Authors:
 ;;	jgd = J. Greg Davidson
 
+;; Have I conflated CEDET with the Semantic Bovinator?
+;; Do these things belong in the same file?
+
 ;; ** how to load this
 
 ;; CEDET is best loaded by calling
@@ -12,14 +15,18 @@
 
 ;; add appropriate ngender-package and config var code here!!
 
-(require 'cedet)
-(require 'semantic/tag)
-(require 'semantic/lex)
-(require 'semantic/sb)
-(require 'semantic/bovine/gcc)
-(require 'srecode)
+(defvar ngender-cedet-packages '(cedet))
 
-;; select which 
+;; package semantic is built in
+;; it defines semantic-mode
+																	
+(require 'cedet)
+;; (require 'semantic/tag)
+;; (require 'semantic/lex)
+;; (require 'semantic/sb)
+;; (require 'semantic/bovine/gcc)
+;; (require 'srecode)
+
 (defvar ngender-cedet-semantic-submodes '(
 			     global-semantic-mru-bookmark-mode
 			     global-semanticdb-minor-mode

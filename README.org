@@ -238,6 +238,53 @@ repository and submit a pull request!
 		
 ** Current Challenges
 
+*** Requiring packages vs. requiring symbols
+We need to ensure that we have all requisite packages
+downloaded.  Only after that we need to load them via
+require on the appropriate symbols.  When can we assume that
+the root of the package name is the same as the require
+symbol?  What's a convenient (succinct and easy to follow)
+s-exp syntax to specify the desired packages and the desired
+requires?
+
+This is a slippery slope to an s-exp syntax which expresses
+packgaes, requires, settings and keymaps.  If we choose to
+slide down this slope, we should review previous efforts and
+consider borrowing from them before rolling our own.
+
+Also on this slippery slope is having a single macro which
+can be called from an init file to load a module with all
+desired enhancements, e.g.
+(ngender-load cider (package apple-cider (require granny-smith)) (require foo) (set bar baz) (map "C-M-S-x" barf))
+would
+- load NGender/ngender-cider within which it would
+- load cider AND apple-cider
+- (require 'granny-smith) in addition to the usuals for apple-cider
+	- unless we know granny-smith replaces one of the usual requires
+- would load foo in addition to the usuals for cider
+	- unless we know foo replaces one of the usual requires for cider
+- would set the configuration variable bar to baz
+- would map Control-Meta-Super x to call function barf
+
+Again, we should look at existing solutions before rolling
+our own, but we're implying being able to associate any
+require, set or map with the top-level context of a module
+OR with an optional package, which then requires that the
+module know a lot about what works which then requires that
+we maintain that knowledge against the package as a moving
+target which one needs to do anyway with init scripts.
+
+** Autoloading
+
+It would be nice where currently various functions are set
+to autoload packages directly to have them instead autoload
+our module which then loads the package and configures it
+the way we like.
+
+Attempts to do this have so far just resulted in odd error
+messages claiming that the loaded module did not define the
+function even though it did.
+
 *** Emacs Customization System Issues
 
 The Emacs Customization System is the natural mechanism for
