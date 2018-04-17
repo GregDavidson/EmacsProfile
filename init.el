@@ -15,24 +15,29 @@
 ;; the directory User-Me and the file init-me.el under it.
 ;; Change any of these paths if needed.
 
-;; Declare any Vendor (3rd-party library) directories here, e.g.
-(ngender-vendor-subdirectory "vendor")
+;; Declare any Vendor (3rd-party library) directories here.
+;; "vendor" is a common directory for such.
+(when (file-directory-p (expand-file-name "vendor" *ngender-emacs-home*)
+				(ngender-vendor-subdirectory "vendor") ))
+				
 ;; Declare any (Project) Group directories here, e.g.
 ;; (ngender-group-subdirectory "Group-RPTUG")
-;; Declare your personal directory here:
-(ngender-user-subdirectory "User-Me")
+
+;; Your personal customization directory path,
+;; *ngender-user-me*, should be set in your .emacs file
+(ngender-user-subdirectory (file-name-nondirectory *ngender-user-me*))
 ;; The Emacs path will be kept ordered as follows, first to last:
-;; (1) User Subdirectories
-;; (2) Group (Project) Directories
-;; (3) Vendor (3rd party extension) directories
+;; (1) Your User Subdirectory
+;; (2) Any Group (Project) Directories
+;; (3) Any Vendor (3rd party extension) directories
 ;; (4) Directories for Packages downloaded from Emacs Repositories
 
 ;; Now it's time to load your personal customizations:
-(load "init-me")
+(when (file-readable-p (expand-file-name "init-me.el" *ngender-user-me*))
+	(load "init-me") )									; might be compiled
 
 ;; Remember that Emacs will help you better with init problems if you
 ;; call it with emacs --debug-init
 
 ;; You don't want to put much more in this file.  Read the README
-;; files for guidance and communicate with the Emacs Users in the
-;; RPTUG!
+;; files for guidance and communicate with the RPTUG Emacs Users.
