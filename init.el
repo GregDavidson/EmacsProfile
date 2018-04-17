@@ -17,8 +17,8 @@
 
 ;; Declare any Vendor (3rd-party library) directories here.
 ;; "vendor" is a common directory for such.
-(when (file-directory-p (expand-file-name "vendor" *ngender-emacs-home*)
-				(ngender-vendor-subdirectory "vendor") ))
+(when (file-directory-p (expand-file-name "vendor" *ngender-emacs-home*))
+				(ngender-vendor-subdirectory "vendor") )
 				
 ;; Declare any (Project) Group directories here, e.g.
 ;; (ngender-group-subdirectory "Group-RPTUG")
