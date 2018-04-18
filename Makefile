@@ -1,6 +1,23 @@
-EMACS_D_SRC = $(wildcard *.el)
-EMACS_JGD_SRC = $(wildcard JGD/*.el)
-EMACS_NGENDER_SRC = $(wildcard NGender/*.el)
-EMACS_SRC = $(EMACS_D_SRC) $(EMACS_JGD_SRC) $(EMACS_NGENDER_SRC)
-TAGS: $(EMACS_SRC)
-	etags -o $@ $^
+# Emacs setup Makefile kas/jgd 4/18/18
+
+HOME = /Users/Engineering/
+EMACSHOME = $(HOME)/.emacs.d
+INSTALLDIR = `pwd`
+
+foo: 
+	@echo Use "make install" when ready
+	@echo Or use 'make prepare' then link .emacs and init.el manually
+
+
+install: prepare
+	ln -s $(INSTALLDIR)/.emacs $(HOME)
+	ln -s $(INSTALLDIR)/init.el $(EMACSHOME)
+
+prepare:
+	mkdir -p $(EMACSHOME)		  # ensure EMACSHOME dir
+	mkdir -p Limbo			  # ensure Limbo dir
+	mv -if $(HOME)/.emacs Limbo	  # preserve your stuff
+	mv -if $(EMACSHOME)/init.el Limbo # all your stuff...
+
+whereami:
+	@echo $(INSTALLDIR)
