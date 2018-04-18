@@ -1,0 +1,6 @@
+* Status of NGender Emacs Prelude Project
+
+** Warnings
+
+Warning (type): Expected directory, got /usr/share/texmf/doc/info/
+Warning (type): Expected directory, got /home/greg/.emacs.d/themes [2 times]
