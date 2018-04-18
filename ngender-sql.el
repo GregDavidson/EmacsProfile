@@ -20,7 +20,7 @@
 
 (defvar *ngender-sql-packages-necessary* '(sql helm)
 	"sql packages necessary for this module to work" )
-(defvar *ngender-sql-packages* *ngender-sql-packages-required*
+(defvar *ngender-sql-packages* *ngender-sql-packages-necessary*
 	"sql packages necessary for this module and required by user" )
 (ngender-update-union-with-bags '*ngender-sql-packages*  *ngender-sql-packages-necessary*)
 (apply #'ngender-package *ngender-sql-packages*)
