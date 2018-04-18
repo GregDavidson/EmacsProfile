@@ -396,17 +396,17 @@ a placeholder for a correct one!!! "
 ;; ** Function ngender-sql-connect
 
 (defun ngender-sql-connect (key)
-  "Prompt and Connect using sql-connect-alist, set sql-product"
+  "Prompt and Connect using sql-connection-alist, set sql-product"
   (interactive
    (helm-comp-read "Select server: "
 		 (mapcar (lambda (item) (let ((name (first item))) (list name name)))
-			 sql-connect-alist ) ) )
-  ;; get the sql connection info and product from the sql-connect-alist
-  (let* ( (info (assoc key sql-connect-alist))
+			 sql-connection-alist ) ) )
+  ;; get the sql connection info and product from the sql-connection-alist
+  (let* ( (info (assoc key sql-connection-alist))
 					(product (second (assoc 'sql-product info))) )
-    ;; move found info to front of sql-connect-alist
-    (setq sql-connect-alist
-			(cons info (assq-delete-all key sql-connect-alist)) )
+    ;; move found info to front of sql-connection-alist
+    (setq sql-connection-alist
+			(cons info (assq-delete-all key sql-connection-alist)) )
     ;; override sql-product by the found product
     (setq sql-product product)		 ; <--- side-effect!
     ;; sql-connect will fetch info again using key
