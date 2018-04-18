@@ -399,11 +399,11 @@ a placeholder for a correct one!!! "
   "Prompt and Connect using sql-connection-alist, set sql-product"
   (interactive
    (helm-comp-read "Select server: "
-		 (mapcar (lambda (item) (let ((name (first item))) (list name name)))
+		 (mapcar (lambda (item) (let ((name (cl-first item))) (list name name)))
 			 sql-connection-alist ) ) )
   ;; get the sql connection info and product from the sql-connection-alist
   (let* ( (info (assoc key sql-connection-alist))
-					(product (second (assoc 'sql-product info))) )
+					(product (cl-second (assoc 'sql-product info))) )
     ;; move found info to front of sql-connection-alist
     (setq sql-connection-alist
 			(cons info (assq-delete-all key sql-connection-alist)) )
