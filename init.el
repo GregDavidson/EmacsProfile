@@ -1,4 +1,4 @@
-;; * User-Me/init-me.el
+;; * init.el in Emacs Home
 ;; Features requiring significant customization
 ;; are in separate byte-compiled files under
 ;; - NGender/ --> if likely to be useful to others
