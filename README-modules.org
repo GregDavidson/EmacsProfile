@@ -1,10 +1,16 @@
 * NGender Emacs Extensions Directory
 
 Except where explicit calls to require indicate
-dependencies, the packages (files) in this directory stand
+dependencies, the modules (files) in this directory stand
 alone.  You will want to arrange for their loading in your
 [[~/emacs.d/init.el][User-Me/init-me.el]] file, either with an explicit require or
 by arranging an autoload.
+
+Most of these "modules" are in a very primitive state.  They
+were recently ripped out of the context of traditional large
+personal customization files.  We're learning how these
+kinds of files should be written so that they are maximally
+independent, robust and resilient.
 
 ** Files:
 - [[org-list-files]] :: Generate Org-Mode list of selected files
