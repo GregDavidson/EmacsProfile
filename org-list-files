@@ -1,8 +1,8 @@
 #!/bin/bash
 : << 'EOF'
-;; * Generate Org-Mode list of *.el files in this directory -*- -*-
+;; * Generate Org-Mode list of ngender-*.el files in this directory -*- -*-
 EOF
-for f in ${0##*/} *.el; do
+for f in ${0##*/} ngender-*.el; do
 printf -- '- [[%s]] :: %s\n' "$f" \
 	"$(head "$f" | sed -n 's/^;; \* \(.*[^[:space:]]\)[[:space:]]*-\*-.*-\*-.*/\1/p')"
 done

@@ -7,7 +7,7 @@ alone.  You will want to arrange for their loading in your
 by arranging an autoload.
 
 ** Files:
-- [[org-list-files]] :: Generate Org-Mode list of *.el files in this directory
+- [[org-list-files]] :: Generate Org-Mode list of selected files
 - [[ngender.el]] :: NGender Emacs Profile Base
 - [[ngender-cedet.el]] :: Semantic Bovinator (CEDET) Support
 - [[ngender-c.el]] :: C/C++ Hacking Support
