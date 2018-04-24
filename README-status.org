@@ -1,5 +1,18 @@
 * Status of NGender Emacs Prelude Project
 
+** Overall Status: Rough
+
+- Some modules are good enough for now.
+- Many modules are unreliable
+- ngender-example needs to show the way
+
+** Roadmap
+
+Let's dump cl-lib in favor of seq.  Let's not pull in
+dash, despite its beauty.
+
+What other now built-in packages would be helpful?
+	
 ** Warnings
 
 Warning (type): Expected directory, got /usr/share/texmf/doc/info/
