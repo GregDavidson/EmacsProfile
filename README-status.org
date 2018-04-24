@@ -8,10 +8,23 @@
 
 ** Roadmap
 
+As ngender-example gets close to completion, examine what we
+can add to ngender.el to make it simpler.  All of the
+management of packages and features should be made much
+simpler.  To make list filtering easier it will be useful to
+define a flatten function to run after any filtering which
+is producing an output list not in a 1-to-1 correspondence
+with the input list.
+	 
 Let's dump cl-lib in favor of seq.  Let's not pull in
 dash, despite its beauty.
 
 What other now built-in packages would be helpful?
+
+We should be using Xref instead of directly using tag commands!
+
+Which project-management package(s) should we provide?
+There's a new built-in package "project".
 	
 ** Warnings
 
