@@ -1,15 +1,25 @@
 ;; * NGender Emacs Profile Base -*- lexical-binding: t; -*-
-;; Authors:
-;;	jgd = J. Greg Davidson
+;; Copyright (C) 2018 J. Greg Davidson
+;; Author: J. Greg Davidson <jgd@ngender.net>
+;; Homepage: https://ngender.org/RPTUG
+;; - we need to make sure that /RPTUG exists as an "alias"
+;; Package-Requires: ((seq)(map)(cl-lib)(emacs "25.1"))
+
+;;; * Commentary:
 
 ;; Yikes: We lost our macros:
 ;; ngender-defvar-list
 ;; ngender-defmacro-quote-args
 ;; -- did we lose anything else?
 
+;;; * Code:
+
 ;; ** Dependencies
 
-;; (require 'jit-lock)	; why?
+;; Prefer the functionality of the modern packages
+;; map and seq over cl-lib when possible!
+(require 'seq)
+(require 'map)
 (require 'cl-lib)
 
 ;; ** Warnings, Errors, Validating
@@ -443,6 +453,17 @@ symbol and rebuild emacs load-path"
        (concat "/sudo:root@localhost:" (buffer-file-name))))
     (goto-char position)))
 
+
+;; ** Macros
+
+(defmacro ngender-require (module-name &rest features)
+	`(progn
+		 (defvar
+			 ,(intern (concat "*" (symbol-name module-name) "-features*"))
+			 (quote ,features)
+			 ,(concat "require module " (symbol-name module-name) " features") )
+		 (require (quote ,module-name))
+		 ) )
 
 ;; ** Provide
 
