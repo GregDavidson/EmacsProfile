@@ -49,19 +49,27 @@
 ;; 	(setq *ngender-example-features* '(feature...))
 ;; 	(require 'ngender-example) )
 
+;; Although an NGender Emacs Module is NOT an Emacs Package,
+;; there's value in following applicable Emacs Packaging
+;; Conventions as described by
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Packaging-Basics.html
+
 ;;; Code:
 
 ;; ** Dependencies
 
-;; Ensure that all needed and requested packages have been downloaded and loaded
+;; Ensure that all needed and requested packages have been
+;; downloaded and loaded
 
-;; Make sure we have our framework with various convenience functions
+;; Ensure we have our framework with various convenience functions
 (require 'ngender)
 
-;; Certain packages need to be loaded to statisfy this module.
-;; The user may request additional or alternative packages.
-;; Users should think in terms of features being required.
-;; We need to determine what packages support those requirements.
+;; Certain packages need to be loaded to statisfy this
+;; module.  The user may request additional or alternative
+;; packages.  Users should think in terms of features being
+;; required rather than packages being loaded, functions
+;; being called, variables being set, etc.  We need to
+;; determine what packages support those requirements.
 
 ;; Meta-features specify alternative ways to satisfy requirements.
 ;; Most modules won't need meta-features, but if they do:
