@@ -26,6 +26,12 @@ We should be using Xref instead of directly using tag commands!
 Which project-management package(s) should we provide?
 There's a new built-in package "project".
 	
+** Missing Package problems
+
+The absence of these were causing problems:
+- auto-complete
+- evil-leader
+
 ** Warnings
 
 Warning (type): Expected directory, got /usr/share/texmf/doc/info/
