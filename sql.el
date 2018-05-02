@@ -403,7 +403,8 @@ a placeholder for a correct one!!! "
 			 sql-connection-alist ) ) )
   ;; get the sql connection info and product from the sql-connection-alist
   (let* ( (info (assoc key sql-connection-alist))
-					(product (cl-second (cl-second (assoc 'sql-product info)))) )
+					(prod (cl-second (assoc 'sql-product info))) ; might be (quote product)
+					(product (if (consp prod) (cl-second prod) prod)) )
     ;; move found info to front of sql-connection-alist
     (setq sql-connection-alist
 			(cons info (assq-delete-all key sql-connection-alist)) )
