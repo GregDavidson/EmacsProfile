@@ -229,6 +229,10 @@
 
 ;; ** Fancy Emacs Load-Path Support
 
+;; This whole section needs to be redesigned and reworked!!
+;; We need to keep module directories off of the load-path
+;; We need to manage modules and module features separately!
+
 ;; The Emacs path will be kept ordered as follows, first to last:
 ;; (1) User Subdirectories
 ;; (2) Group (Project) Directories
@@ -456,14 +460,19 @@ symbol and rebuild emacs load-path"
 
 ;; ** Macros
 
-(defmacro ngender-require (module-name &rest features)
-	`(progn
-		 (defvar
-			 ,(intern (concat "*" (symbol-name module-name) "-features*"))
-			 (quote ,features)
-			 ,(concat "require module " (symbol-name module-name) " features") )
-		 (require (quote ,module-name))
-		 ) )
+(defmacro ngender (module-name &rest features)
+	`(ngender-provide (quote ,module-name) (quote ,features)) )
+
+;; WORK NEEDED HERE!!
+
+(defun ngender-provide (module-name &rest features)
+;; if module-name is already loaded and features are already present, do nothing
+;; otherwise: load the module and record that such has been done!
+)
+
+;; we need a datastructure to store
+;; - loaded modules  -- and their status??
+;; - provided features -- and their statuses??
 
 ;; ** Provide
 

@@ -4,8 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
-
 ;; ** Everything Else
 
 (defun ngender-emacs-lisp-mode-hook ()

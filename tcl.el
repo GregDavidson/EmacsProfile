@@ -4,7 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
 (require 'tcl)
 
 ;; Customization

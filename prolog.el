@@ -4,8 +4,6 @@
 
 ;; ** Dependencies - provide and require
 
-(require 'ngender)
-
 ;; ** Everything Else
 
 ;; see http://turing.ubishops.ca/home/bruda/emacs-prolog/

@@ -4,7 +4,6 @@
 ;; 
 ;; ** Dependencies
 
-(require 'ngender)
 ;; (require 'x-fonts)					; why??
 
 ;; ** Indentation Issues

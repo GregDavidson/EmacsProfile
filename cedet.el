@@ -8,8 +8,8 @@
 ;; ** how to load this
 
 ;; CEDET is best loaded by calling
-;; (require 'ngender-cedet)
-;; in your init.el file.
+;; (ngender cedet)
+;; in your User-Me/init-me.el file.
 
 ;; ** require
 

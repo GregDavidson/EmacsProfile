@@ -4,7 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
 (ngender-package 'php-mode)
 
 ;; ** Everything Else

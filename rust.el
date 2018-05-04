@@ -4,8 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
-
 (defvar *ngender-rust-packages* '(rust-mode)
 	"minimal set of rust packages" )
 (apply #'ngender-package *ngender-rust-packages*)

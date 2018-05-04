@@ -33,21 +33,20 @@
 ;; and appropriately configured and activated.  The intention is
 ;; that the user need only add
 
-;; (require 'ngender-example)
+;; (ngender example)
 
 ;; to their personal Emacs init file in order to have an extension
 ;; fully in operation.  Many packages have complex configuration
 ;; options which a user might want to take advantage of.  In such a
 ;; case, the user should instead specify
 
-;; (ngender-require ngender-example feature...)
+;; (ngender example feature...)
 
 ;; which currently expands into:
 
-;; (progn
-;; 	(defvar *ngender-example-features* '() "require module ngender-example")
-;; 	(setq *ngender-example-features* '(feature...))
-;; 	(require 'ngender-example) )
+;; (ngender-require 'example '(feature...))
+
+;; ngender-require does nothing if the specified features are already loaded
 
 ;; Although an NGender Emacs Module is NOT an Emacs Package,
 ;; there's value in following applicable Emacs Packaging
@@ -60,9 +59,6 @@
 
 ;; Ensure that all needed and requested packages have been
 ;; downloaded and loaded
-
-;; Ensure we have our framework with various convenience functions
-(require 'ngender)
 
 ;; Certain packages need to be loaded to statisfy this
 ;; module.  The user may request additional or alternative

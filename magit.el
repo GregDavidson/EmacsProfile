@@ -4,8 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
-
 (defvar *ngender-magit-packages* '(magit)
 	"minimal set of magit packages" )
 (apply #'ngender-package *ngender-magit-packages*)

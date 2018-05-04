@@ -7,8 +7,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
-
 ;; ** Everything Else
 
 ;; (ngender-prepend-paths 'load-path "~/Lib/Emacs/HaskellMode")

@@ -4,8 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
-
 ;; ** Everything Else
 
 ;; (when (not (boundp 'ozhome))

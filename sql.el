@@ -13,8 +13,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
-
 ;; Consider adding to your init-me.el some of:
 ;; (defvar *ngender-sql-packages* '( sql sql-indent sqlup-mode ))
 

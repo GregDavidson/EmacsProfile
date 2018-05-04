@@ -4,8 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
-
 ;; we should check the environment variable SHELL
 ;; and set up for the appropriate shell!!
 

@@ -4,7 +4,6 @@
 
 ;; ** Dependencies
 
-(require 'ngender)
 (defvar *ngender-org-packages* '()
   "packages to support org-mode" )
 ;; Ensure org package is on the list at the front:

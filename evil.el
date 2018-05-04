@@ -54,7 +54,6 @@
 
 (apply #'ngender-package *ngender-evil-packages*)
 
-(require 'ngender)
 (require 'evil)
 (evil-mode)
 

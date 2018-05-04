@@ -5,7 +5,7 @@
 ;; ** require
 
 (require 'cc-mode)
-;; (require 'ngender-cedet)
+;; (ngender cedet)
 
 ;; ** Functions
 

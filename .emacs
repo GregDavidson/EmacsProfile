@@ -40,12 +40,14 @@
 (load (expand-file-name ".gnu-emacs" *ngender-user-home*) t t) ; ignore its absence
 
 ;; Make sure the NGender subdirectory is on the load-path
-(let ( (ngender-dir (expand-file-name "NGender" *ngender-emacs-home*)) )
-	(if (file-directory-p ngender-dir)
-		(setq load-path (delete-dups (cons ngender-dir load-path)))
-		(lwarn "Expected directory %s" ngender-dir) ) )
+(defvar *ngender-modules-dir*
+ (let ( (dir (expand-file-name "NGender" *ngender-emacs-home*)) )
+  (if (file-directory-p dir)
+   dir
+   (lwarn "Expected directory %s" dir) nil ) )
+ "where you keep your personal Emacs customizations" )
 
-(require 'ngender)
+(load (expand-file-name "ngender.el" *ngender-modules-dir*))
 
 ; init.el should orchestrate everything else
 (load (expand-file-name "init.el" *ngender-emacs-home*))
