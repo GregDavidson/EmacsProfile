@@ -458,14 +458,21 @@ symbol and rebuild emacs load-path"
     (goto-char position)))
 
 
-;; ** Macros
-
-(defmacro ngender (module-name &rest features)
-	`(ngender-provide (quote ,module-name) (quote ,features)) )
+;; ** ngender macro and ngender-provide
 
 ;; WORK NEEDED HERE!!
 
+(defvar *ngender-load-path*
+	'()
+	"where to find ngender modules" )
+
+(defvar *ngender-loaded-modules*
+	'()
+	"ngender modules already loaded" )
+
 (defun ngender-provide (module-name &rest features)
+	(unless (assoc module-name *ngender-loaded-modules*)
+		(load 
 ;; if module-name is already loaded and features are already present, do nothing
 ;; otherwise: load the module and record that such has been done!
 )
@@ -473,6 +480,9 @@ symbol and rebuild emacs load-path"
 ;; we need a datastructure to store
 ;; - loaded modules  -- and their status??
 ;; - provided features -- and their statuses??
+
+(defmacro ngender (module-name &rest features)
+	`(ngender-provide (quote ,module-name) (quote ,features)) )
 
 ;; ** Provide
 
