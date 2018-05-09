@@ -5,14 +5,9 @@
 ;; - we need to make sure that /RPTUG exists as an "alias"
 ;; Package-Requires: ((seq)(map)(cl-lib)(emacs "25.1"))
 
-;;; * Commentary:
+;;; ** Commentary
 
-;; Yikes: We lost our macros:
-;; ngender-defvar-list
-;; ngender-defmacro-quote-args
-;; -- did we lose anything else?
-
-;;; * Code:
+;;; * Code
 
 ;; ** Dependencies
 
@@ -25,8 +20,9 @@
 ;; ** Warnings, Errors, Validating
 
 ;; what should the "level" actually be??
-(defun ngender-warn (x type &optional level tag)
-	(lwarn (or level '(type)) (or tag :warning) "Expected %s, got %s" type x) nil )
+(defun ngender-warn (x expected &optional tag level)
+	"warn that x was not what we expected"
+	(lwarn (or level 'emacs) (or tag :warning) "Expected %s, got %s" expected x) nil )
 
 (defun ngender-validate (x type-test type-name &optional level tag)
 	(if (funcall type-test x)	x
@@ -96,28 +92,6 @@
 (defun ngender-append-paths (symbol &rest dirs)
 	"append candidate directory paths to end of directory set bound to symbol"
 	(funcall #'ngender-add-paths symbol dirs t) )
-
-;; unused!!
-(defun ngender-str-member (str item &optional delim)
-	"is item a member of delimited string?"
-	(let ( (d (or delim ":")) )
-		(string-match (concat ".*" delim (regexp-quote item) delim ".*")
-			(concat delim str delim) ) ) )
-
-;; unused!! except in next function
-(defun ngender-str-append (str item &optional delim)
-	"append item onto delimited string"
-	(concat str (or delim ":") item) )
-
-;; unused!!
-(defun ngender-update-str-append (symbol item &optional delim)
-	(set symbol (ngender-str-append (symbol-value symbol) item delim)) )
-
-;; unused!!
-(defun ngender-exec-path-from-shell ()
-	(let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'")))
-		(setenv "PATH" path-from-shell)
-		(setq exec-path (split-string path-from-shell path-separator)) ) )
 
 ;; ** Emacs Repository Support
 
@@ -233,23 +207,23 @@
 ;; We need to keep module directories off of the load-path
 ;; We need to manage modules and module features separately!
 
-;; The Emacs path will be kept ordered as follows, first to last:
+;; The *ngender-load-path* will be kept ordered as follows, first to last:
 ;; (1) User Subdirectories
 ;; (2) Group (Project) Directories
-;; (3) Vendor (3rd party extension) directories
-;; (4) Everything that was there initially, including NGender (established in .emacs)
+;; (3) *ngender-modules-dir*
 
-;; Note: it seems that packages add their load directories
-;; at the front of load-path!!  Anytime we want to fix this
-;; we can call (ngender-rebuild-load-path)
+;; A handy macro will allow adding package directories to the Emacs load-path
+;; Another handy macro will allow conveniently dropping such
 
-(defvar *ngender-user-subdirectories* '())
-(defvar *ngender-group-subdirectories* '())
-(defvar *ngender-vendor-subdirectories* '())
+(defvar *ngender-load-path*	(list *ngender-modules-dir*) "where to find ngender modules")
+
+(defvar *ngender-user-dirs* '() "normally just directory User-Me")
+(defvar *ngender-group-dirs* '()  "possible shared group module directories")
+(defconst *ngender-core-dirs* (list *ngender-modules-dir*) "should not change!")
 
 (defconst *ngender-path-lists*
-	'(*ngender-user-subdirectories* *ngender-group-subdirectories* *ngender-vendor-subdirectories* load-path)
-"load-path will be reconstructed from these sublists, deduped, left-to-right; ensure load-path is on this list!" )
+	'(*ngender-user-dirs* *ngender-group-dirs* *ngender-core-dirs*)
+"*ngender-load-path* will be reconstructed from these sublists, deduped, left-to-right" )
 
 (defun ngender-rebuild-load-path ()
   "rebuild emacs load-path with elements of lists named in
@@ -257,7 +231,7 @@
   (setq load-path (delete-dups
 	 (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
 
-(defun ngender-path-subdirectories (symbol paths)
+(defun ngender-path-dirs (symbol paths)
 	"add directory paths to the front of the list named by
 symbol and rebuild emacs load-path"
 	(set symbol (ngender-filter-dirs paths))
@@ -268,34 +242,34 @@ symbol and rebuild emacs load-path"
 	(set symbol (delete path (symbol-value symbol)))
 	(ngender-rebuild-load-path) )
 
-(defun ngender-user-subdirectory (&rest paths)
+(defun ngender-user-dir (&rest paths)
 	"add paths to user subdirectories and rebuild emacs load-path"
-	(ngender-path-subdirectories '*ngender-user-subdirectories* paths)
+	(ngender-path-dirs '*ngender-user-dirs* paths)
 )
 
 (defun ngender-user-subdir-delete (path)
-	"delete path from user subdirectories and rebuild emacs load-path"
-	(ngender-path-delete '*ngender-user-subdirectories* path)
+	"delete path from user dirs and rebuild emacs load-path"
+	(ngender-path-delete '*ngender-user-dirs* path)
 )
 
-(defun ngender-group-subdirectory (&rest paths)
-	"add paths to group subdirectories and rebuild emacs load-path"
-	(ngender-path-subdirectories '*ngender-user-subdirectories* paths)
+(defun ngender-group-dir (&rest paths)
+	"add paths to group dirs and rebuild emacs load-path"
+	(ngender-path-dirs '*ngender-user-dirs* paths)
 )
 
 (defun ngender-group-subdir-delete (path)
-	"delete path from group subdirectories and rebuild emacs load-path"
-	(ngender-path-delete '*ngender-group-subdirectories* path)
+	"delete path from group dirs and rebuild emacs load-path"
+	(ngender-path-delete '*ngender-group-dirs* path)
 )
 
-(defun ngender-vendor-subdirectory (&rest paths)
-	"add paths to vendor subdirectories and rebuild emacs load-path"
-	(ngender-path-subdirectories '*ngender-user-subdirectories* paths)
+(defmacro ngender-vendor-dir (&rest paths)
+	"ensure paths on emacs load-path"
+	`(ngender-update-union-with-bags 'load-path ',paths)
 )
 
-(defun ngender-vendor-subdir-delete (path)
-	"delete path from vendor subdirectories and rebuild emacs load-path"
-	(ngender-path-delete '*ngender-vendor-subdirectories* path)
+(defmacro ngender-vendor-subdir-delete (path)
+	"delete path from emacs load-path"
+	`(ngender-path-delete 'load-path ,path)
 )
 
 ;; ** Window Management Functions
@@ -458,32 +432,70 @@ symbol and rebuild emacs load-path"
     (goto-char position)))
 
 
-;; ** ngender macro and ngender-provide
+;; ** ngender require, load, provide with macros
 
-;; WORK NEEDED HERE!!
+(defvar *ngender-modules-loaded* '() "assoc list of (module features...) already loaded")
 
-(defvar *ngender-load-path*
-	'()
-	"where to find ngender modules" )
+(defvar *ngender-modules-loading* '() "assoc stack of (module features...) being loaded")
 
-(defvar *ngender-loaded-modules*
-	'()
-	"ngender modules already loaded" )
+;; We're loading, push us on the stack!
+(setq *ngender-modules-loading* (cons (list 'ngender) *ngender-modules-loading*))
 
-(defun ngender-provide (module-name &rest features)
-	(unless (assoc module-name *ngender-loaded-modules*)
-		(load 
-;; if module-name is already loaded and features are already present, do nothing
-;; otherwise: load the module and record that such has been done!
-)
+(defun ngender-normalize-module (x)
+	"a module name should be a string suitable for a filename w/o extensions"
+	(cond
+		( (stringp x) x )
+		( (symbolp x) (symbol-name x) )
+		( (and (consp x) (eq 'quote (car x)) (eq 2 (length x)))
+			(ngender-warn x "string")
+			(ngender-normalize-module (cadr x)) )
+		( t (ngender-warn x 'string) nil) ) )
 
-;; we need a datastructure to store
-;; - loaded modules  -- and their status??
-;; - provided features -- and their statuses??
+(defun ngender-normalize-feature (x)
+	"a feature should be a list whose first element is a symbol"
+	(let ( (oops (lambda (x) (ngender-warn x "feature(list with symbol as head)"))) )
+		(cond
+			( (consp x)
+				(let ((car (car x)))
+					(cond
+						( (symbolp car)
+							(if (not (eq 'quote car))
+								x
+								(oops x)
+								(ngender-normalize-module (cadr x)) ) )
+						( (stringp car) (cons (intern car) (cdr x)) )
+						( t (oops x) nil ) ) ) )
+			( (symbolp x) (list x) )
+			( (stringp x) (oops x) (list (intern x)) )
+			( t (oops x) nil) ) ) )
 
-(defmacro ngender (module-name &rest features)
-	`(ngender-provide (quote ,module-name) (quote ,features)) )
+(defun ngender-provide (module)
+	"move (module feature...) from loading to loaded"
+	(if-let ( (module (ngender-normalize-module module)) )
+		(if-let ( (module+features (assoc module *ngender-modules-loading*)) )
+			(lwarn :warning "ngender-provide: no %s being loaded, doing nothing" module)
+			(setq *ngender-modules-loading* (cl-delete module+features *ngender-modules-loading*))
+			(add-to-list *ngender-modules-loaded* module+features) ) ) )
+
+(defun ngender-load (module &rest features)
+	"show we are loading (module features...) and load module using our load path"
+	(if-let ( (module (ngender-normalize-module module)) )
+		(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
+			(let ( (module+features (cons module features)) )
+				(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*))
+				(let ( (load-path *ngender-load-path*) ) ; dynamic binding of global variable!!
+					(load module) ) ) ) ) )	; module can pull features off loading list
+
+(defun ngender-require (module &rest features)
+	(unless (assq module *ngender-modules-loaded*)
+		(apply ngender-load (cons module features)) ) )
+
+(defmacro ngender (&rest module+features)
+	(cons 'ngender-require (mapcar (lambda (x) (list 'quote x)) module+features)) )
+
+(defmacro ngender-provide (module)
+	(list 'ngender-provide (list 'quote module)) )
 
 ;; ** Provide
 
-(provide 'ngender)
+(ngender-provide ngender)
