@@ -7,6 +7,81 @@
 
 ;;; ** Commentary
 
+;; *** Macros for Power User Code
+
+;; We provide some handy macros for including and
+;; configuring Emacs Packages and NGender Modules.
+;; No quotes ' or " are required to use these!
+;; Most of these are intended for use in your
+;; User-Me/init-me.el file.
+
+;; **** Managing NGender Emacs Modules
+
+;; When there's an NGender module for what you want,
+;; it should take care of downloading and installing
+;; any required packages for you.
+
+;; (ngender module)
+;; Require the module named "module"
+;; It will be loaded if it hasn't been already
+
+;; (ngender module feature1 feature2 ... )
+;; Load module with specified features.
+;; See module file for feature documentation.
+
+;; (ngender-forget module)
+;; Forget we've ever loaded any such module.
+;; Next (ngender module) will load the module again!
+
+;; **** Managing Files of Emacs Lisp Code
+
+;; When you don't have a module, perhaps you have some
+;; regular Emacs Lisp code and you just need a place to put
+;; it where Emacs will find it
+
+;; (ngender-emacs-path some/dir)
+;; Add some/dir as a directory (folder) where you can place
+;; regular emacs .el or .elc files.  The directory (you will
+;; need to create it) will be placed on the Emacs 'load-path
+;; list.  Files placed there can be loaded with the Emacs
+;; load function or (if they use provide) the Emacs require
+;; function.
+
+;; (ngender-emacs-path-delete some/dir)
+;; Remove some/dir from the Emacs 'load-path list
+
+;; **** Managing Emacs Packages and Package Archives
+
+;; Perhaps you want to deal with Emacs Packages and
+;; Package Archives yourself?
+
+;; (ngender-archive package-archive ... )
+;; Add the specified package-archives to the Emacs 'package-archives list
+
+;; (ngender-package package ... )
+;; Install the specified packages from the Emacs archives
+
+;; *** Macros for NGender Module Writers
+
+;; Unless your module is unusually simple you're going to
+;; have to learn some Emacs Lisp and some of how Emacs does
+;; things, especially how Emacs does things with Packages.
+;; Studying the rest of the code of this file may help you
+;; learn some of that.  These two macros should help you get
+;; started:
+
+;; (ngender-features module)
+;; Returns the list of features requested of your module.
+;; Will return the empty list for a default configuration.
+;; You must give the name of your module.
+
+;; (ngender-provide module)
+;; YOU MUST CALL THIS when your module is done!
+;; Moves your module name and features from the loading list
+;; to the loaded list.  You must give your module name.
+;; Note that each feature will itself be a list looking like
+;; (feature-symbol feature-arguments ...)
+
 ;;; * Code
 
 ;; ** Dependencies
@@ -19,7 +94,6 @@
 
 ;; ** Warnings, Errors, Validating
 
-;; what should the "level" actually be??
 (defun ngender-warn (x expected &optional tag level)
 	"warn that x was not what we expected"
 	(lwarn (or level 'emacs) (or tag :warning) "Expected %s, got %s" expected x) nil )
@@ -93,7 +167,7 @@
 	"append candidate directory paths to end of directory set bound to symbol"
 	(funcall #'ngender-add-paths symbol dirs t) )
 
-;; ** Emacs Repository Support
+;; ** Emacs Package Archive Repository Support
 
 (require 'package)
 
@@ -102,15 +176,21 @@
 		 ("marmalade" . "http://marmalade-repo.org/packages/")
 		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
 		 ("org" . "https://orgmode.org/elpa/")
-		 ) "package archives known to exist" )
+		 ) "package archives we know exist" )
 
 (defvar package-archives
 	'( ("gnu" . "http://elpa.gnu.org/packages/") )
   "requested package archives" )
 
-;; improve these with regexp matching!!
-(defun ngender-archive-name-p (name) (stringp name))
-(defun ngender-archive-url-p (url) (stringp url))
+;; the regexp patterns are only heuristic, not definitive!
+(defun ngender-archive-name-p (name) (and (stringp name) (string-match "^[[:alpha:]][[:alnum:]-]*$" name)))
+(defun ngender-archive-url-p (url) (and (stringp url) (string-match "^https?://" url)))
+
+;; (ngender-validate-list
+;; 	*ngender-known-package-archives* (lambda (x) (ngender-archive-name-p (car x))) "package archive name" )
+
+;; (ngender-validate-list
+;; 	*ngender-known-package-archives* (lambda (x) (ngender-archive-url-p (cdr x))) "package archive url" )
 
 (defun ngender-archive-p (pair)
 	"return the cons archive represented by the list or cons archive pair or nil"
@@ -121,18 +201,26 @@
 				nil
 				(if is-list (cons name url) pair) ) ) ) )
 
+;; (ngender-archive-p '("org" . "https://orgmode.org/elpa/"))
+;; (ngender-archive-p '("org" "https://orgmode.org/elpa/"))
+
 (defun ngender-add-package-archive-pair (symbol new-pair)
-	(let* ( (key (car new-pair)) (alist (symbol-value symbol)) (old-pair (assoc key alist)) )
+	(let* ( (key (car new-pair)) (alist (ngender-symbol-value symbol)) (old-pair (assoc key alist)) )
 		(if (equal old-pair new-pair) t
 			(when old-pair
 				(lwarn "changing url for %s from %s to %s in %s" key (cdr old-pair) (cdr new-pair) symbol)
 				(set symbol (assoc-delete-all key alist)) )
-			(set symbol (cons new-pair (symbol-value symbol))) ) ) )
+			(set symbol (cons new-pair (ngender-symbol-value symbol))) ) ) )
+
+;; (defvar *ngender-test-package-archive* '())
+;; (setq *ngender-test-package-archive* '())
+;; (ngender-add-package-archive-pair '*ngender-test-package-archive* '("org" . "https://orgmode.org/elpa/"))
+;; *ngender-test-package-archive*
 
 (defun ngender-add-package-archive-by-key (key)
 	(let ( (pair (assoc key *ngender-known-package-archives*)) )
 		(cond
-			( (symbolp key) (ngender-package-archive-by-key (symbol-name key)) )
+			( (symbolp key) (ngender-add-package-archive-by-key (symbol-name key)) )
 			( (not (stringp key)) (lwarn "expected string archive key: %s" key) )
 			( (null pair) (lwarn "expected known archive key: %s" key) )
 			( t (ngender-add-package-archive-pair 'package-archives pair) ) ) ) )
@@ -150,28 +238,39 @@
 			( t (lwarn "expected archive name or pair %s" a) ) ) ) )
 
 
+(defmacro ngender-archive (&rest archives)
+	(cons
+		'ngender-package-archive
+		(mapcar (lambda (x) (cond
+													( (symbolp x) (symbol-name x) )
+													( (stringp x) x )
+													( t (list 'quote x) ) )) archives) ) )
+
+;; (macroexpand-1 '(ngender-archive gnu "marmalade" ("org" . "https://orgmode.org/elpa/")))
+												
+
 (defun ngender-drop-assoc-by-key (symbol key)
-  (set symbol (assoc-delete-all key (symbol-value symbol)))
+  (set symbol (assoc-delete-all key (ngender-symbol-value symbol)))
 )
 
 (defun ngender-package-archive-delete (key)
-	(ngender-drop-assoc-without 'package-archives key)
+	(ngender-drop-assoc-by-key 'package-archives key)
 )
 
 (defun ngender-package-archive-forget (key)
-	(ngender-drop-assoc-without 'package-archives key)
-	(ngender-drop-assoc-without '*ngender-known-package-archives* key)
+	(ngender-drop-assoc-by-key 'package-archives key)
+	(ngender-drop-assoc-by-key '*ngender-known-package-archives* key)
 )
 
-;; variables
+;; Some notes on how Emacs manages package archives:
+;; Variables:
 ;; package-archives - where to fetch packages from
 ;; package-load-list - which installed packages to load - might be (all)
 ;; package-archive-contents - Cache of the contents of the
 ;;		Emacs Lisp Package Archive.  This is an alist mapping
 ;;		package names (symbols) to non-empty lists of
 ;;		`package-desc' structures.
-
-;; functions
+;; Functions:
 ;; package-initialize - load packages from package-load-list
 ;; package-refresh-contents - download descriptions of all packages on package-archives
 
@@ -198,8 +297,21 @@
 			(if (funcall type-test p) path
 				(ngender-warn p type-name '(init)) ) ) ) )
 
-(defun require-file (path &optional parent) (require-file-path path #'file-regular-p 'file parent) )
-(defun require-dir (path &optional parent) (require-file-path path #'file-directory-p 'directory parent) )
+(defun require-file (path &optional parent)
+	(require-file-path path #'file-regular-p 'file parent) )
+(defun require-dir (path &optional parent)
+	(require-file-path path #'file-directory-p 'directory parent) )
+
+(defun ngender-a-string (x)
+	"given a string, a symbol or a quoted string or symbol, just provide a string - handy for macros"
+	(cond
+		( (stringp x) x )
+		( (symbolp x) (symbol-name x) )
+		( (and (consp x) (eq 'quote (car x)))
+			(ngender-a-string (cadr x)) ) ) )
+
+;; (mapcar #'ngender-a-string
+;;  '("foo" foo 'foo) )
 
 ;; ** Fancy Emacs Load-Path Support
 
@@ -226,51 +338,51 @@
 "*ngender-load-path* will be reconstructed from these sublists, deduped, left-to-right" )
 
 (defun ngender-rebuild-load-path ()
-  "rebuild emacs load-path with elements of lists named in
+  "rebuild *ngender-load-path* with elements of lists named in
 *ngender-path-lists* appearing in front in order"
-  (setq load-path (delete-dups
+  (setq *ngender-load-path* (delete-dups
 	 (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
 
 (defun ngender-path-dirs (symbol paths)
 	"add directory paths to the front of the list named by
-symbol and rebuild emacs load-path"
+symbol and rebuild *ngender--load-path-"
 	(set symbol (ngender-filter-dirs paths))
 	(ngender-rebuild-load-path) )
 
 (defun ngender-path-delete (symbol path)
-	"delete paths from the list named by symbol and rebuild emacs load-path"
-	(set symbol (delete path (symbol-value symbol)))
+	"delete paths from the list named by symbol and rebuild *ngender-load-path*"
+	(set symbol (delete path (ngender-symbol-value symbol)))
 	(ngender-rebuild-load-path) )
 
 (defun ngender-user-dir (&rest paths)
-	"add paths to user subdirectories and rebuild emacs load-path"
+	"add paths to user subdirectories and rebuild *ngender-load-path*"
 	(ngender-path-dirs '*ngender-user-dirs* paths)
 )
 
 (defun ngender-user-subdir-delete (path)
-	"delete path from user dirs and rebuild emacs load-path"
+	"delete path from user dirs and rebuild *ngender-load-path*"
 	(ngender-path-delete '*ngender-user-dirs* path)
 )
 
 (defun ngender-group-dir (&rest paths)
-	"add paths to group dirs and rebuild emacs load-path"
-	(ngender-path-dirs '*ngender-user-dirs* paths)
-)
+	"add paths to group dirs and rebuild *ngender-load-path*"
+	(ngender-path-dirs '*ngender-user-dirs* paths) )
 
 (defun ngender-group-subdir-delete (path)
-	"delete path from group dirs and rebuild emacs load-path"
-	(ngender-path-delete '*ngender-group-dirs* path)
-)
+	"delete path from group dirs and rebuild *ngender-load-path*"
+	(ngender-path-delete '*ngender-group-dirs* path) )
 
-(defmacro ngender-vendor-dir (&rest paths)
+(defmacro ngender-emacs-path (&rest paths)
 	"ensure paths on emacs load-path"
-	`(ngender-update-union-with-bags 'load-path ',paths)
-)
+	`(ngender-update-union-with-bags 'load-path ',(mapcar #'ngender-a-string paths)) )
 
-(defmacro ngender-vendor-subdir-delete (path)
+;; (macroexpand-1 '(ngender-emacs-path some/dir))
+
+(defmacro ngender-emacs-path-delete (path)
 	"delete path from emacs load-path"
-	`(ngender-path-delete 'load-path ,path)
-)
+	`(ngender-path-delete 'load-path ,(ngender-a-string path)) )
+
+;; (macroexpand-1 '(ngender-emacs-path-delete some/dir))
 
 ;; ** Window Management Functions
 
@@ -441,42 +553,62 @@ symbol and rebuild emacs load-path"
 ;; We're loading, push us on the stack!
 (setq *ngender-modules-loading* (cons (list 'ngender) *ngender-modules-loading*))
 
+;; should we warn if argument has an extension??
 (defun ngender-normalize-module (x)
-	"a module name should be a string suitable for a filename w/o extensions"
-	(cond
-		( (stringp x) x )
-		( (symbolp x) (symbol-name x) )
-		( (and (consp x) (eq 'quote (car x)) (eq 2 (length x)))
-			(ngender-warn x "string")
-			(ngender-normalize-module (cadr x)) )
-		( t (ngender-warn x 'string) nil) ) )
+	"a module name is a filename string w/o extensions; we allow some substitutes"
+	(ngender-a-string x) )
 
 (defun ngender-normalize-feature (x)
-	"a feature should be a list whose first element is a symbol"
-	(let ( (oops (lambda (x) (ngender-warn x "feature(list with symbol as head)"))) )
+	"a feature is a list whose first element is a symbol; we allow some substitutes"
+	(let ( (warning (lambda (x) (ngender-warn x "feature"))) )
 		(cond
 			( (consp x)
-				(let ((car (car x)))
+				(let ( (head (car x)) )
 					(cond
-						( (symbolp car)
-							(if (not (eq 'quote car))
-								x
-								(oops x)
-								(ngender-normalize-module (cadr x)) ) )
-						( (stringp car) (cons (intern car) (cdr x)) )
-						( t (oops x) nil ) ) ) )
+						( (eq 'quote head) (ngender-normalize-feature (cadr x)) )
+						( (symbolp head) x )
+						( (stringp head) (cons (intern head) (cdr x)) )
+						( t (funcall warning x) nil ) ) ) )
 			( (symbolp x) (list x) )
-			( (stringp x) (oops x) (list (intern x)) )
-			( t (oops x) nil) ) ) )
+			( (stringp x) (funcall warning x) (list (intern x)) )
+			( t (funcall warning x) nil) ) ) )
 
-(defun ngender-provide (module)
-	"move (module feature...) from loading to loaded"
+;; (mapcar #'ngender-normalize-feature
+;;  '(foo "foo" 'foo ("foo" bar) '("foo" bar)) )
+
+(defun ngender-forget-loading (module)
+	"remove all instances of given module from list of modules in process of loading"
+	(if-let ( (module (ngender-normalize-module module)) )
+		(setq *ngender-modules-loading* (assoc-delete-all module *ngender-modules-loading*) ) ) )
+
+(defun ngender-forget-loaded (module)
+	"remove all instances of given module from list of modules already loaded"
+	(if-let ( (module (ngender-normalize-module module)) )
+		(setq *ngender-modules-loaded* (assoc-delete-all module *ngender-modules-loaded*)) ) )
+
+(defun ngender-loading (module)
+	"return the (module feature...) list requested for the given module being loaded"
+	(if-let ( (module (ngender-normalize-module module)) )
+		(assoc module *ngender-modules-loading*) ) )
+
+(defmacro ngender-features (module)
+	"provide just the feature list, leaving off the module name"
+	`(cdr (ngender-loading ,(ngender-normalize-module module))) )
+
+;; (macroexpand-1 '(ngender-features foo))
+		
+(defun ngender-provide-function (module)
+	"move (module feature...) from loading to loaded - used by macro ngender-provide"
 	(if-let ( (module (ngender-normalize-module module)) )
 		(if-let ( (module+features (assoc module *ngender-modules-loading*)) )
-			(lwarn :warning "ngender-provide: no %s being loaded, doing nothing" module)
-			(setq *ngender-modules-loading* (cl-delete module+features *ngender-modules-loading*))
-			(add-to-list *ngender-modules-loaded* module+features) ) ) )
+			(progn
+				(setq *ngender-modules-loading* (cl-delete module+features *ngender-modules-loading*))
+				(add-to-list '*ngender-modules-loaded* module+features) )
+			(lwarn :warning "ngender-provide: no %s being loaded, doing nothing" module) ) ) )
 
+;; file a bug with emacs in re the apparent dynamic binding
+;; of free / global variables with let.  There needs to be
+;; a clear way to do this so we won't be hit by software rot!!
 (defun ngender-load (module &rest features)
 	"show we are loading (module features...) and load module using our load path"
 	(if-let ( (module (ngender-normalize-module module)) )
@@ -487,14 +619,32 @@ symbol and rebuild emacs load-path"
 					(load module) ) ) ) ) )	; module can pull features off loading list
 
 (defun ngender-require (module &rest features)
-	(unless (assq module *ngender-modules-loaded*)
-		(apply ngender-load (cons module features)) ) )
+	"load module with required features unless already done - used by macro ngender - order of features matters"
+	(if-let ( (module (ngender-normalize-module module)) )
+		(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
+			(unless (member (cons module features) *ngender-modules-loaded*)
+				(apply #'ngender-load (cons module features)) ) ) ) )
 
 (defmacro ngender (&rest module+features)
 	(cons 'ngender-require (mapcar (lambda (x) (list 'quote x)) module+features)) )
 
+;; (macroexpand-1 '(ngender foo))
+;; (macroexpand-1 '(ngender foo this that))
+
 (defmacro ngender-provide (module)
-	(list 'ngender-provide (list 'quote module)) )
+	(list 'ngender-provide-function (list 'quote module)) )
+
+;; (macroexpand-1 '(ngender-provide foo))
+
+(defmacro ngender-forget (module)
+	"fagedaboutit"
+	(if-let ( (module (ngender-normalize-module module)) )
+		`(progn
+			 (ngender-forget-loading ,module)
+			 (ngender-forget-loaded ,module) )
+		`(ngender-warn 'module "a module name") ) )
+
+;; (macroexpand-1 '(ngender-forget foo))
 
 ;; ** Provide
 
