@@ -1,8 +1,15 @@
 ;; GNU-Emacs User Profile, typically ~/.emacs
-;; I keep the real copy of this under *ngender-emacs-home*
-;; and simply symlink it to ~ or *ngender-user-home*
 
-;; Change these paths if appropriate!
+;; This file starts out as a symbolic link to a generic
+;; version under NGender/
+;; Try to avoid changing this file, but if you need to:
+;;	(1) remove the link
+;;	(2) copy the generic file to User-Me/
+;;  (3) create a new link to the copy
+;;  (4) edit the copy as needed
+
+;; We're trying to be very generic with the paths but if
+;; they're wrong then you'll need to change this file!
 
 (defvar *ngender-user-home* (expand-file-name "~")
 	"where you keep your customizations: your home or profile directory" )
