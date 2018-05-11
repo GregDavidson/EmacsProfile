@@ -13,4 +13,4 @@
 
 ;; Provide
 
-(provide 'ngender-scala)
+(ngender-provide ngender-scala)

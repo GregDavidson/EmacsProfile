@@ -19,4 +19,4 @@
 
 ;; ** provide
 
-(provide 'ngender-prolog)
+(ngender-provide ngender-prolog)

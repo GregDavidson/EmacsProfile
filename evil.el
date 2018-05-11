@@ -59,4 +59,4 @@
 
 ;; ** Provides
 
-(provide 'ngender-evil)
+(ngender-provide ngender-evil)

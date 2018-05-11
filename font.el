@@ -61,4 +61,4 @@
 
 ;; ** provide
 
-(provide 'ngender-font)
+(ngender-provide ngender-font)

@@ -48,4 +48,4 @@
 
 ;; ** provide
 
-(provide 'ngender-haskell)
+(ngender-provide ngender-haskell)

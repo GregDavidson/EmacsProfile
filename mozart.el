@@ -28,4 +28,4 @@
 
 ;; ** provide
 
-(provide 'ngender-mozart)
+(ngender-provide ngender-mozart)

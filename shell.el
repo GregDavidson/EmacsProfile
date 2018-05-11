@@ -37,4 +37,4 @@
 
 ;; ** provide
 
-(provide 'ngender-shell)
+(ngender-provide ngender-shell)

@@ -16,4 +16,4 @@
 
 ;; ** provide
 
-(provide 'ngender-magit)
+(ngender-provide ngender-magit)

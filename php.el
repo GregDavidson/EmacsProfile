@@ -27,4 +27,4 @@
 
 ;; ** Provides
 
-(provide 'ngender-php)
+(ngender-provide ngender-php)

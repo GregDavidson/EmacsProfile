@@ -415,4 +415,4 @@ a placeholder for a correct one!!! "
 
 ;; ** provide
 
-(provide 'ngender-sql)
+(ngender-provide ngender-sql)

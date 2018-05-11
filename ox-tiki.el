@@ -708,7 +708,7 @@ Return output file name."
 
 ;; ** Provides
 
-(provide 'ox-tiki)
+(ngender-provide ox-tiki)
 
 ;; Local variables:
 ;; generated-autoload-file: "org-loaddefs.el"

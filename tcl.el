@@ -18,4 +18,4 @@
 
 ;; Provides
 
-(provide 'ngender-tcl)
+(ngender-provide ngender-tcl)

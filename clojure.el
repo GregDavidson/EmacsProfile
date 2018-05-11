@@ -60,7 +60,7 @@
 
 ;; ** provide
 
-(provide 'ngender-clojure)
+(ngender-provide ngender-clojure)
 
 ;; ** Loading
 

@@ -70,7 +70,7 @@
 
 ;; ** provide
 
-(provide 'ngender-c)
+(ngender-provide ngender-c)
 
 ;; ** Autoloading
 

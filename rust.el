@@ -61,4 +61,4 @@
 
 ;; ** provide
 
-(provide 'ngender-rust)
+(ngender-provide ngender-rust)
