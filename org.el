@@ -6,14 +6,18 @@
 
 (defvar *ngender-org-packages* '()
   "packages to support org-mode" )
+
 ;; Ensure org package is on the list at the front:
 (setq *ngender-org-packages*
   (delete-dups (cons 'org *ngender-org-packages*)) )
+
+;; Ensure all of those packages have been installed
 (apply #'ngender-package *ngender-org-packages* )
-;; Do I need to require the rest of the org packages?? Or exactly what??
+
+;; Require the features in order to load the packages
 (require 'org)
 
-;; ** Everything Else
+;; ** Now configure org nicely
 
 (setq org-directory (expand-file-name "~/Notes"))
 (setq org-default-notes-file (expand-file-name "Notes" org-directory))
@@ -82,4 +86,4 @@
 
 ;; ** Provide
 
-(provide 'ngender-org)
+(ngender-provide ngender-org)
