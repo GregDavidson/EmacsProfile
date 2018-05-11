@@ -38,19 +38,13 @@
 ;; to their personal Emacs init file in order to have an extension
 ;; fully in operation.  Many packages have complex configuration
 ;; options which a user might want to take advantage of.  In such a
-;; case, the user should instead specify
+;; case, the user should look up the features which the module supplies
+;; and specify them with appropriate additional arguments:
 
-;; (ngender example feature...)
-
-;; which currently expands into:
-
-;; (ngender-require 'example '(feature...))
-
-;; ngender-require does nothing if the specified features are already loaded
+;; (ngender example feature... (feature details...)...)
 
 ;; Although an NGender Emacs Module is NOT an Emacs Package,
-;; there's value in following applicable Emacs Packaging
-;; Conventions as described by
+;; we borrow some of the Emacs Packaging Conventions as described by
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Packaging-Basics.html
 
 ;;; Code:
@@ -77,31 +71,39 @@
 ;; Other packages have one or more features with names differing from the package name.
 ;; Anything managed by a meta-feature should not be in this list!
 (defvar *ngender-example-package-requires*
-	'( example-mode (fancy-example-package fancy-example-feature-1 fancy-example-feature-2) )
-	"mapping from package names to requirement name(s)" )
+	'( example-mode ("example-package" feature-1 feature-2) )
+	"relating package names and feature name(s)" )
 
 ;; Figure out what meta features, packages and require features we need
 
-(defvar *ngender-example-minimum-features* '(example-mode)
+(defvar *ngender-example-necessary-features* '((example-mode))
 	"minimum set of features requred for this module" )
 
-;; if user doesn't specify this feature, the minimum features become the default
-(defvar *ngender-example-features* *ngender-example-minimum-features*
+;; if user doesn't specify this feature, the necessary features become the default
+(defvar *ngender-example-default-features* *ngender-example-necessary-features*
 	"features required by the user - must be defined before they load this module" )
 
-;; merge the necessary features into the requested features
-(ngender-update-union-with-bags '*ngender-example-features* *ngender-example-minimum-features*)
+;; Process the required or default features
+(let* ( (requested-features (ngender-features example))
+				(features
+					(if requested-features
+						(ngender--union-bags requested-features *ngender-example-necessary-features*)
+						*ngender-example-default-features* ) ) )
+	(dolist ( feature features )
 
-;; Figure out what packages and require features are implied
+		;; Figure out what packages and require features are implied
+		
+		(let ( (packages '()) (features '()) )
+			
+			(apply #'ngender-package packages)
+			(apply #'require features)
+			)
 
-(let ( (packages '()) (features '()) )
-	
-	(apply #'ngender-package packages)
-	(apply #'require features)
-)
+		;; Process any meta-features required
+		) )
 
 ;; ** Provides
 
-(provide 'ngender-example)
+(ngender-provide example)
 
-‘;;; filename ends here’
+;;; filename ends here
