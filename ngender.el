@@ -359,7 +359,7 @@ symbol and rebuild *ngender--load-path-"
 	(ngender-path-dirs '*ngender-user-dirs* paths)
 )
 
-(defun ngender-user-subdir-delete (path)
+(defun ngender-user-dir-delete (path)
 	"delete path from user dirs and rebuild *ngender-load-path*"
 	(ngender-path-delete '*ngender-user-dirs* path)
 )
@@ -368,7 +368,7 @@ symbol and rebuild *ngender--load-path-"
 	"add paths to group dirs and rebuild *ngender-load-path*"
 	(ngender-path-dirs '*ngender-user-dirs* paths) )
 
-(defun ngender-group-subdir-delete (path)
+(defun ngender-group-dir-delete (path)
 	"delete path from group dirs and rebuild *ngender-load-path*"
 	(ngender-path-delete '*ngender-group-dirs* path) )
 
