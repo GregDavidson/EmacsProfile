@@ -32,7 +32,7 @@
 
 		(when *ngender-rust-racer-p*
 			(defvar racer-cmd cmd "racer binary")
-			(defvar racer-rust-src-path src "rust src dir") )
+			(defvar racer-rust-src-path src "rust src dir") ) ) )
 
 ;;;; Rust Support reference
 ; http://bassam.co/emacs/2015/08/24/rust-with-emacs/
