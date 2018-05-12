@@ -82,6 +82,11 @@
 ;; Note that each feature will itself be a list looking like
 ;; (feature-symbol feature-arguments ...)
 
+;; *** Room for improvement
+
+;; Better macros would signal a compile time error when
+;; called with appropriate arguments.
+
 ;;; * Code
 
 ;; ** Dependencies
@@ -167,12 +172,45 @@
 	"append candidate directory paths to end of directory set bound to symbol"
 	(ngender-add-paths symbol dirs t) )
 
+;; ** Association List Support
+
+;; Emacs 27 has assoc-delete-all but we don't so we'll just have to work harder:
+
+(defun ngender-assoc-delete-all (key alist)
+	"replace with assoc-delete-all as soon as emacs27 is in common use!!"
+	(seq-filter (lambda (x) (eq key (car x))) alist) )
+
+(defun ngender-move-from-to-match (src-list dst-list match)
+	"destructively move first matching element from src to dst; returning dst"
+	(let ( (src (ngender-symbol-value src-symbol)) (dst (ngender-symbol-value dst-symbol)) (rest) )
+		(cond
+			( (null src) dst )					; src is empty, return dst
+			( (funcall match (car src))	; first element matches
+				(setq rest (cdr src))			; save rest of src list
+				(set src-symbol rest)			; splice out matching cell
+				(rplaca src dst)					; attach cell with match to dst
+				(set dst-symbol src) )		; set and return new dst
+			(t (let ( (next (cdr src)) )
+					 (while (and next (not (match (car next))))
+						 (setq src next)
+						 (setq next (cdr next)) )
+					 (if (not next)								; nothing matched
+						 dst												; so return dst as promised
+						 (setq rest (cdr next))			; otherwise, save rest of src list
+						 (rplacd src rest)					; splice out matching cell
+						 (rplacd next dst)					; attach cell with match to dst
+						 (set dst-symbol next) ) ) ) ) ) ) ; set and return new dst
+					 
+(defun ngender-alist-move-from-to-key (src dst key)
+	"destructively move first matching element from src to dst; returning value of dst"
+	(ngender-move-from-to-match src dst (lambda (x) (eq key (car x)))) )
+
 ;; ** Emacs Package Archive Repository Support
 
 (require 'package)
 
 (defvar *ngender-known-package-archives*
-	'( ("gnu" . "http://elpa.gnu.org/packages/")
+	'( ("gnu" . "https://elpa.gnu.org/packages/")
 		 ("marmalade" . "http://marmalade-repo.org/packages/")
 		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
 		 ("org" . "https://orgmode.org/elpa/")
@@ -208,8 +246,8 @@
 	(let* ( (key (car new-pair)) (alist (ngender-symbol-value symbol)) (old-pair (assoc key alist)) )
 		(if (equal old-pair new-pair) t
 			(when old-pair
-				(lwarn "changing url for %s from %s to %s in %s" key (cdr old-pair) (cdr new-pair) symbol)
-				(set symbol (assoc-delete-all key alist)) )
+				(warn "changing url for %s from %s to %s in %s" key (cdr old-pair) (cdr new-pair) symbol)
+				(set symbol (ngender-assoc-delete-all key alist)) )
 			(set symbol (cons new-pair (ngender-symbol-value symbol))) ) ) )
 
 ;; (defvar *ngender-test-package-archive* '())
@@ -221,8 +259,8 @@
 	(let ( (pair (assoc key *ngender-known-package-archives*)) )
 		(cond
 			( (symbolp key) (ngender-add-package-archive-by-key (symbol-name key)) )
-			( (not (stringp key)) (lwarn "expected string archive key: %s" key) )
-			( (null pair) (lwarn "expected known archive key: %s" key) )
+			( (not (stringp key)) (warn "expected string archive key: %s" key) )
+			( (null pair) (warn "expected known archive key: %s" key) )
 			( t (ngender-add-package-archive-pair 'package-archives pair) ) ) ) )
 
 (defun ngender-package-archive (&rest args)
@@ -231,11 +269,11 @@
 		(cond
 			( (consp a) (let* ( (pair (ngender-archive-p a)) )
 										(if (not pair)
-											(lwarn "expected archive: %s" a)
+											(warn "expected archive: %s" a)
 											(ngender-add-package-archive-pair '*ngender-known-package-archives* pair)
 											(ngender-add-package-archive-pair 'package-archives pair) ) ) )
 			( (or (stringp a) (symbolp a)) (ngender-add-package-archive-by-key a) )
-			( t (lwarn "expected archive name or pair %s" a) ) ) ) )
+			( t (warn "expected archive name or pair %s" a) ) ) ) )
 
 
 (defmacro ngender-archive (&rest archives)
@@ -250,7 +288,7 @@
 												
 
 (defun ngender-drop-assoc-by-key (symbol key)
-  (set symbol (assoc-delete-all key (ngender-symbol-value symbol)))
+  (set symbol (ngender-assoc-delete-all key (ngender-symbol-value symbol)))
 )
 
 (defun ngender-package-archive-delete (key)
@@ -277,11 +315,16 @@
 ;; Various package files will use this to ensure
 ;; that their required packages are loaded.
 ;; How could we fail gracefully?? This will not!!
-(defun ngender-package (&rest packages)
+(defun ngender-package-function (&rest packages)
 	"ensure these packages are loaded"
 	(dolist (p packages)
 		(unless (package-installed-p p)
 			(package-install p) ) ) )
+
+(defmacro ngender-package (&rest packages)
+	(cons 'ngender-package-function (mapcar #'ngender-a-string packages)) )
+
+;; (macroexpand-1 '(ngender-package org))
 
 ;; ** File and Directory Support
 
@@ -421,7 +464,7 @@ symbol and rebuild *ngender--load-path-"
 ;; Are we running under a window-system?
 ;; The variable window-system will be nil if not,
 ;; otherwise it will tell us which gui we're using!
-(defun using-gui-p () (and bound-p 'window-system) window-system)
+(defun using-gui-p () (and (boundp 'window-system) window-system))
 
 ;; do we want subminor??
 ;; should we burst minor-version on "."?? and have &rest minors??
@@ -444,7 +487,7 @@ symbol and rebuild *ngender--load-path-"
 (defun ngender-pitch-mode ()
 "set variable-pitch-mode to *ngender-pitch-mode* if bound"
 	(if (boundp '*ngender-pitch-mode*)
-		(setq variable-pitch-mode
+		(setq *variable-pitch-mode*
 			(cond
 				((eq :variable *ngender-pitch-mode*) 1)
 				((eq :fixed *ngender-pitch-mode*) 0)
@@ -491,9 +534,10 @@ symbol and rebuild *ngender--load-path-"
 ;; Darn - it is not working the same way.  Fix it, and when it
 ;; works, use it instead of compile in the keybinding below.
 ;; Alas, this doesn't work!!!
-(defun make (n)
+(defun make ()
   (interactive)
-  (compile "make") )
+	(let ( (compile-command (purecopy "make")) )
+		(compile "make") ) )
 
 ;; - Hold down Meta (aka Alt) and type a digit to select the
 ;;   desired format before running this function.
@@ -545,15 +589,6 @@ symbol and rebuild *ngender--load-path-"
     (goto-char position)))
 
 
-;; ** ngender require, load, provide with macros
-
-(defvar *ngender-modules-loaded* '() "assoc list of (module features...) already loaded")
-
-(defvar *ngender-modules-loading* '() "assoc stack of (module features...) being loaded")
-
-;; We're loading, push us on the stack!
-(setq *ngender-modules-loading* (cons (list 'ngender) *ngender-modules-loading*))
-
 ;; should we warn if argument has an extension??
 (defun ngender-normalize-module (x)
 	"a module name is a filename string w/o extensions; we allow some substitutes"
@@ -577,20 +612,32 @@ symbol and rebuild *ngender--load-path-"
 ;; (mapcar #'ngender-normalize-feature
 ;;  '(foo "foo" 'foo ("foo" bar) '("foo" bar)) )
 
+;; ** ngender require, load, provide with macros
+
+(defvar *ngender-modules-loaded* '() "assoc list of (module features...) already loaded")
+
+(defvar *ngender-modules-loading* '() "assoc stack of (module features...) being loaded")
+
+;; We're loading, push us on the stack!
+(setq *ngender-modules-loading* (cons (ngender-normalize-feature "ngender") *ngender-modules-loading*))
+
 (defun ngender-forget-loading (module)
 	"remove all instances of given module from list of modules in process of loading"
-	(if-let ( (module (ngender-normalize-module module)) )
-		(setq *ngender-modules-loading* (assoc-delete-all module *ngender-modules-loading*) ) ) )
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(setq *ngender-modules-loading* (ngender-assoc-delete-all module *ngender-modules-loading*) ) ) ) )
 
 (defun ngender-forget-loaded (module)
 	"remove all instances of given module from list of modules already loaded"
-	(if-let ( (module (ngender-normalize-module module)) )
-		(setq *ngender-modules-loaded* (assoc-delete-all module *ngender-modules-loaded*)) ) )
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(setq *ngender-modules-loaded* (ngender-assoc-delete-all module *ngender-modules-loaded*)) ) ) )
 
 (defun ngender-loading (module)
 	"return the (module feature...) list requested for the given module being loaded"
-	(if-let ( (module (ngender-normalize-module module)) )
-		(assoc module *ngender-modules-loading*) ) )
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(assoc module *ngender-modules-loading*) ) ) )
 
 (defmacro ngender-features (module)
 	"provide just the feature list, leaving off the module name"
@@ -600,12 +647,12 @@ symbol and rebuild *ngender--load-path-"
 		
 (defun ngender-provide-function (module)
 	"move (module feature...) from loading to loaded - used by macro ngender-provide"
-	(if-let ( (module (ngender-normalize-module module)) )
-		(if-let ( (module+features (assoc module *ngender-modules-loading*)) )
-			(progn
-				(setq *ngender-modules-loading* (cl-delete module+features *ngender-modules-loading*))
-				(add-to-list '*ngender-modules-loaded* module+features) )
-			(lwarn :warning "ngender-provide: no %s being loaded, doing nothing" module) ) ) )
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(let ( (module+features (assoc module *ngender-modules-loading*)) )
+				(if (not module+features)
+					(warn "ngender-provide-function: no %s loading, doing nothing" module)
+					(ngender-alist-move-from-to-key '*ngender-modules-loading* '*ngender-modules-loaded* module) ) ) ) ) )
 
 ;; file a bug with emacs in re the apparent dynamic binding
 ;; of free / global variables with let.  There needs to be
@@ -617,18 +664,21 @@ symbol and rebuild *ngender--load-path-"
 
 (defun ngender-load (module &rest features)
 	"show we are loading (module features...) and load module using our load path"
-	(if-let ( (module (ngender-normalize-module module)) )
-		(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
-			(let ( (module+features (cons module features)) )
-				(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*))
-				(ngender-load-module module) ) ) ) ) ; module can pull features off loading list
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(ngender-warn module-in "module")
+			(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
+				(let ( (module+features (cons module features)) )
+					(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*))
+					(ngender-load-module module) ) ) ) ) ) ; module can pull features off loading list
 
 (defun ngender-require (module &rest features)
 	"load module with required features unless already done - used by macro ngender - order of features matters"
-	(if-let ( (module (ngender-normalize-module module)) )
-		(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
-			(unless (member (cons module features) *ngender-modules-loaded*)
-				(apply #'ngender-load (cons module features)) ) ) ) )
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
+				(unless (member (cons module features) *ngender-modules-loaded*)
+					(apply #'ngender-load (cons module features)) ) ) ) ) )
 
 (defmacro ngender (&rest module+features)
 	(cons 'ngender-require (mapcar (lambda (x) (list 'quote x)) module+features)) )
@@ -637,17 +687,19 @@ symbol and rebuild *ngender--load-path-"
 ;; (macroexpand-1 '(ngender foo this that))
 
 (defmacro ngender-provide (module)
-	(list 'ngender-provide-function (list 'quote module)) )
+	(list 'ngender-provide-function (ngender-normalize-module module)) )
 
 ;; (macroexpand-1 '(ngender-provide foo))
 
-(defmacro ngender-forget (module)
+(defun ngender-forget-function (module)
 	"fagedaboutit"
-	(if-let ( (module (ngender-normalize-module module)) )
-		`(progn
-			 (ngender-forget-loading ,module)
-			 (ngender-forget-loaded ,module) )
-		`(ngender-warn 'module "a module name") ) )
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(ngender-forget-loading ,module)
+			(ngender-forget-loaded ,module) ) ) )
+
+(defmacro ngender-forget (module)
+	(list 'ngender-forget-function module) )
 
 ;; (macroexpand-1 '(ngender-forget foo))
 
