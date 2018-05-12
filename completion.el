@@ -6,4 +6,4 @@
 
 ;; ** Provide
 
-(ngender-provide ngender-completion)
+(ngender-provide completion)

@@ -15,4 +15,4 @@
 
 ;; ** Provide
 
-(ngender-provide ngender-workspace)
+(ngender-provide workspace)

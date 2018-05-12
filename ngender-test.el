@@ -8,4 +8,4 @@
 
 ;; Record that we've been loaded with those features
 
-(ngender-provide ngender-test)
+(ngender-provide test)

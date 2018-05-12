@@ -23,4 +23,4 @@
 
 ;; ** provide
 
-(ngender-provide ngender-clisp)
+(ngender-provide clisp)

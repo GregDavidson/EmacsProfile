@@ -108,4 +108,4 @@
 
 ;; ** provide
 
-(ngender-provide ngender-cedet)
+(ngender-provide cedet)

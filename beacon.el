@@ -14,4 +14,4 @@
 
 ;; Provides
 
-(ngender-provide ngender-beacon)
+(ngender-provide beacon)

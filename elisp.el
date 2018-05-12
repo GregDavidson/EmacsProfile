@@ -16,4 +16,4 @@
 
 ;; ** provide
 
-(ngender-provide ngender-elisp)
+(ngender-provide elisp)

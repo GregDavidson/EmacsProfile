@@ -161,11 +161,11 @@
 
 (defun ngender-prepend-paths (symbol &rest dirs)
 	"prepend candidate directory paths in front of directory set bound to symbol"
-	(funcall #'ngender-add-paths symbol dirs nil) )
+	(ngender-add-paths symbol dirs nil) )
 
 (defun ngender-append-paths (symbol &rest dirs)
 	"append candidate directory paths to end of directory set bound to symbol"
-	(funcall #'ngender-add-paths symbol dirs t) )
+	(ngender-add-paths symbol dirs t) )
 
 ;; ** Emacs Package Archive Repository Support
 
@@ -322,17 +322,16 @@
 ;; The *ngender-load-path* will be kept ordered as follows, first to last:
 ;; (1) User Subdirectories
 ;; (2) Group (Project) Directories
-;; (3) *ngender-modules-dir*
+;; (3) *ngender-home*
 
 ;; A handy macro will allow adding package directories to the Emacs load-path
 ;; Another handy macro will allow conveniently dropping such
 
-(defvar *ngender-load-path*	(list *ngender-modules-dir*) "where to find ngender modules")
+(defvar *ngender-load-path*	(list *ngender-home*) "where to find ngender modules")
 
 (defvar *ngender-user-dirs* '() "normally just directory User-Me")
 (defvar *ngender-group-dirs* '()  "possible shared group module directories")
-(defconst *ngender-core-dirs* (list *ngender-modules-dir*) "should not change!")
-
+(defconst *ngender-core-dirs* (list *ngender-home*) "should not change!")
 (defconst *ngender-path-lists*
 	'(*ngender-user-dirs* *ngender-group-dirs* *ngender-core-dirs*)
 "*ngender-load-path* will be reconstructed from these sublists, deduped, left-to-right" )
@@ -342,6 +341,8 @@
 *ngender-path-lists* appearing in front in order"
   (setq *ngender-load-path* (delete-dups
 	 (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
+
+;; (ngender-rebuild-load-path)
 
 (defun ngender-path-dirs (symbol paths)
 	"add directory paths to the front of the list named by
@@ -609,14 +610,18 @@ symbol and rebuild *ngender--load-path-"
 ;; file a bug with emacs in re the apparent dynamic binding
 ;; of free / global variables with let.  There needs to be
 ;; a clear way to do this so we won't be hit by software rot!!
+(defun ngender-load-module (module &optional NOERROR NOMESSAGE)
+	"load the specified module on the *ngender-load-path*"
+	(let ( (load-path *ngender-load-path*) ) ; dynamic binding of global variable!!
+		(load module NOERROR NOMESSAGE) ) )
+
 (defun ngender-load (module &rest features)
 	"show we are loading (module features...) and load module using our load path"
 	(if-let ( (module (ngender-normalize-module module)) )
 		(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
 			(let ( (module+features (cons module features)) )
 				(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*))
-				(let ( (load-path *ngender-load-path*) ) ; dynamic binding of global variable!!
-					(load module) ) ) ) ) )	; module can pull features off loading list
+				(ngender-load-module module) ) ) ) ) ; module can pull features off loading list
 
 (defun ngender-require (module &rest features)
 	"load module with required features unless already done - used by macro ngender - order of features matters"
