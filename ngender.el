@@ -137,9 +137,9 @@
 	(ngender-union-list-of-bags bags) )
 
 (defun ngender-update-union-with-list-of-bags (symbol list-of-bags)
-	"update symbol as set list from current value and bags in list"
+	"update symbol as set list from current value and bags in list assuming current value is usually biggest"
   (set symbol
-		(ngender-union-list-of-bags (cons (ngender-symbol-value symbol) list-of-bags)) ) )
+		(ngender-union-list-of-bags (append list-of-bags (list (ngender-symbol-value symbol)))) ) )
 
 (defun ngender-update-union-with-bags (symbol &rest bags)
 	"update symbol as set list from current value and multiple bags"
@@ -178,7 +178,7 @@
 
 (defun ngender-assoc-delete-all (key alist)
 	"replace with assoc-delete-all as soon as emacs27 is in common use!!"
-	(seq-filter (lambda (x) (eq key (car x))) alist) )
+	(seq-filter (lambda (x) (equal key (car x))) alist) )
 
 (defun ngender-move-from-to-match (src-list dst-list match)
 	"destructively move first matching element from src to dst; returning dst"
@@ -203,7 +203,7 @@
 					 
 (defun ngender-alist-move-from-to-key (src dst key)
 	"destructively move first matching element from src to dst; returning value of dst"
-	(ngender-move-from-to-match src dst (lambda (x) (eq key (car x)))) )
+	(ngender-move-from-to-match src dst (lambda (x) (equal key (car x)))) )
 
 ;; ** Emacs Package Archive Repository Support
 
@@ -618,9 +618,6 @@ symbol and rebuild *ngender--load-path-"
 
 (defvar *ngender-modules-loading* '() "assoc stack of (module features...) being loaded")
 
-;; We're loading, push us on the stack!
-(setq *ngender-modules-loading* (cons (ngender-normalize-feature "ngender") *ngender-modules-loading*))
-
 (defun ngender-forget-loading (module)
 	"remove all instances of given module from list of modules in process of loading"
 	(let ( (module (ngender-normalize-module module)) )
@@ -705,4 +702,4 @@ symbol and rebuild *ngender--load-path-"
 
 ;; ** Provide
 
-(ngender-provide ngender)
+(add-to-list '*ngender-modules-loaded* (list "ngender"))
