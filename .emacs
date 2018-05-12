@@ -1,8 +1,10 @@
-;; GNU-Emacs User Profile, typically ~/.emacs
+;; GNU-Emacs User Profile Start, typically ~/.emacs
+
+;; See README.org in *ngender-home* for the full story
 
 ;; This file starts out as a symbolic link to a generic
 ;; version under NGender/
-;; Try to avoid changing this file, but if you need to:
+;; Try to avoid changing this file, but if you must:
 ;;	(1) remove the link
 ;;	(2) copy the generic file to User-Me/
 ;;  (3) create a new link to the copy
@@ -44,7 +46,7 @@
 ;; If you have an additional customization file, load it
 (load (expand-file-name ".gnu-emacs" *ngender-user-home*) t t)
 
-(defvar *ngender-modules-dir*
+(defvar *ngender-home*
 	(let ( (dir (expand-file-name "NGender" *ngender-emacs-home*)) )
 		(if (file-directory-p dir)
 			dir
@@ -52,7 +54,7 @@
 	"where you keep your personal Emacs customizations" )
 
 ;; load our essential ngender features
-(load (expand-file-name "ngender" *ngender-modules-dir*))
+(load (expand-file-name "ngender" *ngender-home*))
 
 ;; init.el should orchestrate everything else
 (load (expand-file-name "init" *ngender-emacs-home*))
