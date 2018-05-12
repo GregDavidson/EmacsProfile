@@ -12,14 +12,16 @@
 
 ;; We're trying to be very generic with the paths but if
 ;; they're wrong then you'll need to change this file!
-
-(defvar *ngender-user-home* (expand-file-name "~")
+(setq debug-on-error t)
+(defvar *ngender-user-home*
+	(expand-file-name "~")
 	"where you keep your customizations: your home or profile directory" )
 
 (defvar *ngender-emacs-home*
 	(expand-file-name ".emacs.d" *ngender-user-home*)
 	"where you keep your Emacs customizations" )
 ;; What has Emacs treat this as its top-level init dir??
+;; Note package-user-dir and package-directory-list
 
 (package-initialize)
 
