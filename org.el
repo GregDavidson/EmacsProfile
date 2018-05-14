@@ -4,15 +4,16 @@
 
 ;; ** Dependencies
 
-(defvar *ngender-org-packages* '()
+(defvar *ngender-org-packages* '(mysql-to-org org-autolist org-bullets org-page
+	org-projectile org-tree-slide ox-gfm toc-org)
   "packages to support org-mode" )
 
 ;; Ensure org package is on the list at the front:
 (setq *ngender-org-packages*
-  (delete-dups (cons 'org *ngender-org-packages*)) )
+  (delete-dups (cons 'org (ngender-symbol-value '*ngender-org-packages*))) )
 
 ;; Ensure all of those packages have been installed
-(apply #'ngender-package *ngender-org-packages* )
+(apply #'ngender-package-function *ngender-org-packages* )
 
 ;; Require the features in order to load the packages
 (require 'org)
@@ -23,8 +24,9 @@
 (setq org-default-notes-file (expand-file-name "Notes" org-directory))
 
 (defconst my-org-babel-t
-;	'(emacs-lisp shell awk sed sql J scheme clojure prolog)
-	'(emacs-lisp shell awk sed sql J scheme clojure)
+;;	'(emacs-lisp shell awk sed sql J scheme clojure prolog)
+;;	'(emacs-lisp shell awk sed sql J scheme clojure)
+	'(emacs-lisp awk sql J scheme clojure)
 	"known org-mode source block languages I'd like org to evaluate" )
 
 ;; More org-babel packages, would allow more babel-t languages:

@@ -21,7 +21,7 @@
 (defvar *ngender-sql-packages* *ngender-sql-packages-necessary*
 	"sql packages necessary for this module and required by user" )
 (ngender-update-union-with-bags '*ngender-sql-packages*  *ngender-sql-packages-necessary*)
-(apply #'ngender-package *ngender-sql-packages*)
+(apply #'ngender-package-function *ngender-sql-packages*)
 
 (require 'rx)
 (require 'sql)

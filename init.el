@@ -27,8 +27,7 @@
 
 ;; Declare any Package (3rd-party library) directories here.
 ;; "vendor" is a common directory for such.
-(when (file-directory-p (expand-file-name "vendor" *ngender-emacs-home*))
-				(ngender-emacs-path "vendor") )
+(ngender-emacs-path vendor *ngender-emacs-home*)
 				
 ;; Declare any (Project) Group module directories here, e.g.
 ;; (ngender-group-dir "Group-RPTUG")

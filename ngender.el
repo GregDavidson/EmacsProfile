@@ -29,26 +29,19 @@
 ;; Load module with specified features.
 ;; See module file for feature documentation.
 
-;; (ngender-forget module)
-;; Forget we've ever loaded any such module.
-;; Next (ngender module) will load the module again!
-
 ;; **** Managing Files of Emacs Lisp Code
 
 ;; When you don't have a module, perhaps you have some
 ;; regular Emacs Lisp code and you just need a place to put
 ;; it where Emacs will find it
 
-;; (ngender-emacs-path some/dir)
+;; (ngender-emacs-path dir-name symbol-bound-to-parent-directory)
 ;; Add some/dir as a directory (folder) where you can place
 ;; regular emacs .el or .elc files.  The directory (you will
-;; need to create it) will be placed on the Emacs 'load-path
-;; list.  Files placed there can be loaded with the Emacs
-;; load function or (if they use provide) the Emacs require
-;; function.
-
-;; (ngender-emacs-path-delete some/dir)
-;; Remove some/dir from the Emacs 'load-path list
+;; need to create it first) will be placed on the Emacs
+;; 'load-path list.  Files placed there can be loaded with
+;; the Emacs load function or (if they use provide) the
+;; Emacs require function.
 
 ;; **** Managing Emacs Packages and Package Archives
 
@@ -104,8 +97,10 @@
 	(lwarn (or level 'emacs) (or tag :warning) "Expected %s, got %s" expected x) nil )
 
 (defun ngender-validate (x type-test type-name &optional level tag)
-	(if (funcall type-test x)	x
-		(ngender-warn x type-name (or level '(type)) (or tag :warning)) ) )
+	(if (funcall type-test x)
+		x
+		(ngender-warn x type-name (or level '(type)) (or tag :warning))
+		nil ) )
 
 (defun ngender-validate-list (list type-test type-name)
 	"filter out elements of list which fail type-test expecting them to be type-name things"
@@ -158,6 +153,8 @@
 
 (defun ngender-add-paths (symbol paths do-append)
 	"prepend or append candidate directory set with directory set bound to symbol"
+	(if (eq symbol 'load-path) (message "load-path += %S" paths))
+	(if (numberp (car load-path)) (message "loadpath.0 = %d" (car load-path)))
 	(set symbol (let ( (paths (ngender-symbol-value symbol))
 										 (newbies (ngender-filter-dirs paths)) )
 								(if do-append
@@ -180,7 +177,7 @@
 	"replace with assoc-delete-all as soon as emacs27 is in common use!!"
 	(seq-filter (lambda (x) (equal key (car x))) alist) )
 
-(defun ngender-move-from-to-match (src-list dst-list match)
+(defun ngender-move-from-to-match (src-symbol dst-symbol match)
 	"destructively move first matching element from src to dst; returning dst"
 	(let ( (src (ngender-symbol-value src-symbol)) (dst (ngender-symbol-value dst-symbol)) (rest) )
 		(cond
@@ -217,7 +214,7 @@
 		 ) "package archives we know exist" )
 
 (defvar package-archives
-	'( ("gnu" . "http://elpa.gnu.org/packages/") )
+	'( ("gnu" . "https://elpa.gnu.org/packages/") )
   "requested package archives" )
 
 ;; the regexp patterns are only heuristic, not definitive!
@@ -416,17 +413,17 @@ symbol and rebuild *ngender--load-path-"
 	"delete path from group dirs and rebuild *ngender-load-path*"
 	(ngender-path-delete '*ngender-group-dirs* path) )
 
-(defmacro ngender-emacs-path (&rest paths)
-	"ensure paths on emacs load-path"
-	`(ngender-update-union-with-bags 'load-path ',(mapcar #'ngender-a-string paths)) )
+(defun ngender-emacs-path-add (dir-path)
+	"ensure directory path is on emacs load-path"
+	(if (eq symbol 'load-path) (message "load-path += %S" dir-path))
+	(if (numberp (car load-path)) (message "loadpath.0 = %d" (car load-path)))
+	(when (ngender-validate dir-path #'file-directory-p "directory")
+		(ngender-update-union-with-bags 'load-path dir-path) ) )
 
-;; (macroexpand-1 '(ngender-emacs-path some/dir))
+(defmacro ngender-emacs-path (dir-name parent-path-symbol)
+	`(ngender-emacs-path-add (expand-file-name ,(ngender-a-string dir-name) ,parent-path-symbol)) )
 
-(defmacro ngender-emacs-path-delete (path)
-	"delete path from emacs load-path"
-	`(ngender-path-delete 'load-path ,(ngender-a-string path)) )
-
-;; (macroexpand-1 '(ngender-emacs-path-delete some/dir))
+;; (macroexpand-1 '(ngender-emacs-path name *ngender-emacs-home*))
 
 ;; ** Window Management Functions
 
@@ -630,6 +627,13 @@ symbol and rebuild *ngender--load-path-"
 		(when module
 			(setq *ngender-modules-loaded* (ngender-assoc-delete-all module *ngender-modules-loaded*)) ) ) )
 
+(defun ngender-forget (module)
+	"if you've left a mess, fuhgeddaboudit"
+	(let ( (module (ngender-normalize-module module)) )
+		(when module
+			(ngender-forget-loading ,module)
+			(ngender-forget-loaded ,module) ) ) )
+
 (defun ngender-loading (module)
 	"return the (module feature...) list requested for the given module being loaded"
 	(let ( (module (ngender-normalize-module module)) )
@@ -663,7 +667,7 @@ symbol and rebuild *ngender--load-path-"
 	"show we are loading (module features...) and load module using our load path"
 	(let ( (module (ngender-normalize-module module)) )
 		(when module
-			(ngender-warn module-in "module")
+			(ngender-warn module "module")
 			(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
 				(let ( (module+features (cons module features)) )
 					(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*))
@@ -687,18 +691,6 @@ symbol and rebuild *ngender--load-path-"
 	(list 'ngender-provide-function (ngender-normalize-module module)) )
 
 ;; (macroexpand-1 '(ngender-provide foo))
-
-(defun ngender-forget-function (module)
-	"fagedaboutit"
-	(let ( (module (ngender-normalize-module module)) )
-		(when module
-			(ngender-forget-loading ,module)
-			(ngender-forget-loaded ,module) ) ) )
-
-(defmacro ngender-forget (module)
-	(list 'ngender-forget-function module) )
-
-;; (macroexpand-1 '(ngender-forget foo))
 
 ;; ** Provide
 
