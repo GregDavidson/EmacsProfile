@@ -415,7 +415,7 @@ symbol and rebuild *ngender--load-path-"
 
 (defun ngender-emacs-path-add (dir-path)
 	"ensure directory path is on emacs load-path"
-	(if (eq symbol 'load-path) (message "load-path += %S" dir-path))
+	(message "load-path += %S" dir-path)
 	(if (numberp (car load-path)) (message "loadpath.0 = %d" (car load-path)))
 	(when (ngender-validate dir-path #'file-directory-p "directory")
 		(ngender-update-union-with-bags 'load-path dir-path) ) )
