@@ -106,6 +106,28 @@
 	"filter out elements of list which fail type-test expecting them to be type-name things"
 	(seq-filter (lambda (x) (ngender-validate x type-test type-name)) list) )
 
+(defun ngender-nothing (&rest args)
+	"the essential function that does nothing"
+	nil )
+
+(defun ngender-a-string (x)
+	"given a string, a symbol or a quoted string or symbol, just provide a string - handy for macros"
+	(cond
+		( (stringp x) x )
+		( (symbolp x) (symbol-name x) )
+		( (and (consp x) (eq 'quote (car x)))
+			(ngender-a-string (cadr x)) )
+		( t (ngender-warn x "string") ) ) )
+
+(defun ngender-a-quoted-symbol (x)
+	"given a string, a symbol or a quoted string or symbol, provide a quoted symbol - handy for macros"
+	(cond
+		( (and (consp x) (eq 'quote (cadr x)) (symbolp (caddr x))) x )
+		( (and (consp x) (eq 'quote (cadr x)) (stringp (caddr x))) (list 'quote (intern (caddr x))) )
+		( (symbolp x) (list 'quote x) )
+		( (stringp x) (list 'quote (intern x)) )
+		( t (ngender-warn x "symbol") ) ) )
+
 ;; ** Define some functions for managing lists, sets, paths
 
 ;; *** Filtering Lists
@@ -153,8 +175,10 @@
 
 (defun ngender-add-paths (symbol paths do-append)
 	"prepend or append candidate directory set with directory set bound to symbol"
-	(if (eq symbol 'load-path) (message "load-path += %S" paths))
-	(if (numberp (car load-path)) (message "loadpath.0 = %d" (car load-path)))
+	(if (eq symbol 'load-path)
+		(ngender-debug-warn t "load-path += %S" paths) )
+	(if (numberp (car load-path))
+		(ngender-debug-warn t "loadpath.0 = %d" (car load-path)) )
 	(set symbol (let ( (paths (ngender-symbol-value symbol))
 										 (newbies (ngender-filter-dirs paths)) )
 								(if do-append
@@ -185,7 +209,7 @@
 			( (funcall match (car src))	; first element matches
 				(setq rest (cdr src))			; save rest of src list
 				(set src-symbol rest)			; splice out matching cell
-				(rplaca src dst)					; attach cell with match to dst
+				(rplacd src dst)					; attach cell with match to dst
 				(set dst-symbol src) )		; set and return new dst
 			(t (let ( (next (cdr src)) )
 					 (while (and next (not (match (car next))))
@@ -319,7 +343,7 @@
 			(package-install p) ) ) )
 
 (defmacro ngender-package (&rest packages)
-	(cons 'ngender-package-function (mapcar #'ngender-a-string packages)) )
+	(cons 'ngender-package-function (mapcar #'ngender-a-quoted-symbol packages)) )
 
 ;; (macroexpand-1 '(ngender-package org))
 
@@ -341,14 +365,6 @@
 	(require-file-path path #'file-regular-p 'file parent) )
 (defun require-dir (path &optional parent)
 	(require-file-path path #'file-directory-p 'directory parent) )
-
-(defun ngender-a-string (x)
-	"given a string, a symbol or a quoted string or symbol, just provide a string - handy for macros"
-	(cond
-		( (stringp x) x )
-		( (symbolp x) (symbol-name x) )
-		( (and (consp x) (eq 'quote (car x)))
-			(ngender-a-string (cadr x)) ) ) )
 
 ;; (mapcar #'ngender-a-string
 ;;  '("foo" foo 'foo) )
@@ -377,16 +393,18 @@
 "*ngender-load-path* will be reconstructed from these sublists, deduped, left-to-right" )
 
 (defun ngender-rebuild-load-path ()
-  "rebuild *ngender-load-path* with elements of lists named in
-*ngender-path-lists* appearing in front in order"
-  (setq *ngender-load-path* (delete-dups
-	 (apply #'append (mapcar #'symbol-value *ngender-path-lists*)))) )
+  "rebuild *ngender-load-path* with elements of lists named in *ngender-path-lists* appearing in front in order"
+	(let* ( (new-list (apply #'append (mapcar #'symbol-value *ngender-path-lists*)) )
+		( new-path (delete-dups new-list) ) )
+	(ngender-debug-warn t "*ngender-load-path* = %S" new-path)
+	(setq *ngender-load-path* new-path) ) )
 
 ;; (ngender-rebuild-load-path)
 
 (defun ngender-path-dirs (symbol paths)
 	"add directory paths to the front of the list named by
 symbol and rebuild *ngender--load-path-"
+	(ngender-debug-warn t "%s += %S" symbol paths)
 	(set symbol (ngender-filter-dirs paths))
 	(ngender-rebuild-load-path) )
 
@@ -415,10 +433,14 @@ symbol and rebuild *ngender--load-path-"
 
 (defun ngender-emacs-path-add (dir-path)
 	"ensure directory path is on emacs load-path"
-	(if (eq symbol 'load-path) (message "load-path += %S" dir-path))
-	(if (numberp (car load-path)) (message "loadpath.0 = %d" (car load-path)))
+	(ngender-debug-warn t "load-path += %S" dir-path)
+	(if (numberp (car load-path))
+		(ngender-debug-warn t "loadpath contains %S!" (seq-filter #'numberp load-path)) )
 	(when (ngender-validate dir-path #'file-directory-p "directory")
-		(ngender-update-union-with-bags 'load-path dir-path) ) )
+		(ngender-update-union-with-items 'load-path dir-path) ) )
+
+;; something is causing numbers to be pushed onto load-path; patch:
+;; (setq load-path (seq-filter (lambda (x) (not (numberp x))) load-path))
 
 (defmacro ngender-emacs-path (dir-name parent-path-symbol)
 	`(ngender-emacs-path-add (expand-file-name ,(ngender-a-string dir-name) ,parent-path-symbol)) )
@@ -658,10 +680,21 @@ symbol and rebuild *ngender--load-path-"
 ;; file a bug with emacs in re the apparent dynamic binding
 ;; of free / global variables with let.  There needs to be
 ;; a clear way to do this so we won't be hit by software rot!!
-(defun ngender-load-module (module &optional NOERROR NOMESSAGE)
+(defun ngender-load-module (module &optional noerror nowarn)
 	"load the specified module on the *ngender-load-path*"
-	(let ( (load-path *ngender-load-path*) ) ; dynamic binding of global variable!!
-		(load module NOERROR NOMESSAGE) ) )
+	(let ( (load-prefer-newer t) )
+		(let ( (success (seq-some
+											(lambda (p)
+												(ngender-debug-warn t "trying to load %s" (expand-file-name module p))
+												(load (expand-file-name module p) t t))
+											*ngender-load-path* )) )
+			(ngender-debug-warn t "success = %S" success)
+			(when (not success)
+				(funcall (or
+									 (and (not noerror) #'error)
+									 (and (not nowarn) #'warn)
+									 #'ngender-nothing )
+					"ngender-load-module: %s not found!" module ) ) ) ) )
 
 (defun ngender-load (module &rest features)
 	"show we are loading (module features...) and load module using our load path"
@@ -670,7 +703,9 @@ symbol and rebuild *ngender--load-path-"
 			(ngender-warn module "module")
 			(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
 				(let ( (module+features (cons module features)) )
-					(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*))
+					(if (assoc module+features *ngender-modules-loading*)
+						(warn "%s already in *ngender-modules-loading*" module+features)
+						(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*)) )
 					(ngender-load-module module) ) ) ) ) ) ; module can pull features off loading list
 
 (defun ngender-require (module &rest features)
