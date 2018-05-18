@@ -25,8 +25,7 @@
 
 (defconst my-org-babel-t
 ;;	'(emacs-lisp shell awk sed sql J scheme clojure prolog)
-;;	'(emacs-lisp shell awk sed sql J scheme clojure)
-	'(emacs-lisp awk sql J scheme clojure)
+	'(emacs-lisp awk sql scheme clojure)
 	"known org-mode source block languages I'd like org to evaluate" )
 
 ;; More org-babel packages, would allow more babel-t languages:

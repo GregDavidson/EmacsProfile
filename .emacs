@@ -10,9 +10,23 @@
 ;;  (3) create a new link to the copy
 ;;  (4) edit the copy as needed
 
+;; Set up some tracing control for debugging
+(defvar *ngender-debug*
+	nil "list of items we are debugging" )
+(defun ngender-debug-p (&optional x)
+	"Are we debugging item x or everything?"
+	(member (or x t) *ngender-debug*))
+(defun ngender-debug-on (&optional x)
+	(add-to-list '*ngender-debug* (or x t)) )
+(defun ngender-debug-no (&optional x)
+	(setq *ngender-debug* (remove (or x t) *ngender-debug*)) )
+(defun ngender-debug-warn (x &rest args)
+	(if (ngender-debug-p x) (apply #'message args)) )
+(ngender-debug-on t)
+(setq debug-on-error t)
+
 ;; We're trying to be very generic with the paths but if
 ;; they're wrong then you'll need to change this file!
-(setq debug-on-error t)
 (defvar *ngender-user-home*
 	(expand-file-name "~")
 	"where you keep your customizations: your home or profile directory" )
