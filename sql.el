@@ -23,6 +23,8 @@
 (ngender-update-union-with-bags '*ngender-sql-packages*  *ngender-sql-packages-necessary*)
 (apply #'ngender-package-function *ngender-sql-packages*)
 
+
+(ngender-package rx sql helm)
 (require 'rx)
 (require 'sql)
 (require 'helm)
