@@ -32,6 +32,30 @@ The absence of these were causing problems:
 - auto-complete
 - evil-leader
 
+** Recursive load problem
+
+Recursive load: "/usr/share/emacs/24.5/lisp/jka-compr.el.gz", "/usr/share/emacs/24.5/lisp/jka-compr.el.gz", "/usr/share/emacs/24.5/lisp/jka-compr.el.gz", "/usr/share/emacs/24.5/lisp/jka-com
+pr.el.gz", "/usr/share/emacs/24.5/lisp/jka-compr.el.gz", "/usr/share/emacs/24.5/lisp/emacs-lisp/warnings.el.gz"
+
+showed up as soon as I wrapped load inside of
+	(let ( (load-prefer-newer t) )
+
+apparently because the .elc files were older so emacs tried to use the compressed .el files but to do so it needed jka-compr so ...
+
+Solution: I (1) gunziped /usr/share/emacs/24.5/lisp/jka-compr.el.gz AND I (2) I touched all of the .elc files under /usr/share/emacs/24.5/lisp/
+
+Now I'm getting some issue with (require 'overlay) not finding package overlay - hmmm.
+
+** After Install
+
+After installing Emacs from source, it says:
+
+Assuming /var/mail is really the mail spool directory, you should
+run  lib-src/blessmail /usr/local/SW.d/libexec/emacs/25.3/x86_64-pc-linux-gnu/movemail
+as root, to give  movemail  appropriate permissions.
+Do that after running  make install.
+
+
 ** Warnings
 
 Warning (type): Expected directory, got /usr/share/texmf/doc/info/
