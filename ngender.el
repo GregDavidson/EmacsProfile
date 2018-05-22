@@ -682,7 +682,8 @@ symbol and rebuild *ngender--load-path-"
 ;; a clear way to do this so we won't be hit by software rot!!
 (defun ngender-load-module (module &optional noerror nowarn)
 	"load the specified module on the *ngender-load-path*"
-	(let ( (load-prefer-newer t) )
+;;	(let ( (load-prefer-newer t) ) ; causing trouble with libraries!
+	(let ( )
 		(let ( (success (seq-some
 											(lambda (p)
 												(ngender-debug-warn t "trying to load %s" (expand-file-name module p))
