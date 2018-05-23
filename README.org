@@ -13,7 +13,7 @@ This Directory Tree is a Git Repository.
 		- Files, Directories, Paths, Links
 		- Maybe some [[https://git-scm.com/book/en/v2/Getting-Started-Git-Basics][Git]]
 - What you'll get if you use this Profile:
-	- Ease in setting up many powerful packages
+	- Ease in setting up many powerful [[https://github.com/emacs-tw/awesome-emacs][packages]]
 	- Ease in establishing many useful customizations
 - If you want to try it out, follow the directions in
 	- Installing This Profile (below)
@@ -23,7 +23,7 @@ This Directory Tree is a Git Repository.
 Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is due to its *extraordinary
 customizability* through settings and extentions.  Many of
 the most powerful extensions are in the form of Packages,
-typically available from *Emacs Package Archives*.  Emacs
+typically available from [[[https://melpa.org][Emacs Package Archives]].  Emacs
 Packages are themselves highly configurable.  Many of these
 extensions are also designed to be combined and/or layered.
 
@@ -66,20 +66,20 @@ directory, denoted by *~* and that your Emacs Customization
 Directory is *~/.emacs.d/* -- these locations can be changed if
 another arrangement is more convenient.
 
-- ~/.emacs :: links or calls ~.emacs.d/NGender/.emacs~
+- ~/.emacs :: links, loads or forks ~.emacs.d/NGender/.emacs~
 - ~/.emacs.d/ :: your Emacs Customization Directory
-- ~/.emacs.d/init.el :: links or calls ~NGender/init.el~
-- ~/.emacs.d/NGender/ :: files shared with Emacs Community, on Emacs ~load-path~
+- ~/.emacs.d/init.el :: links, loads or forks ~NGender/init.el~
+- ~/.emacs.d/NGender/ :: extension modules shared with Emacs Community
 - ~/.emacs.d/NGender/.emacs :: establishes paths & gets things started
-- ~/.emacs.d/NGender/init.el :: extends load-path, loads other init files
-- ~/.emacs.d/NGender/ngender.el :: core extension loaded by ~.emacs~ file
-- ~/.emacs.d/NGender/ngender-NAME.el :: file managing extension NAME
-- ~/.emacs.d/User-Me/ :: individual extensions, on Emacs ~load-path~
-- ~/.emacs.d/User-Me/init-me.el :: loaded by ~init.el~
+- ~/.emacs.d/NGender/init.el :: loads user module
+- ~/.emacs.d/NGender/ngender.el :: core module loaded by ~.emacs~ file
+- ~/.emacs.d/NGender/NAME.el :: module providing extension NAME
+- ~/.emacs.d/User-Me/ :: individual extensions
+- ~/.emacs.d/User-Me/init-me.el :: automatically loaded by ~init.el~
 - ~/.emacs.d/User-Me/custom-file.el :: Emacs Customization System settings
-- ~/.emacs.d/Group-NAME/ :: things shared with given group/project, on ~load-path~
+- ~/.emacs.d/Group-NAME/ :: modules shared with given group/project
 - ~/.emacs.d/NGender/init-examples.el :: snippets to copy/paste into ~init-me.el~
-- ~/.emacs.d/Makefile :: script to set up the above links
+- ~/.emacs.d/Makefile :: script to help set up the above links
 
 In most cases our provided ~.emacs~ and ~init.el~ files will
 meet your needs well enough that you can just link to them.
@@ -96,16 +96,16 @@ This arrangement allows you to use Git to
 These installation instructions assume
 - a Unix-Like system, e.g. Unix, BSD, Linux, MacOS
 - some familiarity with using a command shell, e.g. Bash
-	- the comment character is # (hash)
-	- cp old new # copies things
+	- the comment character is =# (hash)=
+	- *cp* /old/ /new/ =# copies things=
 	- your home directory is ~ (tilda)
 - some familiarity with Emacs and/or another editor
 - simple understanding of Emacs-Lisp
-	- the comment character is ; (semicolon)
-	- Commands are enclosed in parentheses
+	- the comment character is =; (semicolon)=
+	- Commands are (enclosed in parentheses)
 	- Arguments separated by spaces, NOT commas
-	- Strings in double quotes
-	- One single quote quotes the following object
+	- Strings in ~"double quotes"~
+	- One single quote ~'(quotes the following object)~
 
 If you're using an Apple Macintosh or a Microsoft Windows
 system you'll need to install appropriate command-line tools
