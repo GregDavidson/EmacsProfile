@@ -365,8 +365,12 @@
   (set symbol (ngender-assoc-delete-all key (ngender-symbol-value symbol)))
 )
 
-(defun ngender-package-archive-delete (key)
+(defun ngender-package-archive-drop (key)
 	(ngender-drop-assoc-by-key 'package-archives key)
+)
+
+(defun ngender-clear-package-archives ()
+	(setq package-archives nil)
 )
 
 (defun ngender-package-archive-forget (key)
