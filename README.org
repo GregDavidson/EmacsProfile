@@ -102,10 +102,10 @@ These installation instructions assume
 - some familiarity with Emacs and/or another editor
 - simple understanding of Emacs-Lisp
 	- the comment character is =; (semicolon)=
-	- Commands are (enclosed in parentheses)
+	- Commands are =(enclosed in parentheses)=
 	- Arguments separated by spaces, NOT commas
-	- Strings in ~"double quotes"~
-	- One single quote ~'(quotes the following object)~
+	- Strings in ="double quotes"=
+	- One single quote ='(quotes the following object)=
 
 If you're using an Apple Macintosh or a Microsoft Windows
 system you'll need to install appropriate command-line tools
