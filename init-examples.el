@@ -26,7 +26,7 @@
 
 (ngender-package ido-ubiquitous)
 
-;; *** Multi-Term - manage multiple terminal emulators
+;; Multi-Term - manage multiple terminal emulators
 (ngender-package multi-term)
 (require 'multi-term)
 
