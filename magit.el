@@ -6,7 +6,7 @@
 
 (defvar *ngender-magit-packages* '(magit)
 	"minimal set of magit packages" )
-(apply #'ngender-package *ngender-magit-packages*)
+(apply #'ngender-package-function *ngender-magit-packages*)
 
 (require 'magit)
 
