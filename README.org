@@ -120,13 +120,13 @@ them!
 
 #+BEGIN_SRC shell
   # 1. You will need a modern Emacs installed, version 25 or later
-  which emacs # this needs to find your emacs program
-  emacs --version # this needs to be version 25 or higher
+  which emacs # should find your emacs program
+  emacs --version # should be version 25 or higher
   # 2. Find your existing Emacs Customizations
   # Typically you'll find them here:
   ls -ld ~/.emacs*
-  ls ~/.emacs.d		# We'll call this your Emacs Home
-  # ~/Gits is just a suggestion, use what you like
+  ls -l ~/.emacs		# Your Emacs initialization file
+  ls ~/.emacs.d/		# Your Emacs Home directory
   # 3. Clone our repository under your Emacs Home
   cd ~/.emacs.d
   git clone https://github.com/GregDavidson/EmacsProfile.git
@@ -149,7 +149,7 @@ them!
   # to ~ and ~/.emacs.d respectively so you can manage their
   # evolution along with your other personal customizations.
   # If, e.g. your .emacs extends our .emacs then use
-  #	(load "~/.emacs.d/NGender/.emacs")
+  #	(load-file "~/.emacs.d/NGender/.emacs")
   # in your .emacs file where appropriate.
   # 8. Test your installation
   emacs --debug-init
