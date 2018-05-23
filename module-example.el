@@ -1,4 +1,4 @@
-;;; ngender-example.el --- template for NGender Emacs Module -*- lexical-binding: t; -*-
+;;; module-example.el --- template for NGender Emacs Module -*- lexical-binding: t; -*-
  
 ;; Copyright (C) 2018 J. Greg Davidson
 ;; Author: J. Greg Davidson <jgd@ngender.net>
