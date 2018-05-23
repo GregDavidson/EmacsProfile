@@ -7,11 +7,11 @@ This Directory Tree is a Git Repository.
 - This is an *Emacs Profile*
 - It is for the use of Emacs by *Power Users*
 - You need to be somewhat comfortable with
-	- Emacs -- Regular or Evil Mode
-	- very basic Emacs-Lisp
+	- [[https://www.gnu.org/software/emacs][Emacs]]-- [[https://www.gnu.org/software/emacs/tour][Regular]] or [[https://www.emacswiki.org/emacs/Evil][Evil Mode]]
+	- very basic [[https://emacs-doctor.com/learn-emacs-lisp-in-15-minutes.html][Emacs-Lisp]]
 	- Filesystems
 		- Files, Directories, Paths, Links
-		- Maybe some Git
+		- Maybe some [[https://git-scm.com/book/en/v2/Getting-Started-Git-Basics][Git]]
 - What you'll get if you use this Profile:
 	- Ease in setting up many powerful packages
 	- Ease in establishing many useful customizations
