@@ -6,6 +6,13 @@
 - Many modules are unreliable
 - ngender-example needs to show the way
 
+** Installation could be improved
+
+It would be nice to have a flexible and fault-tolerant shell
+script which could test the environment and do most of this
+setup work better than the current Makefile - please feel
+free to submit one!
+
 ** Roadmap
 
 As ngender-example gets close to completion, examine what we
@@ -16,22 +23,19 @@ define a flatten function to run after any filtering which
 is producing an output list not in a 1-to-1 correspondence
 with the input list.
 	 
-Let's dump cl-lib in favor of seq.  Let's not pull in
-dash, despite its beauty.
+Let's deprecate ~package cl-lib~ functions in favor of the
+more modern ~package seq~ functions.  Both of these are now
+"built-in" to the default Emacs installation.  Let's not
+pull in ~package dash~ despite its beauty as it's not quite
+worth its extra overhead.
 
-What other now built-in packages would be helpful?
+What other now "built-in" packages would be helpful?
 
 We should be using Xref instead of directly using tag commands!
 
 Which project-management package(s) should we provide?
-There's a new built-in package "project".
+There's a new built-in package "project" - let's evaluate it.
 	
-** Missing Package problems
-
-The absence of these were causing problems:
-- auto-complete
-- evil-leader
-
 ** Recursive load problem
 
 Recursive load: "/usr/share/emacs/24.5/lisp/jka-compr.el.gz", "/usr/share/emacs/24.5/lisp/jka-compr.el.gz", "/usr/share/emacs/24.5/lisp/jka-compr.el.gz", "/usr/share/emacs/24.5/lisp/jka-com
@@ -55,8 +59,19 @@ run  lib-src/blessmail /usr/local/SW.d/libexec/emacs/25.3/x86_64-pc-linux-gnu/mo
 as root, to give  movemail  appropriate permissions.
 Do that after running  make install.
 
-
 ** Warnings
 
 Warning (type): Expected directory, got /usr/share/texmf/doc/info/
 Warning (type): Expected directory, got /home/greg/.emacs.d/themes [2 times]
+
+** =let= does NOT create lexical bindings
+
+Some nasty bugs were caused by the =let= form not creating
+lexical bindings despite being inside of a module which
+specified =-*- lexical-binding: t; -*-= on line one.
+
+In particular, =(let ( (features ...) ) ...package download
+code...)= led to the bizarre error ~Emacs was compiled
+without network access~ because the =install-package=
+function uses a global variable called =features= which was
+being dynamically rebound by =let=.
