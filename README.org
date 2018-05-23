@@ -87,8 +87,8 @@ Otherwise, you can provide your own which can still load
 ours.  Yours should live in your =User-Me/= directory and
 only be linked to from =~= and =.emacs.d/= directories.
 
-This arrangement allows you to use Git to
-- Manage the evolution of NGender and User-Me
+This arrangement allows you to use separate Git repositories to
+- Add to and improve modules under  =NGender/= and =User-Me/=
 - Quickly clone this arrangement to new computers and accounts
 
 ** Installing This Profile
@@ -98,12 +98,12 @@ These installation instructions assume
 - some familiarity with using a command shell, e.g. Bash
 	- the comment character is =# (hash)=
 	- *cp* /old/ /new/ =# copies things=
-	- your home directory is ~ (tilda)
+	- your home directory is =~= (tilda)
 - some familiarity with Emacs and/or another editor
 - simple understanding of Emacs-Lisp
-	- the comment character is =; (semicolon)=
+	- the comment character is =;= (semicolon)
 	- Commands are =(enclosed in parentheses)=
-	- Arguments separated by spaces, NOT commas
+	- Arguments separated by spaces NOT commas
 	- Strings in "double quotes"
 	- One single quote '(quotes the following object)
 
@@ -188,21 +188,7 @@ Microsoft or Cygwin (now part of Red Hat Linux).
 
 ** Status of this Project
 
-This project is currently being evolved from a variety of
-customization files which have served the needs of members
-of the Radical Productivity Tools Users' Group for many
-years.  We're making these disparate extensions more
-reliable and sharable by turning them into small files (we
-call them "modules") under
-- =~/.emacs.d/NGender/=
-Any files which are specific to the needs and tastes of a
-particular user should be put in sibling subdirectories,
-e.g. User-Me or Group-NAME.
-
-It would be nice to have a flexible and fault-tolerant shell
-script which could test the environment and do most of this
-setup work better than the current Makefile - please feel
-free to submit one!
+See the separate file [[file:README-status.org][README-status.org]]
 
 ** Customizing Your New Profile
 
