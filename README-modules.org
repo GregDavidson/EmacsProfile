@@ -3,7 +3,7 @@
 Except where explicit calls to require indicate
 dependencies, the modules (files) in this directory stand
 alone.  You will want to arrange for their loading in your
-[[~/emacs.d/init.el][User-Me/init-me.el]] file, either with an explicit require or
+[[file:~/emacs.d/init.el][User-Me/init-me.el]] file, either with an explicit require or
 by arranging an autoload.
 
 Most of these "modules" are in a very primitive state.  They
@@ -15,19 +15,19 @@ independent, robust and resilient.
 ** Files:
 - [[org-list-files]] :: Generate Org-Mode list of selected files
 - [[ngender.el]] :: NGender Emacs Profile Base
-- [[ngender-cedet.el]] :: Semantic Bovinator (CEDET) Support
-- [[ngender-c.el]] :: C/C++ Hacking Support
-- [[ngender-clisp.el]] :: Common Lisp Hacking Support
-- [[ngender-clojure.el]] :: Clojure Hacking Support
-- [[ngender-elisp.el]] :: Emacs-Lisp Hacking Support
-- [[ngender-haskell.el]] :: Haskell Hacking Support
-- [[ngender-mozart.el]] :: Mozart/Oz Hacking Support
-- [[ngender-org.el]] :: Org Mode Support
-- [[ngender-php.el]] :: PHP Hacking Support
-- [[ngender-prolog.el]] :: Prolog Hacking Support
-- [[ngender-rust.el]] :: Rust Hacking Support
-- [[ngender-scala.el]] :: Ensime Scala Support
-- [[ngender-rx.el]] :: sexp notation for regular expressions
-- [[ngender-shell.el]] :: Support for Bourne-Compatible Shells
-- [[ngender-sql.el]] :: Fancy SQL Editing Support
+- [[cedet.el]] :: Semantic Bovinator (CEDET) Support
+- [[c.el]] :: C/C++ Hacking Support
+- [[clisp.el]] :: Common Lisp Hacking Support
+- [[clojure.el]] :: Clojure Hacking Support
+- [[elisp.el]] :: Emacs-Lisp Hacking Support
+- [[haskell.el]] :: Haskell Hacking Support
+- [[mozart.el]] :: Mozart/Oz Hacking Support
+- [[org.el]] :: Org Mode Support
+- [[php.el]] :: PHP Hacking Support
+- [[prolog.el]] :: Prolog Hacking Support
+- [[rust.el]] :: Rust Hacking Support
+- [[scala.el]] :: Ensime Scala Support
+- [[rx.el]] :: sexp notation for regular expressions
+- [[shell.el]] :: Support for Bourne-Compatible Shells
+- [[sql.el]] :: Fancy SQL Editing Support
 - [[ox-tiki.el]] :: (unfinished) Tiki Wiki Back-End for Org Export Engine
