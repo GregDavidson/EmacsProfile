@@ -61,31 +61,31 @@ It is expected to work well
 
 ** Layout of the Repository
 
-We assume here that your *.emacs* is stored in your home
-directory, denoted by *~* and that your Emacs Customization
-Directory is *~/.emacs.d/* -- these locations can be changed if
+We assume here that your =.emacs= file is stored in your home
+directory, denoted by =~= and that your Emacs Customization
+Directory is =~/.emacs.d/= -- these locations can be changed if
 another arrangement is more convenient.
 
-- ~/.emacs :: links, loads or forks =.emacs.d/NGender/.emacs=
-- ~/.emacs.d/ :: your Emacs Customization Directory
-- ~/.emacs.d/init.el :: links, loads or forks =NGender/init.el=
-- ~/.emacs.d/NGender/ :: extension modules shared with Emacs Community
-- ~/.emacs.d/NGender/.emacs :: establishes paths & gets things started
-- ~/.emacs.d/NGender/init.el :: loads user module
-- ~/.emacs.d/NGender/ngender.el :: core module loaded by =.emacs= file
-- ~/.emacs.d/NGender/NAME.el :: module providing extension /NAME/
-- ~/.emacs.d/User-Me/ :: individual extensions
-- ~/.emacs.d/User-Me/init-me.el :: automatically loaded by =init.el=
-- ~/.emacs.d/User-Me/custom-file.el :: Emacs Customization System settings
-- ~/.emacs.d/Group-NAME/ :: modules shared with group/project /Group-Name/
-- ~/.emacs.d/NGender/init-examples.el :: snippets to copy/paste into =init-me.el=
-- ~/.emacs.d/Makefile :: script to help set up the above links
+- =~/.emacs= :: links, loads or forks =.emacs.d/NGender/.emacs=
+- =~/.emacs.d/= :: your Emacs Customization Directory
+- =~/.emacs.d/init.el= :: links, loads or forks =NGender/init.el=
+- =~/.emacs.d/NGender/= :: extension modules shared with Emacs Community
+- =~/.emacs.d/NGender/.emacs= :: establishes paths & gets things started
+- =~/.emacs.d/NGender/init.el= :: loads user module
+- =~/.emacs.d/NGender/ngender.el= :: core module loaded by =.emacs= file
+- =~/.emacs.d/NGender/NAME.el= :: module providing extension /NAME/
+- =~/.emacs.d/User-Me/= :: individual extensions
+- =~/.emacs.d/User-Me/init-me.el= :: automatically loaded by =init.el=
+- =~/.emacs.d/User-Me/custom-file.el= :: Emacs Customization System settings
+- =~/.emacs.d/Group-NAME/= :: modules shared with group/project /Group-Name/
+- =~/.emacs.d/NGender/init-examples.el= :: snippets to copy/paste into =init-me.el=
+- =~/.emacs.d/Makefile= :: script to help set up the above links
 
 In most cases our provided =.emacs= and =init.el= files will
 meet your needs well enough that you can just link to them.
 Otherwise, you can provide your own which can still load
-ours.  Yours should live in your *User-Me/* directory and
-only be linked to from *~* and *.emacs.d/* directories.
+ours.  Yours should live in your =User-Me/= directory and
+only be linked to from =~= and =.emacs.d/= directories.
 
 This arrangement allows you to use Git to
 - Manage the evolution of NGender and User-Me
@@ -166,8 +166,8 @@ them!
 
 *** Post-Installation Possibilities
 
-- read ~README.org~ and other files under NGender/
-- study ~init-examples.el~ for ideas
+- read =README.org= and other files under NGender/
+- study =init-examples.el= for ideas
 - submit an issue reporting problems or requested features
 - submit a pull request with your improvements
 	- respecially for things you've added under NGender/
@@ -194,7 +194,7 @@ of the Radical Productivity Tools Users' Group for many
 years.  We're making these disparate extensions more
 reliable and sharable by turning them into small files (we
 call them "modules") under
-- ~/.emacs.d/NGender/
+- =~/.emacs.d/NGender/=
 Any files which are specific to the needs and tastes of a
 particular user should be put in sibling subdirectories,
 e.g. User-Me or Group-NAME.
@@ -208,14 +208,14 @@ free to submit one!
 
 Any files which are specific to your individual needs and
 tastes go under a sibling subdirectory which we've been
-calling ~.emacs.d/User-Me/~ in these instructions.  If you
+calling =.emacs.d/User-Me/= in these instructions.  If you
 change this name you'll need to create your own versions of
-the ~.emacs~ and ~init.el~ files.
+the =.emacs= and =init.el= files.
 
 If you are collaborating with partners on various projects,
 there may be some Emacs extensions which you may want to
 share with members of your group.  Consider putting those
-changes in a directory beginning with ~Group-~.
+changes in a directory beginning with =Group=-/NAME/.
 
 ** Individual vs. (Project) Group vs. Community
 
@@ -235,7 +235,7 @@ via Git.
 
 **** Individual Level
 
-Keep your personal extensions under ~User-Me/~ so you can
+Keep your personal extensions under =User-Me/= so you can
 easily copy them to other computers and accounts.  Consider
 turning it into a Git Repository with something like
 #+BEGIN_SRC
@@ -248,11 +248,11 @@ cp ../NGender/.gitignore .
 
 Customizations for Projects and Groups can be created as
 separate repositories just as shown in the Individual Level
-above.  They can live under ~/.emacs.d alongside NGender and
-User-Me.  Activate them by
-- adding to your ~init.el~ or ~init-me.el~ file:
+above.  They can live under =~/.emacs.d= alongside =NGender= and
+=User-Me=.  Activate them by
+- adding to your =init.el= or =init-me.el= file:
 	- (ngender-group-subdirectory "Group-YOUR-GROUP-NAME")
-- adding other customizations for them to ~init-me.el~ file
+- adding other customizations for them to =init-me.el= file
 
 Host the Project/Group repository where other members of the
 Project or Group can find it.  Ask the other members to
@@ -272,7 +272,7 @@ generalized enough to become modules under NGender.
 *** Requiring packages vs. requiring symbols
 We need to ensure that we have all requisite packages
 downloaded.  Only after that we need to load them via
-~require~ on the appropriate symbols.  When can we assume that
+=require= on the appropriate symbols.  When can we assume that
 the root of the package name is the same as the require
 symbol?  What's a convenient (succinct and easy to follow)
 s-exp syntax to specify the desired packages and the desired
@@ -327,7 +327,7 @@ The Emacs Customization System is the natural mechanism for
 Emacs Users who are reluctant to use Emacs Lisp to make
 their changes.
 
-Should we use ~defcustom~ for the ~ngender-*~ module
+Should we use =defcustom= for the =ngender-*= module
 variables?  We're currently not doing so because of
 our discomfort with the Emacs Customization System.
 
@@ -341,7 +341,7 @@ Some of our issues with the Emacs Customization System
 		- the scope, i.e. individual/project,community
 	- it doesn't capture comments or notes
 
-Currently ~custom-file.el~ is going into the git repository
+Currently =custom-file.el= is going into the git repository
 - handy for propagating all such to all one's accounts
 - yet not everything there is appropriate everywhere
 - and it's pretty volatile
@@ -355,7 +355,7 @@ the module's features and configurable options.
 There are some account-specific parts of various files, e.g.
 information on external accounts including logins, port
 numbers, passwords, etc.  None of these things belong under
-the ~NGender/~ directory.
+the =NGender/= directory.
 
 Access information shared by groups would ideally live in
 modules under an appropriate =Group-NAME/= directory.  Other
@@ -378,9 +378,9 @@ restrictions and/or encryption.
 
 How do we ensure that byte-recompilation happens automatically?
 
-Consider adding code to ~.emacs~ to call
-~byte-recompile-directory~ on ~NGender/~ with suitable
-options and similar code in ~init.el~ for the ~User-Me/~
+Consider adding code to =.emacs= to call
+=byte-recompile-directory= on =NGender/= with suitable
+options and similar code in =init.el= for the =User-Me/=
 directory, etc.
 
 *** NGendering use of Emacs-Server
@@ -389,7 +389,7 @@ Let's add an ngender-emacs-server.el file which does
 byte-recompiles and any other slow things and then starts
 the Emacs Server.
 
-Consider using ~systemd~ or login scripts to start and
+Consider using =systemd= or login scripts to start and
 maintain an Emacs Server at all times.
 
 ** Rationale for the Curious
@@ -465,19 +465,19 @@ You can write a new, more ambitious Package Manager such as
 When emacs starts up Emacs will look for a configuration
 file in your Home Directory as specified by the environment
 variable HOME.  Emacs understands that any path beginning
-with tilde slash (~/) starts from your Home Directory.
+with tilde slash =~/= starts from your Home Directory.
 
 Emacs will take the first file it finds in the list
-1. ~/.emacs
-2. ~/.emacs.d/init.el
+1. =~/.emacs=
+2. =~/.emacs.d/init.el=
 and load it, i.e. Emacs will treat the contents of that file
 as Emacs-Lisp code (so it better be that) and Emacs will
 execute that code.
 
 Therefore, if you have *both* files, Emacs will, by default, ignore
-your ~/.emacs.d/ directory and everything in it!
+your =~/.emacs.d/= directory and everything in it!
 
-It would seem that it's simpler to just not have a ~/.emacs file but
+It would seem that it's simpler to just not have a =~/.emacs= file but
 unfortunately that will interfere with the Emacs Customization System.
 
-Thus, we use a ~.emacs~ file to get everything started.
+Thus, we use a =.emacs= file to get everything started.
