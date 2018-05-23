@@ -66,22 +66,22 @@ directory, denoted by *~* and that your Emacs Customization
 Directory is *~/.emacs.d/* -- these locations can be changed if
 another arrangement is more convenient.
 
-- ~/.emacs :: links, loads or forks ~.emacs.d/NGender/.emacs~
+- ~/.emacs :: links, loads or forks =.emacs.d/NGender/.emacs=
 - ~/.emacs.d/ :: your Emacs Customization Directory
-- ~/.emacs.d/init.el :: links, loads or forks ~NGender/init.el~
+- ~/.emacs.d/init.el :: links, loads or forks =NGender/init.el=
 - ~/.emacs.d/NGender/ :: extension modules shared with Emacs Community
 - ~/.emacs.d/NGender/.emacs :: establishes paths & gets things started
 - ~/.emacs.d/NGender/init.el :: loads user module
-- ~/.emacs.d/NGender/ngender.el :: core module loaded by ~.emacs~ file
+- ~/.emacs.d/NGender/ngender.el :: core module loaded by =.emacs= file
 - ~/.emacs.d/NGender/NAME.el :: module providing extension /NAME/
 - ~/.emacs.d/User-Me/ :: individual extensions
-- ~/.emacs.d/User-Me/init-me.el :: automatically loaded by ~init.el~
+- ~/.emacs.d/User-Me/init-me.el :: automatically loaded by =init.el=
 - ~/.emacs.d/User-Me/custom-file.el :: Emacs Customization System settings
 - ~/.emacs.d/Group-NAME/ :: modules shared with group/project /Group-Name/
-- ~/.emacs.d/NGender/init-examples.el :: snippets to copy/paste into ~init-me.el~
+- ~/.emacs.d/NGender/init-examples.el :: snippets to copy/paste into =init-me.el=
 - ~/.emacs.d/Makefile :: script to help set up the above links
 
-In most cases our provided ~.emacs~ and ~init.el~ files will
+In most cases our provided =.emacs= and =init.el= files will
 meet your needs well enough that you can just link to them.
 Otherwise, you can provide your own which can still load
 ours.  Yours should live in your *User-Me/* directory and
@@ -280,28 +280,27 @@ requires?
 
 This is a slippery slope to an s-exp syntax which expresses
 packages, requires, settings and keymaps.  If we choose to
-slide down this slope, we should review previous efforts and
+slide down this slope, we should review [[https://github.com/jwiegley/use-package][previous efforts]] and
 consider borrowing from them before rolling our own.
 
-Also on this slippery slope is having a single macro which
-can be called from an init file to load a module with all
-desired enhancements, e.g.
+As an example, we could extend the =ngender= macro along the
+lines of this example desired enhancements, e.g.
 #+BEGIN_SRC emacs-lisp
 (ngender-load cider
-	(package apple-cider (require granny-smith))
-	(require foo)
-	(set bar baz)
-	(map "C-M-S-x" barf) )
+	:package (apple-cider :require granny-smith)
+	:require foo
+	:set bar baz
+	:map "C-M-S-x" drink )
 #+END_SRC
 would
-- load NGender/ngender-cider within which it would
-- load cider AND apple-cider
-- (require 'granny-smith) in addition to the usuals for apple-cider
+- load module =NGender/ngender-cider= which would
+- load packages cider AND apple-cider
+- =(require 'granny-smith)= in addition to the usuals for apple-cider
 	- unless we know granny-smith replaces one of the usual requires
 - would load foo in addition to the usuals for cider
 	- unless we know foo replaces one of the usual requires for cider
 - would set the configuration variable bar to baz
-- would map Control-Meta-Super x to call function barf
+- would map =Control-Meta-Super x= to call function drink
 
 Again, we should look at existing solutions before rolling
 our own, but we're implying being able to associate any
@@ -318,9 +317,9 @@ to autoload packages directly to have them instead autoload
 our module which then loads the package and configures it
 the way we like.
 
-Attempts to do this have so far just resulted in odd error
-messages claiming that the loaded module did not define the
-function even though it did.
+Our attempts to do this have so far just resulted in odd
+error messages claiming that the loaded module did not
+define the function even though it did.
 
 *** Emacs Customization System Issues
 
@@ -345,10 +344,11 @@ Some of our issues with the Emacs Customization System
 Currently ~custom-file.el~ is going into the git repository
 - handy for propagating all such to all one's accounts
 - yet not everything there is appropriate everywhere
+- and it's pretty volatile
 
-Ideally customizations settings would be moved to an
-appropriate initialization file, documented and perhaps
-controlled by some simple or sophisticated Emacs Lisp code.
+Ideally customizations settings would be moved into module
+files which would also contain clear documentation of all of
+the module's features and configurable options.
 
 *** Sensitive Data, e.g. External Accounts and Databases
 
@@ -358,8 +358,8 @@ numbers, passwords, etc.  None of these things belong under
 the ~NGender/~ directory.
 
 Access information shared by groups would ideally live in
-modules under an appropriate Group-NAME/ directory.  Other
-parts need to be under the User-Me/ directory.  Either these
+modules under an appropriate =Group-NAME/= directory.  Other
+parts need to be under the =User-Me/= directory.  Either these
 modules or directories have carefully restricted permissions
 and/or the modules involved should be encrypted, e.g. with
 GPG which Emacs knows how to decrypt.
@@ -369,9 +369,9 @@ A module could be created to stich together the Individual
 password?) parts of this sort of senstive data.
 
 Unless and until a nice module is available in the
-~NGender/~ directory to manage all of these things, we
+=NGender/= directory to manage all of these things, we
 recommend that users simply keep any sensitive modules in
-their ~User-Me/~ directory and protect them with readability
+their =User-Me/= directory and protect them with readability
 restrictions and/or encryption.
 
 *** Automating Byte-Recompilation
