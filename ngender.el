@@ -409,7 +409,7 @@
 		default-directory ) )
 
 (defun require-file-path (name type-test type-name &optional parent)
-	(let (( path (expand-file-name name (if parent parent *ngender-emacs-home*)) ))
+	(let (( path (expand-file-name name (if parent parent user-emacs-directory)) ))
 		(let (( p (file-chase-links path) ))
 			(if (funcall type-test p) path
 				(ngender-warn p type-name '(init)) ) ) ) )
@@ -498,7 +498,7 @@ symbol and rebuild *ngender--load-path-"
 (defmacro ngender-emacs-path (dir-name parent-path-symbol)
 	`(ngender-emacs-path-add (expand-file-name ,(ngender-a-string dir-name) ,parent-path-symbol)) )
 
-;; (macroexpand-1 '(ngender-emacs-path name *ngender-emacs-home*))
+;; (macroexpand-1 '(ngender-emacs-path name user-emacs-directory))
 
 ;; ** Window Management Functions
 

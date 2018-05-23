@@ -16,16 +16,14 @@
 	(expand-file-name "~")
 	"where you keep your customizations: your home or profile directory" )
 
-(defvar *ngender-emacs-home*
-	(expand-file-name ".emacs.d" *ngender-user-home*)
-	"where you keep your Emacs customizations" )
-;; What has Emacs treat this as its top-level init dir??
-;; Note package-user-dir and package-directory-list
+;; The built-in variable 'user-emacs-directory is the
+;; directory under which most of your emacs extensions will
+;; live.  It is usually bound to "~/.emacs.d/"
 
-(package-initialize)
+(package-initialize)	; is this the best place to put this??
 
 (defvar *ngender-user-me*
-	(expand-file-name "User-Me" *ngender-emacs-home*)
+	(expand-file-name "User-Me" user-emacs-directory)
 	"where you keep your personal Emacs customizations" )
 
 ;; Ensure *ngender-user-me* directory exists
@@ -48,7 +46,7 @@
 (load (expand-file-name ".gnu-emacs" *ngender-user-home*) t t)
 
 (defvar *ngender-home*
-	(let ( (dir (expand-file-name "NGender" *ngender-emacs-home*)) )
+	(let ( (dir (expand-file-name "NGender" user-emacs-directory)) )
 		(if (file-directory-p dir)
 			dir
 			(lwarn "Expected personal directory %s" dir) nil ) )
@@ -58,4 +56,4 @@
 (load (expand-file-name "ngender" *ngender-home*))
 
 ;; init.el should orchestrate everything else
-(load (expand-file-name "init" *ngender-emacs-home*))
+(load (expand-file-name "init" user-emacs-directory))

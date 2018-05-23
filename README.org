@@ -279,7 +279,7 @@ s-exp syntax to specify the desired packages and the desired
 requires?
 
 This is a slippery slope to an s-exp syntax which expresses
-packgaes, requires, settings and keymaps.  If we choose to
+packages, requires, settings and keymaps.  If we choose to
 slide down this slope, we should review previous efforts and
 consider borrowing from them before rolling our own.
 
