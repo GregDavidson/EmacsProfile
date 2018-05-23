@@ -23,7 +23,7 @@ This Directory Tree is a Git Repository.
 Much of the power of [[https://www.gnu.org/software/emacs][Emacs]] is due to its *extraordinary
 customizability* through settings and extentions.  Many of
 the most powerful extensions are in the form of Packages,
-typically available from [[[https://melpa.org][Emacs Package Archives]].  Emacs
+typically available from [[https://melpa.org][Emacs Package Archives]].  Emacs
 Packages are themselves highly configurable.  Many of these
 extensions are also designed to be combined and/or layered.
 
