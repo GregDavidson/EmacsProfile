@@ -66,20 +66,20 @@ directory, denoted by *~* and that your Emacs Customization
 Directory is *~/.emacs.d/* -- these locations can be changed if
 another arrangement is more convenient.
 
-- =~/.emacs= :: links, loads or forks ~.emacs.d/NGender/.emacs~
-- =~/.emacs.d/= :: your Emacs Customization Directory
-- =~/.emacs.d/init.el= :: links, loads or forks ~NGender/init.el~
-- =~/.emacs.d/NGender/= :: extension modules shared with Emacs Community
-- =~/.emacs.d/NGender/.emacs= :: establishes paths & gets things started
-- =~/.emacs.d/NGender/init.el= :: loads user module
-- =~/.emacs.d/NGender/ngender.el= :: core module loaded by ~.emacs~ file
-- =~/.emacs.d/NGender/NAME.el= :: module providing extension /NAME/
-- =~/.emacs.d/User-Me/= :: individual extensions
-- =~/.emacs.d/User-Me/init-me.el= :: automatically loaded by ~init.el~
-- =~/.emacs.d/User-Me/custom-file.el= :: Emacs Customization System settings
-- =~/.emacs.d/Group-NAME/= :: modules shared with group/project /Group-Name/
-- =~/.emacs.d/NGender/init-examples.el= :: snippets to copy/paste into ~init-me.el~
-- =~/.emacs.d/Makefile= :: script to help set up the above links
+- ~/.emacs :: links, loads or forks ~.emacs.d/NGender/.emacs~
+- ~/.emacs.d/ :: your Emacs Customization Directory
+- ~/.emacs.d/init.el :: links, loads or forks ~NGender/init.el~
+- ~/.emacs.d/NGender/ :: extension modules shared with Emacs Community
+- ~/.emacs.d/NGender/.emacs :: establishes paths & gets things started
+- ~/.emacs.d/NGender/init.el :: loads user module
+- ~/.emacs.d/NGender/ngender.el :: core module loaded by ~.emacs~ file
+- ~/.emacs.d/NGender/NAME.el :: module providing extension /NAME/
+- ~/.emacs.d/User-Me/ :: individual extensions
+- ~/.emacs.d/User-Me/init-me.el :: automatically loaded by ~init.el~
+- ~/.emacs.d/User-Me/custom-file.el :: Emacs Customization System settings
+- ~/.emacs.d/Group-NAME/ :: modules shared with group/project /Group-Name/
+- ~/.emacs.d/NGender/init-examples.el :: snippets to copy/paste into ~init-me.el~
+- ~/.emacs.d/Makefile :: script to help set up the above links
 
 In most cases our provided ~.emacs~ and ~init.el~ files will
 meet your needs well enough that you can just link to them.
