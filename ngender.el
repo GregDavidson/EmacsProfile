@@ -96,6 +96,38 @@
 	"warn that x was not what we expected"
 	(lwarn (or level 'emacs) (or tag :warning) "Expected %s, got %s" expected x) nil )
 
+;; Set up some tracing control for debugging
+(defvar *ngender-debug*
+	nil "list of items we are debugging" )
+(defun ngender-debug-p (&optional x)
+	"Are we debugging item x or everything?"
+	(member (or x t) *ngender-debug*))
+(defun ngender-debug-on (&optional x)
+	(add-to-list '*ngender-debug* (or x t)) )
+(defun ngender-debug-no (&optional x)
+	(setq *ngender-debug* (remove (or x t) *ngender-debug*)) )
+(defun ngender-debug-warn (x &rest args)
+	(if (ngender-debug-p x) (apply #'message args)) )
+(ngender-debug-on t)
+
+(defun ngender-ok ()
+	"this should return true or something's wrong with our emacs!"
+	(featurep 'make-network-process) )
+
+(defun ngender-check (&rest context)
+	"check the health of our emacs process"
+	(unless (ngender-ok)
+		(error "NGender Not OK in %s!"
+			(mapconcat (lambda (x) (format "%s" x)) context " ") ) ) )
+
+(defun ngender-test (expression expected &optional compare-fn report-fn)
+	"handy for testing and quality assurance"
+	(let ( (actual (eval expression))
+				 (compare (or compare-fn #'equal))
+				 (report (or report-fn #'error)) )
+		(unless (funcall compare expected actual)
+			(funcall report "%S\n: expected %S, actual %S" expression expected actual) ) ) )
+
 (defun ngender-validate (x type-test type-name &optional level tag)
 	(if (funcall type-test x)
 		x
@@ -122,8 +154,8 @@
 (defun ngender-a-quoted-symbol (x)
 	"given a string, a symbol or a quoted string or symbol, provide a quoted symbol - handy for macros"
 	(cond
-		( (and (consp x) (eq 'quote (cadr x)) (symbolp (caddr x))) x )
-		( (and (consp x) (eq 'quote (cadr x)) (stringp (caddr x))) (list 'quote (intern (caddr x))) )
+		( (and (consp x) (eq 'quote (car x)) (symbolp (cadr x))) x )
+		( (and (consp x) (eq 'quote (car x)) (stringp (cadr x))) (list 'quote (intern (cadr x))) )
 		( (symbolp x) (list 'quote x) )
 		( (stringp x) (list 'quote (intern x)) )
 		( t (ngender-warn x "symbol") ) ) )
@@ -197,9 +229,12 @@
 
 ;; Emacs 27 has assoc-delete-all but we don't so we'll just have to work harder:
 
-(defun ngender-assoc-delete-all (key alist)
-	"replace with assoc-delete-all as soon as emacs27 is in common use!!"
-	(seq-filter (lambda (x) (equal key (car x))) alist) )
+(if (fboundp 'assoc-delete-all)
+	(defun ngender-assoc-delete-all (key alist)
+		(assoc-delete-all key alist) )
+	(defun ngender-assoc-delete-all (key alist)
+		"replace with assoc-delete-all as soon as emacs27 is in common use!!"
+		(seq-filter (lambda (x) (not (equal key (car x)))) alist) ) )
 
 (defun ngender-move-from-to-match (src-symbol dst-symbol match)
 	"destructively move first matching element from src to dst; returning dst"
@@ -265,16 +300,31 @@
 
 (defun ngender-add-package-archive-pair (symbol new-pair)
 	(let* ( (key (car new-pair)) (alist (ngender-symbol-value symbol)) (old-pair (assoc key alist)) )
-		(if (equal old-pair new-pair) t
+		(if (equal old-pair new-pair)
+			alist
 			(when old-pair
 				(warn "changing url for %s from %s to %s in %s" key (cdr old-pair) (cdr new-pair) symbol)
 				(set symbol (ngender-assoc-delete-all key alist)) )
 			(set symbol (cons new-pair (ngender-symbol-value symbol))) ) ) )
 
-;; (defvar *ngender-test-package-archive* '())
-;; (setq *ngender-test-package-archive* '())
-;; (ngender-add-package-archive-pair '*ngender-test-package-archive* '("org" . "https://orgmode.org/elpa/"))
-;; *ngender-test-package-archive*
+(let ( (the-list '*ngender-test-archive-list*)
+			 (gnu '("gnu" . "http://elpa.gnu.org/packages/"))
+			 (gnu-https '("gnu" . "https://elpa.gnu.org/packages/"))
+			 (org '("org" . "https://orgmode.org/elpa/")) )
+	(set the-list nil)
+	(ngender-test
+		`(ngender-add-package-archive-pair ',the-list ',gnu)
+		(list gnu) )
+	(ngender-test
+		`(ngender-add-package-archive-pair ',the-list ',gnu)
+		(list gnu) )
+	(ngender-test
+		`(ngender-add-package-archive-pair ',the-list ',org)
+		(list org gnu) )
+	(ngender-test
+		`(ngender-add-package-archive-pair ',the-list ',gnu-https)
+		(list gnu-https org) )
+	(makunbound the-list) )
 
 (defun ngender-add-package-archive-by-key (key)
 	(let ( (pair (assoc key *ngender-known-package-archives*)) )
@@ -294,7 +344,9 @@
 											(ngender-add-package-archive-pair '*ngender-known-package-archives* pair)
 											(ngender-add-package-archive-pair 'package-archives pair) ) ) )
 			( (or (stringp a) (symbolp a)) (ngender-add-package-archive-by-key a) )
-			( t (warn "expected archive name or pair %s" a) ) ) ) )
+			( t (warn "expected archive name or pair %s" a) ) ) )
+	(package-initialize)									; is this needed??
+	)
 
 
 (defmacro ngender-archive (&rest archives)
@@ -303,7 +355,8 @@
 		(mapcar (lambda (x) (cond
 													( (symbolp x) (symbol-name x) )
 													( (stringp x) x )
-													( t (list 'quote x) ) )) archives) ) )
+													( (consp x) (if (eq 'quote (car x)) x (list 'quote x)) )
+													( t (ngender-warn x "package archive") ) )) archives) ) )
 
 ;; (macroexpand-1 '(ngender-archive gnu "marmalade" ("org" . "https://orgmode.org/elpa/")))
 												
@@ -677,45 +730,74 @@ symbol and rebuild *ngender--load-path-"
 					(warn "ngender-provide-function: no %s loading, doing nothing" module)
 					(ngender-alist-move-from-to-key '*ngender-modules-loading* '*ngender-modules-loaded* module) ) ) ) ) )
 
+(defun ngender-try-load (path)
+	"load file at path, adding .el and .elc extensions appropriately, fail silently with nil"
+	(let* ( (path-el (concat path ".el"))
+					(path-elc (concat path ".elc"))
+					(file
+						(cond
+							( (file-regular-p path) path )
+							( (and
+									(file-regular-p path-elc)
+									(or
+										(not (file-regular-p path-el))
+										(file-newer-then-file-p path-elc path-el) ) )
+								path-elc )
+							(	(file-regular-p path-el) path-el )
+							( t nil ) ) ) )
+		(when file
+			(ngender-debug-warn t "trying to load %s" file)
+			(ngender-check 'ngender-try-load 'loading file)
+			(prog1
+				(load-file file)
+				(ngender-check 'ngender-try-load 'loaded file)
+				(ngender-debug-warn t "loaded %s" file) ) ) ) )
+
 ;; file a bug with emacs in re the apparent dynamic binding
 ;; of free / global variables with let.  There needs to be
 ;; a clear way to do this so we won't be hit by software rot!!
 (defun ngender-load-module (module &optional noerror nowarn)
-	"load the specified module on the *ngender-load-path*"
-;;	(let ( (load-prefer-newer t) ) ; causing trouble with libraries!
-	(let ( )
-		(let ( (success (seq-some
-											(lambda (p)
-												(ngender-debug-warn t "trying to load %s" (expand-file-name module p))
-												(load (expand-file-name module p) t t))
-											*ngender-load-path* )) )
-			(ngender-debug-warn t "success = %S" success)
-			(when (not success)
-				(funcall (or
-									 (and (not noerror) #'error)
-									 (and (not nowarn) #'warn)
-									 #'ngender-nothing )
-					"ngender-load-module: %s not found!" module ) ) ) ) )
+  "load the specified module on the *ngender-load-path*"
+  ;;	(let ( (load-prefer-newer t) ) ; causing trouble with libraries!
+	(ngender-check 'ngender-load-module module)
+	(let ((success (seq-some
+										(lambda (p)
+											(ngender-try-load (expand-file-name module p)) )
+											*ngender-load-path*  ) ))
+		(ngender-debug-warn t "success = %S" success)
+		(when (not success)
+			(funcall (or
+								 (and (not noerror) #'error)
+								 (and (not nowarn) #'warn)
+								 #'ngender-nothing )
+				"ngender-load-module: %s not found!" module ) ) ) )
 
-(defun ngender-load (module &rest features)
+(defun ngender-load (module &rest feature-list)
 	"show we are loading (module features...) and load module using our load path"
+	(ngender-check 'ngender-load module)
 	(let ( (module (ngender-normalize-module module)) )
 		(when module
 			(ngender-warn module "module")
-			(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
-				(let ( (module+features (cons module features)) )
+			(let ( (good-features (seq-filter #'consp (mapcar #'ngender-normalize-feature feature-list))) )
+				(let ( (module+features (cons module good-features)) )
 					(if (assoc module+features *ngender-modules-loading*)
 						(warn "%s already in *ngender-modules-loading*" module+features)
 						(setq *ngender-modules-loading* (cons module+features *ngender-modules-loading*)) )
 					(ngender-load-module module) ) ) ) ) ) ; module can pull features off loading list
 
-(defun ngender-require (module &rest features)
+(defun ngender-require (module-in &rest features-in)
 	"load module with required features unless already done - used by macro ngender - order of features matters"
-	(let ( (module (ngender-normalize-module module)) )
+	(ngender-check 'ngender-require module-in)
+	(let ( (module (ngender-normalize-module module-in)) )
+		(ngender-check 'ngender-require module-in module 'after 'ngender-normalize-module)
 		(when module
-			(let ( (features (seq-filter #'consp (mapcar #'ngender-normalize-feature features))) )
-				(unless (member (cons module features) *ngender-modules-loaded*)
-					(apply #'ngender-load (cons module features)) ) ) ) ) )
+			(let ( (good-features (seq-filter #'consp (mapcar #'ngender-normalize-feature features-in))) ) ; clobbers emacs!!!
+				(ngender-check 'ngender-require module 'after 'mapcar)
+				(message "%s: module %s features %S" 'ngender-require module good-features)
+				(ngender-check 'ngender-require module 'after 'seq-filter)
+				(unless (member (cons module good-features) *ngender-modules-loaded*)
+					(ngender-check 'ngender-require module 'before 'apply)
+					(apply #'ngender-load (cons module good-features)) ) ) ) ) )
 
 (defmacro ngender (&rest module+features)
 	(cons 'ngender-require (mapcar (lambda (x) (list 'quote x)) module+features)) )
