@@ -24,7 +24,7 @@ prepare:
 	mkdir -p $(USER_ME)		# ensure USER_ME dir
 	touch $(INIT_ME)			# ensure INIT_ME file
 	mkdir -p Limbo			  # ensure Limbo dir
-	for f in $(OLD); do test -L $$f || mv -if $$f Limbo; done
+	for f in $(OLD); do test -L $$f || ! test -e $$f || mv -if $$f Limbo; done
 
 whereami:
 	@echo $(INSTALLDIR)
