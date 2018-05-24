@@ -13,6 +13,29 @@ script which could test the environment and do most of this
 setup work better than the current Makefile - please feel
 free to submit one!
 
+*** make install not creating links!
+
+make install
+is correctly echoing the steps to create the symbolic links
+yet they are not happening.  When I copy/paste them they work
+just fine.  WTF!!!
+
+$ make install
+mkdir -p ~/.emacs.d	# ensure EMACSHOME dir
+mkdir -p ~/.emacs.d/User-Me		# ensure USER_ME dir
+touch ~/.emacs.d/User-Me/init-me.el			# ensure INIT_ME file
+mkdir -p Limbo			  # ensure Limbo dir
+for f in ~/.emacs ~/.emacs.d/init.el ~/.emacs.d/README.org; do test -L $f || ! test -e $f || mv -if $f Limbo; done
+test -e ~/.emacs || ln -s `pwd`/.emacs ~
+test -e ~/.emacs.d/.init.el || ln -s `pwd`/init.el ~/.emacs.d
+test -e ~/.emacs.d/README.org || ln -s `pwd`/README.org ~/.emacs.d
+greg@ngender-org:~/.emacs.d/NGender$ ls -l ~/.emacs
+ls: cannot access /home/greg/.emacs: No such file or directory
+greg@ngender-org:~/.emacs.d/NGender$ test -e ~/.emacs || ln -s `pwd`/.emacs ~
+greg@ngender-org:~/.emacs.d/NGender$ ls -l ~/.emacs
+lrwxrwxrwx 1 greg users 34 May 24 15:48 /home/greg/.emacs -> /home/greg/.emacs.d/NGender/.emacs
+
+
 ** Roadmap
 
 As ngender-example gets close to completion, examine what we
