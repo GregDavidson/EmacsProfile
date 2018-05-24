@@ -6,7 +6,13 @@
 - Many modules are unreliable
 - ngender-example needs to show the way
 
-** Installation could be improved
+*** running list-packages required
+
+Something is not correctly setting up package archives when
+starting things from scratch.  Running list-packages once
+interactively seems to fix the problem.
+
+** Automated installation could be improved
 
 It would be nice to have a flexible and fault-tolerant shell
 script which could test the environment and do most of this
@@ -34,7 +40,6 @@ ls: cannot access /home/greg/.emacs: No such file or directory
 greg@ngender-org:~/.emacs.d/NGender$ test -e ~/.emacs || ln -s `pwd`/.emacs ~
 greg@ngender-org:~/.emacs.d/NGender$ ls -l ~/.emacs
 lrwxrwxrwx 1 greg users 34 May 24 15:48 /home/greg/.emacs -> /home/greg/.emacs.d/NGender/.emacs
-
 
 ** Roadmap
 
