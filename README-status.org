@@ -103,3 +103,8 @@ code...)= led to the bizarre error ~Emacs was compiled
 without network access~ because the =install-package=
 function uses a global variable called =features= which was
 being dynamically rebound by =let=.
+
+** sql-buffer not being found by sql-send functions
+Ugly patch of making sql buffer global; seemingly a personal problem on the Mac
+
+Also need to sql-connect twice to accomplish the task...
