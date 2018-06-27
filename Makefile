@@ -14,7 +14,7 @@ default:
 
 install: prepare
 	test -e $(HOME)/.emacs || ln -s $(INSTALLDIR)/.emacs $(HOME)
-	test -e $(EMACSHOME)/.init.el || ln -s $(INSTALLDIR)/init.el $(EMACSHOME)
+	test -e $(EMACSHOME)/init.el || ln -s $(INSTALLDIR)/init.el $(EMACSHOME)
 	test -e $(EMACSHOME)/README.org || ln -s $(INSTALLDIR)/README.org $(EMACSHOME)
 
 # ensure key directories and files exist
