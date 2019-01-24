@@ -12,7 +12,7 @@
 (defun ngender-sh-mode-hook ()
   (setq-default sh-basic-offset 2)
   (setq-default sh-indentation 2)
-	(setq orgstruct-heading-prefix-regexp "##* ")
+	(set (make-local-variable 'orgstruct-heading-prefix-regexp) "##* ")
 	(orgstruct-mode)
 	(ngender-pitch-mode)
 )

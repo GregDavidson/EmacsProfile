@@ -7,7 +7,7 @@
 ;; ** Everything Else
 
 (defun ngender-emacs-lisp-mode-hook ()
-	(setq orgstruct-heading-prefix-regexp ";;* ")
+	(set (make-local-variable 'orgstruct-heading-prefix-regexp) ";;* ")
 	(orgstruct-mode)
 	(ngender-pitch-mode)
 )

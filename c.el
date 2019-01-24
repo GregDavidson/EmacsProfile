@@ -61,7 +61,7 @@
 	;; objc-mode-map, java-mode-map, and idl-mode-map
 	;; all inherit from it.
   (define-key c-mode-base-map "\C-m" 'newline-and-indent)
-	(setq orgstruct-heading-prefix-regexp "/[/*] ")
+	(set (make-local-variable 'orgstruct-heading-prefix-regexp) "/[/*] ")
 	(orgstruct-mode)
 )
 

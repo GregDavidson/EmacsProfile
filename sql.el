@@ -386,7 +386,7 @@ a placeholder for a correct one!!! "
 (defun ngender-sql-mode ()
 	(ngender-tab-width 0)
 	(ngender-pitch-mode)
-	(setq orgstruct-heading-prefix-regexp "-- ") ; maybe /* as well?
+	(set (make-local-variable 'orgstruct-heading-prefix-regexp) "-- ")
 	(orgstruct-mode)
 	(ngender-set-sqli-buffer)
 	(ngender-bind-sql-magic-functions)
