@@ -268,7 +268,8 @@
 (defvar *ngender-known-package-archives*
 	'( ("gnu" . "https://elpa.gnu.org/packages/")
 		 ("marmalade" . "http://marmalade-repo.org/packages/")
-		 ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+		 ("melpa" . "http://melpa.org/packages/")
+		 ("melpa-stable" . "http://stable.melpa.org/packages/")
 		 ("org" . "https://orgmode.org/elpa/")
 		 ) "package archives we know exist" )
 
