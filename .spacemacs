@@ -37,18 +37,18 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     ;; auto-completion
+     auto-completion                    ; uncommented jgd
      ;; better-defaults
      emacs-lisp
-     ;; git
-     ;; markdown
-     ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     git                                ; uncommented jgd
+     markdown                           ; uncommented jgd
+     org                                ; uncommented jgd
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom) ; uncommented jgd
      ;; spell-checking
-     ;; syntax-checking
-     ;; version-control
+     syntax-checking                    ; uncommented jgd
+     ersion-control                     ; uncommented jgd
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
