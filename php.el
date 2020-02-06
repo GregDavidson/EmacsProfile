@@ -16,9 +16,8 @@
 		c-basic-offset ngender-default-indent
 		tab-width ngender-default-indent
 		c-echo-syntactic-information-p t ;show parse on indent
-		orgstruct-heading-prefix-regexp "/[/*] "
   )
-	(orgstruct-mode)
+	(outshine-mode)
 	(ngender-pitch-mode)
   (c-set-offset 'arglist-intro '+)
   (c-set-offset 'arglist-close '0)

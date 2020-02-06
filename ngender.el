@@ -92,6 +92,8 @@
 
 ;; ** Warnings, Errors, Validating
 
+
+
 (defun ngender-warn (x expected &optional tag level)
 	"warn that x was not what we expected"
 	(lwarn (or level 'emacs) (or tag :warning) "Expected %s, got %s" expected x) nil )
@@ -782,7 +784,7 @@ symbol and rebuild *ngender--load-path-"
 	(ngender-check 'ngender-load module)
 	(let ( (module (ngender-normalize-module module)) )
 		(when module
-			(ngender-warn module "module")
+;;			(ngender-warn module "module")
 			(let ( (good-features (seq-filter #'consp (mapcar #'ngender-normalize-feature feature-list))) )
 				(let ( (module+features (cons module good-features)) )
 					(if (assoc module+features *ngender-modules-loading*)

@@ -53,8 +53,7 @@
 	(when *ngender-rust-company-p*
 		(set (make-local-variable 'company-backends) '(company-racer)) )
 	(ngender-pitch-mode)
-	(set (make-local-variable 'orgstruct-heading-prefix-regexp) "/[/*] ")
-	(orgstruct-mode)
+	(outshine-mode)
 )
 
 (add-hook 'rust-mode-hook 'ngender-rust)
