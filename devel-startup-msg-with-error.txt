@@ -1,0 +1,93 @@
+                                                                                                                                                                        0.300.0@26.3 (spacemacs)
+
+                                                                                 
+
+                                                                                      [S P A C E M A C S]
+
+                                                                [?] [Homepage] [Documentation] [Gitter Chat] [Update Spacemacs]
+                                                                          [Update Packages] [Rollback Package Update]
+                                                                             [Release Notes] [Search in Spacemacs]
+                                                     
+                                                     ╭─ Important Notes (Release 0.300.x) ────────────────────────────────────────────────╮
+                                                     │                                                                                    │
+                                                     │         ╭───────────────────────────────────────────────────────────╮              │
+                                                     │                                                                                    │
+                                                     │                         VERSION 0.300 IS ALMOST OUT!                               │
+                                                     │                                                                                    │
+                                                     │         ╰───────────────────────────────────────────────────────────╯              │
+                                                     │                                                                                    │
+                                                     │  The long awaited feature to have stable ELPA packages is now available in the     │
+                                                     │  develop branch and we need to test it out before we release the 0.300 version.    │
+                                                     │                                                                                    │
+                                                     │  The stable ELPA repository is a Git repository, the official one is called        │
+                                                     │  Spacelpa and it is hosted on GitHub here:                                         │
+                                                     │                                                                                    │
+                                                     │      https://github.com/syl20bnr/spacelpa                                          │
+                                                     │                                                                                    │
+                                                     │  In the end only the master branch will use the stable ELPA repository and the     │
+                                                     │  develop branch will continue to use bleeding edge packages from MELPA             │
+                                                     │  essentially.                                                                      │
+                                                     │                                                                                    │
+                                                     │  Unfortunately this new feature requires at least Emacs 25.1 to work correctly as  │
+                                                     │  we need the archive priority feature of package.el that shipped with this         │
+                                                     │  version of Emacs.                                                                 │
+                                                     │                                                                                    │
+                                                     │  The ELPA repository configuration is set in a new immutable file called .lock     │
+                                                     │  that sits at the root of the Spacemacs git repository.                            │
+                                                     │                                                                                    │
+                                                     │  Spacemacs downloads the whole ELPA stable repository locally so it means that     │
+                                                     │  once it is installed you don't need an Internet connection anymore to install     │
+                                                     │  any packages covered by Spacemacs layers!                                         │
+                                                     │                                                                                    │
+                                                     │  Default installation location of the ELPA stable repository is in:                │
+                                                     │                                                                                    │
+                                                     │      ~/.emacs.d/.cache/stable-elpa                                                 │
+                                                     │                                                                                    │
+                                                     │  If you want to disable the ELPA stable repository put this in your dotfile in     │
+                                                     │  the user-init function:                                                           │
+                                                     │                                                                                    │
+                                                     │      (setq configuration-layer-elpa-archives '(("melpa" . "melpa.org/packages/")   │
+                                                     │            ("org" . "orgmode.org/elpa/") ("gnu" . "elpa.gnu.org/packages/")))      │
+                                                     │                                                                                    │
+                                                     ╰─ Update your dotfile (SPC f e D) and packages after every update ──────────────────╯
+                                                     
+                                                                                [Click here for full change log]
+
+
+                                                                     254 packages loaded in 120.866s (e:183 r:4 l:12 b:55)
+                                                                               (0.000s spent in your user-config)
+
+
+
+Errors:
+    - 
+      An error occurred while installing font-lock+ (error: (error Invalid version syntax: ‘Command ’(env LC_ALL=C /usr/bin/timeout -k 60 600 git submodule sync --recursive)’ exited with non-zero status 2: Cloning into '/home/greg/.emacs.d/.cache/quelpa/build/font-lock+'...
+      HEAD is now at f2c1ddc no summary available
+      sh: 0: Illegal number: 0;
+      ’ (must start with a number)))
+      
+
+Warnings:
+    - Spacemacs has imported your environment variables from your shell and saved them
+      to `/home/greg/.spacemacs.env'. Open this file for more info (SPC f e e) or call
+      `spacemacs/edit-env' function.      
+    - Unknown layer ersion-control declared in dotfile.      
+
+Recent Files:
+    /Data/Greg/Gits-Others/spacemacs/.cache/.custom-settings
+    ~/.emacs.d/private/NGender/README-status.org
+    /Data/Greg/Gits-Ours/spacemacs/private/JGD/.spacemacs
+    ~/.spacemacs
+    ~/.emacs.d/private/NGender/README-ngender.org
+
+Projects:
+    /Data/Greg/Gits-Ours/spacemacs/private/JGD/
+    /Data/Greg/Gits-Ours/spacemacs/private/NGender/
+    ~/
+
+
+
+
+                                                                                       
+
+                                                                                 Made with   by the community

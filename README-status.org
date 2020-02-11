@@ -1,5 +1,66 @@
 * Status of NGender Emacs Prelude Project
 
+** Conversion to Spacemacs
+   
+In February of 2020 two of the NGender principles, Keith & Greg, switched to
+Spacemacs.  The NGender Emacs Framework needs to be either converted to, or
+generalized to include, Spacemacs.
+
+*** What has been done so far: Wednesday, 5 February 2020
+
+- Creation of an NGender Layer
+  - The contents of the old NGender MOdules Directory moved there
+  - Under the same Git control
+  - This file is part of that direcrtory
+    
+- Creation of a layer for each user
+  - The contents of the old user's User-Me directory moved to that layer
+  - Under the same Git control
+  - We'll refer to the logged-in user's layer directory as *User-Me*
+
+- Customizing the ~/.spacemacs file
+  - Uncommenting a few commented-out packages
+  - Moved to and linked from the NGender Layer directory
+
+*** TODO 
+
+- Go through old init files
+  - .emacs, init.el
+    - Pull anything we like out and into NGender/ngender.el
+    - Otherwise leave alone for use by non-spacemacs
+  - ngender.el
+    - Can we consolidate here the NGender stuff that was in
+      - .emacs, init.el ??
+      - if so, pull that stuff out of old init files??
+    - Weave fundamental customizations in *User-Me*
+    - Maybe rename as ngender-init.el
+    - Module system should ignore these files!
+  - .spacemacs
+    - Have it pull in NGender/ngender.el
+
+*** STARTUP PROBLEMS:
+
+**** Important background piece:
+
+spacemacs is apparently very close to a new release.  In the new release packages are versioned and come from a git repository.
+
+**** org-projectile problem
+
+Currently, a change in org-projectile causes trouble when spacemacs tries to build it.
+
+Gory details: https://github.com/syl20bnr/spacemacs/issues/10434
+
+tl;dr: Either exclude org-projectile or switch to development branch
+
+I tried switching to the devel build and
+- encountered a problem with font-lock+
+  - reports an invalid version number of 0 saying that 0 is not a number!
+  - tried changing the version number but spacemacs keeps downloading it again
+
+tl;dr: went back to master, deleted org-projectile from package-selected-packages list.  Seems to fix the problem.
+
+WTF is package-selected-packages list doing in .spacemacs??  How in general is user supposed to edit things in .spacemacs and step around other stuff??
+
 ** Overall Status: Rough
 
 - Some modules are good enough for now.
