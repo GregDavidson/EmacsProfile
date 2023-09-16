@@ -2,8 +2,13 @@
 
 * Emacs Profile Ideas
 
-This is all an old mess, /except/ for
+This is an old mess from before I moved to Spacemacs, /except for/
 
-[[file:org-capture.el][org-capture.el]]
+- [[file:org-capture.el][org-capture.el]] :: my org-capture set up
 
-which may give you some ideas for how to set up org-capture!
+Note that the files under ~/Notes/GTD folder (or wherever you put them) have to
+already exist and have the assumed OrgMode structure for org-capture to work.
+
+- [[file:.spacemacs][.spacemacs]] :: my spacemacs settings
+
+May contain useful clues on how to set up Org-Babel for various programs.
